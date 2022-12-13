@@ -1,3 +1,3 @@
 # PersonalAssistantApp
 
-## Reid Trisler, Thien Vu
+## Reid Trisler, Thien Vu, Cole Varnado
