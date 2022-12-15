@@ -1,3 +1,3 @@
 # PersonalAssistantApp
 
-## Reid Trisler, Thien Vu, Cole Varnado, James Vieux
+## Reid Trisler, Thien Vu, Cole Varnado, James Vieux, Josue Gaona
