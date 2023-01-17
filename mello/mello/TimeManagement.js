@@ -18,7 +18,7 @@ export default function TimeManagement() {
 
 const timeToString = (time) => {
   const date = new Date(time);
-  const date.toISOString().split('T')[0];
+  return date.toISOString().split('T')[0];
 }
 
 const App = () => {
