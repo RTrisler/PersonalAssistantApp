@@ -75,7 +75,7 @@ const App = () => {
         renderItem={renderItem}
         />
     </View>
-  ):
+  );
 }
 
 const styles = StyleSheet.create({
