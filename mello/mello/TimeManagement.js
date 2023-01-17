@@ -1,5 +1,5 @@
 import react from 'react';
-import { StatusBar } from 'expo-status-bar';
+//import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TouchableOpacity, StatusBar } from 'react-native';
 import {agenda} from 'react-native-calendars';
 import {card} from 'react-native-paper';
