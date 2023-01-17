@@ -18,7 +18,7 @@ export default function App() {
                                                   backgroundColor: '#839496'
                                                 }
     }}>
-      <Drawer.Screen name="Mello" component={Home} options={{ title: 'Welcome', headerStyle: {
+      <Drawer.Screen name="Mello" component={Home} options={{ title: 'Home', headerStyle: {
               backgroundColor: '#2aa198'
            } }} />
       <Drawer.Screen name="Settings" component={Settings} />
