@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import WeeklyCalendar from 'react-native-weekly-calendar';
- 
-export default function App() {
+
+export default function TimeManagement() {
   const sampleEvents = [
     { 'start': '2023-01-13 09:00:00', 'duration': '00:20:00', 'note': 'Walk my dog' },
     { 'start': '2023-01-14 14:00:00', 'duration': '01:00:00', 'note': 'Doctor\'s appointment' },
@@ -15,7 +15,7 @@ export default function App() {
     { 'start': '2023-01-16 18:00:00', 'duration': '02:00:00', 'note': 'Schedule 4' },
     { 'start': '2023-01-16 22:00:00', 'duration': '01:00:00', 'note': 'Schedule 5' }
   ]
- 
+
   return (
     <View style={styles.container}>
       <WeeklyCalendar events={sampleEvents} style={{ height: 400 }} />
