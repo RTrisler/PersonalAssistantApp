@@ -33,7 +33,8 @@ const Stack = createNativeStackNavigator();
 
 // 2AA198, #003847, 002B36
 const BGColor = "#003847"
-const LGreen = "#839496"
+const LGreen = "#2AA198"
+const DGreen = "#002B36"
 
 
 export default function TimeManagement() {
@@ -57,11 +58,11 @@ const styles = StyleSheet.create({
     },
     todoContainer: {
       height: 350,
-      width: 375,
+      width: 400,
       marginBottom: 10,
-      backgroundColor: 'white',
+      backgroundColor: DGreen,
       alignItems: 'center',
-      justifyContent: 'top',
+      justifyContent: 'center',
       borderRadius: 10,
       elevation: 3,
     },
@@ -71,21 +72,22 @@ const styles = StyleSheet.create({
       textTransform: 'uppercase',
       textAlign: 'center',
     },
-    calendarButton: {
-      alignItems: 'center',
-      justifyContent: 'center',
-      borderRadius: 10,
-      width: 375,
-      height: 50,
-      backgroundColor: LGreen,
-    },
     reminderButton: {
       height: 350,
-      width: 375,
+      width: 400,
       marginBottom: 10,
       alignItems: 'center',
       justifyContent: 'center',
       borderRadius: 8,
-      backgroundColor: '#F8C454',
+      backgroundColor: DGreen,
     },
+    calendarButton: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderRadius: 10,
+      width: 400,
+      height: 50,
+      backgroundColor: LGreen,
+    },
+    
 });
