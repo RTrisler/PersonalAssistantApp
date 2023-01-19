@@ -12,15 +12,17 @@ import MonthView from './MonthView';
 function Overview({ navigation }) {
   return(
     <View style={styles.container}>  
-        <Text styles={styles.buttonText}>Todo List</Text>
+      <View style={styles.todoContainer}>
+          <Text styles={styles.todoText}>Todo List</Text>
+      </View>
         <TouchableOpacity onPress={() => navigation.navigate('Mello')}>
-          <View style={styles.button2} text="To Do">
+          <View style={styles.reminderButton} >
             <Text styles={styles.buttonText}>Reminders</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('MonthView')}>
           <View style={styles.calendarButton}>
-            <Text styles={styles.buttonText}>Calender</Text>
+            <Text styles={styles.buttonText}>Go To Calendar</Text>
           </View>
         </TouchableOpacity>
     </View>
@@ -49,43 +51,41 @@ const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: BGColor,
       alignItems: 'center',
-      justifyContent: 'top',
-      paddingVertical: 12,
-      paddingHorizontal: 32,
       borderRadius: 3,
       elevation: 3,
+      paddingTop: 20
     },
-  calendarButton: {
+    todoContainer: {
+      height: 350,
+      width: 375,
+      marginBottom: 10,
+      backgroundColor: 'white',
       alignItems: 'center',
-      justifyContent: 'center',
-      borderRadius: 8,
-      paddingVertical: 30,
-      paddingHorizontal: 100,
-      backgroundColor: '',
-      
-  },
-  button2: {
-      alignItems: 'center',
-      justifyContent: 'center',
-      borderRadius: 8,
-      paddingVertical: 30,
-      paddingHorizontal: 93,
-      backgroundColor: '#F8C454',
-      
-  },
-  buttonText: {
+      justifyContent: 'top',
+      borderRadius: 10,
+      elevation: 3,
+    },
+    todoText: {
       color: 'white',
       fontWeight: 'bold',
       textTransform: 'uppercase',
-      fontSize: 20,
       textAlign: 'center',
-  },
-  Label: {
+    },
+    calendarButton: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderRadius: 10,
+      width: 375,
+      height: 50,
+      backgroundColor: LGreen,
+    },
+    reminderButton: {
+      height: 350,
+      width: 375,
+      marginBottom: 10,
       alignItems: 'center',
       justifyContent: 'center',
       borderRadius: 8,
-      paddingVertical: 50,
-      paddingHorizontal: 100,
-      backgroundColor: 'white',
-  },
+      backgroundColor: '#F8C454',
+    },
 });

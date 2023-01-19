@@ -25,7 +25,6 @@ export default function App() {
             } }} />
         <Drawer.Screen name="Settings" component={Settings} />
         <Drawer.Screen name="TimeManagement" component={TimeManagement} options={{ headerShown: false}} />
-        <Drawer.Screen name="Daily Planner" component={WeekView} options={{ headerShown: false}} />
       </Drawer.Navigator>
     </NavigationContainer>
   );
