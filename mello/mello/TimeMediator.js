@@ -8,7 +8,6 @@ import { Text, Button, StyleSheet, View, TouchableOpacity} from 'react-native';
 export default function TimeMediator({ navigation }){
 
     return(
-        
         <View style={styles.container}>  
             <View style={styles.lable}> 
                 <Text styles={styles.buttonText}>Todo List</Text>
@@ -25,9 +24,7 @@ export default function TimeMediator({ navigation }){
                     <Text styles={styles.buttonText}>Calender</Text>
                 </View>
             </TouchableOpacity>
-        </View>
-            
-        
+        </View>     
     )
 }
     
