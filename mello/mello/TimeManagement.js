@@ -9,6 +9,7 @@ import 'react-native-gesture-handler'
 const BGColor = "#003847"
 const LGreen = "#839496"
 
+
 export default function TimeManagement() {
   return (
     <View style={styles.container}>
@@ -20,6 +21,7 @@ export default function TimeManagement() {
           height: 375,
           width: 420,
           marginTop: 40,
+          paddingTop: 20,
           borderRadius: 10
         }}
 
@@ -29,20 +31,21 @@ export default function TimeManagement() {
           textSectionTitleColor: '#b6c1cd',
           selectedDayBackgroundColor: '#00adf5', elevation:2,
           selectedDayTextColor: '#ffffff',
-          todayTextColor: '#00adf5',
+          todayTextColor: 'white',
           todayBackgroundColor: '#2AA198', elevation:2,
           dayTextColor: '#2d4150',
           textDisabledColor: '#d9e1e8',
           dotColor: '#00adf5',
           selectedDotColor: '#ffffff',
+          arrowColor: '#2AA198',
           disabledArrowColor: '#d9e1e8',
           monthTextColor: '#2AA198',
           indicatorColor: 'blue',
           textDayFontWeight: '300',
           textMonthFontWeight: 'bold',
           textDayHeaderFontWeight: '200',
-          textDayFontSize: 16,
-          textMonthFontSize: 16,
+          textDayFontSize: 20,
+          textMonthFontSize: 24,
           textDayHeaderFontSize: 14
         }}
       />
