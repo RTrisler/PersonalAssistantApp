@@ -9,23 +9,22 @@ import Home from './Home'
 import Settings from './Settings';
 import TimeManagement from './TimeManagement';
 import WeekView from './WeekView';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-
-const Drawer = createDrawerNavigator();
+const TabNav = createBottomTabNavigator();
+function TheTabs(){
+  return(
+    <TabNav.Navigator>
+      <TabNav.Screen name="Home" component={Home}/>
+      <TabNav.Screen name="Manage Time" component={TimeManagement}/>
+    </TabNav.Navigator>
+  );
+}
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Drawer.Navigator initialRouteName="Home" screenOptions={{
-                                                  drawerStyle: {
-                                                    backgroundColor: '#839496'
-                                                  }}}>
-        <Drawer.Screen name="Mello" component={Home} options={{ title: 'Welcome', headerStyle: {
-                backgroundColor: '#2aa198'
-            } }} />
-        <Drawer.Screen name="Settings" component={Settings} />
-        <Drawer.Screen name="TimeManagement" component={TimeManagement} options={{ headerShown: false}} />
-      </Drawer.Navigator>
+      <TheTabs/>
     </NavigationContainer>
   );
 }
