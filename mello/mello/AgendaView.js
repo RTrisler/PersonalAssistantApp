@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
-import { StyleSheet, View, Text, TextInput } from 'react-native';
+import { StyleSheet, View, Text} from 'react-native';
 import { Agenda, DateData } from 'react-native-calendars';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Divider, Card, Button } from 'react-native-paper';
+import { Divider, Card, Button, Modal, TextInput } from 'react-native-paper';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 
 // 2AA198, #003847, 002B36
@@ -15,10 +16,18 @@ const timeToString = (time) => {
   return date.toISOString().split('T')[0];
 }
 
-const dateToString = (date) => {
-  return date.toISOString().split('T')[0];
-}
-
+const getFormattedDate = (date) => {
+  let fCDateMonth = (date.getMonth() + 1) + '';
+  if(fCDateMonth.length <2) {
+    fCDateMonth = '0' + fCDateMonth;
+  }
+  let fCDateDate = date.getDate() + '';
+  if(fCDateDate.length <2) {
+    fCDateDate = '0' + fCDateDate;
+  }
+  const fCDateStr = date.getFullYear() + '-' + fCDateMonth + '-' + fCDateDate;
+  return fCDateStr;
+};
 export default function AgendaView() {
   const [items, setItems] = useState({
     '2023-01-30': [
@@ -74,40 +83,92 @@ export default function AgendaView() {
   }
 
   const renderEmptyItem = () => {
-    return (<View>
-      <Divider/>
+    return (<View style={{justifyContent: 'center', alignContent: 'center'}}>
+      <Divider bold={true}/>
     </View>)
   }
 
   //initial load of calendar app
   const [started,setStarted] = useState(false);
-  const currentDate = new Date;
+  const currentDate = new Date();
   if(!started)
   {
-    loadItems({"dateString": dateToString(currentDate), 
+    loadItems({"dateString": getFormattedDate(currentDate), 
                "day": currentDate.getDate(), 
                "month": currentDate.getMonth(),
-               "timestamp": currentDate.valueOf(),
+               "timestamp": currentDate.valueOf() - (currentDate.valueOf() % 100000),
                "year": currentDate.getFullYear()
               })
     setStarted(true);
   }
 
-  //making an event in the first place
+  //making an event
   const [isEventMakerVisible, setEventMakerVisible] = useState(false);
   const toggleEventMaker = () => {
+    console.log(isEventMakerVisible)
     setEventMakerVisible(!isEventMakerVisible);
   };
 
+  //vars for making an event date
+  const [startDate, setStartDate] = useState(new Date());
+  const [startTime, setstartTime] = useState(new Date());
+  const [endTime, setEndTime] = useState(new Date());
+  const [nameText, setNameText] = useState('empty');
+  const [noteText, setNoteText] = useState('empty');
+
+  //functions for changing date/time vars
+  const onChangeStartDate = (event, selectedStartDate) => {
+    const currentStartDate = selectedStartDate;
+    setStartDate(currentStartDate);
+  };
+  const onChangeStartTime = (event, selectedstartTime) => {
+    const currentstartTime = selectedstartTime;
+    setstartTime(currentstartTime);
+  };
+  const onChangeEndTime = (event, selectedEndTime) => {
+    const currentEndTime = selectedEndTime;
+    setEndTime(currentEndTime);
+  };
+
+  const addToEvents = () => {
+    setTimeout(() => {
+      console.log(startDate.getDate())
+      const startDateStr = getFormattedDate(startDate);
+      console.log(startDateStr);
+      const eventItem = {name: nameText, 
+                         timeDueStart: startTime.getHours() + ':' + startTime.getMinutes(), 
+                         timeDueEnd: endTime.getHours() + ':' + endTime.getMinutes(), 
+                         note: noteText};
+      if(!items[startDateStr]) {
+        items[startDateStr] = [eventItem];
+      }
+      else{
+        items[startDateStr].push(eventItem);
+      }
+      console.log(items[startDateStr]);
+    }, 70);
+    loadItems({"dateString": getFormattedDate(startDate), 
+               "day": startDate.getDate(), 
+               "month": startDate.getMonth(),
+               "timestamp": startDate.valueOf() - (startDate.valueOf() % 100000),
+               "year": startDate.getFullYear()
+              })
+  }
 
 
   return (
     <View style = {styles.container}>
-      <View style = {styles.calendar}>
+      <View style = {styles.addButton}>
+        <View style = {{flexDirection: 'row', justifyContent: 'space-around'}}>
+          <Button onPress={toggleEventMaker} buttonColor={DGreen} textColor={LGreen}>
+            <Text style = {{fontSize: 20}}> Add Event </Text>
+          </Button>
+        </View>
+      </View>
         <Agenda
           items={items}
           loadItemsForMonth={loadItems}
-          selected={dateToString(currentDate)}
+          selected={getFormattedDate(currentDate)}
           showClosingKnob={true}
           renderItem={renderItem}
           renderEmptyDate={renderEmptyItem}
@@ -116,14 +177,44 @@ export default function AgendaView() {
           }}
           theme={styles.calendarTheme}
         />
-      </View>
-      <View style = {styles.addButton}>
-        <View style = {{flexDirection: 'row', justifyContent: 'space-around'}}>
-        <Button onPress={toggleEventMaker} buttonColor={DGreen} textColor={LGreen}>
-          <Text style = {{fontSize: 20}}> Add Event </Text>
-        </Button>
-        </View>
-      </View>
+      <Modal visible={isEventMakerVisible} onDismiss={toggleEventMaker}>
+            <Card style={styles.eventMaker}>
+              <TextInput placeholder='Name' onChangeText={setNameText} textColor="#2AA198"/>
+              <TextInput placeholder='Note' onChangeText={setNoteText} textColor="#2AA198"/>
+
+              <View style = {{paddingHorizontal: 10}}>
+                <View style={styles.dateTimeField}>
+                  <Text style={{ fontWeight: 'bold', fontSize: 20, color: LGreen}}>
+                    Date:
+                  </Text>
+                  <DateTimePicker value={startDate} mode={'date'} onChange={onChangeStartDate}/>
+                </View>
+
+                <View style={styles.dateTimeField}>
+                  <Text style={{ fontWeight: 'bold', fontSize: 20, color: LGreen }}>
+                    Start:
+                  </Text>
+                  <DateTimePicker value={startTime} mode={'time'} onChange={onChangeStartTime} />
+                </View>
+
+                <View style={styles.dateTimeField}>
+                  <Text style={{ fontWeight: 'bold', fontSize: 20, color: LGreen }}>
+                    End:
+                  </Text>
+                  <DateTimePicker value={startTime} mode={'time'} onChange={onChangeEndTime} />
+                </View>
+
+                <View style={{flexDirection:'row', justifyContent:'space-between', paddingTop: 10, paddingBottom: 10}}>
+                  <Button onPress={addToEvents} buttonColor={DGreen} textColor={LGreen}>
+                    <Text style = {{fontSize: 20}}> Save </Text>
+                  </Button>
+                  <Button onPress={toggleEventMaker} buttonColor={DGreen} textColor={LGreen}>
+                    <Text style = {{fontSize: 20}}> Cancel </Text>
+                  </Button>
+                </View>
+              </View>
+            </Card>
+      </Modal>
     </View>
   );
 }
@@ -137,8 +228,8 @@ const styles = StyleSheet.create({
     height: '90%'
   },
   addButton: {
-    paddingTop: 10,
-    paddingBottom: 30,
+    paddingTop: 5,
+    paddingBottom: 5,
     backgroundColor: LGreen
   },
   itemBorder: {
@@ -146,7 +237,7 @@ const styles = StyleSheet.create({
     marginTop: 17
   },
   item: { 
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   itemTimes: {
     flexDirection: 'row',
@@ -175,5 +266,15 @@ const styles = StyleSheet.create({
     textDayFontSize: 16,
     textMonthFontSize: 16,
     textDayHeaderFontSize: 16
+  },
+  dateTimeField: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingTop: 10,
+
+  },
+  eventMaker: {
+    backgroundColor: BGColor
   }
 });
