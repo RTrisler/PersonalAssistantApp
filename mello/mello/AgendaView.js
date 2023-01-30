@@ -21,9 +21,15 @@ const dateToString = (date) => {
 
 export default function AgendaView() {
   const [items, setItems] = useState({
-    '2023-01-30': [{name: 'nametest', timeDueStart: '12:30', timeDueEnd: '13:30', note: 'this is a note'},
-      {name: 'csc 330', timeDueStart: '11:00', timeDueEnd: '12:15', note: 'go to class nerd'}],
-    '2023-01-31': [{name: 'csc 405', timeDueStart: '2:00', timeDueEnd: '3:15', note: 'go to class nerd'}]
+    '2023-01-30': [
+      {name: 'nametest', timeDueStart: '12:30', timeDueEnd: '13:30', note: 'note test'},
+      {name: 'csc 330', timeDueStart: '11:00', timeDueEnd: '12:15', note: 'go to class nerd'},
+      {name: 'csc 470', timeDueStart: '11:00', timeDueEnd: '12:15', note: 'go to class nerd'},
+      {name: 'csc 405', timeDueStart: '2:00', timeDueEnd: '3:15', note: 'go to class nerd'}
+    ],
+    '2023-01-31': [
+      {name: 'do thing', timeDueStart: '2:00', timeDueEnd: '3:15', note: 'note about thing'}
+    ]
   });
 
   //loading items from the item list to agenda
