@@ -19,7 +19,7 @@ export default function TimeMediator({ navigation }){
                 </View>
             </TouchableOpacity>
             <View style={styles.space}/>
-            <TouchableOpacity onPress={() => navigation.navigate('TimeManagement')}>
+            <TouchableOpacity onPress={() => navigation.navigate('WeekView')}>
                 <View style={styles.button}>
                     <Text styles={styles.buttonText}>Calender</Text>
                 </View>

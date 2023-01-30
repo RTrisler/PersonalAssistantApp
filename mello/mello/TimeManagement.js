@@ -4,8 +4,7 @@ import { Text, Button, StyleSheet, View, TouchableOpacity} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import 'react-native-gesture-handler'
-import WeekView from './WeekView';
-import MonthView from './MonthView';
+import AgendaView from './AgendaView';
 
 
 
@@ -20,7 +19,7 @@ function Overview({ navigation }) {
             <Text styles={styles.buttonText}>Reminders</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.touchableOpacity2} onPress={() => navigation.navigate('MonthView')}>
+        <TouchableOpacity style={styles.touchableOpacity2} onPress={() => navigation.navigate('AgendaView')}>
           <View style={styles.calendarButton}>
             <Text styles={styles.buttonText}>Go To Calendar</Text>
           </View>
@@ -41,8 +40,7 @@ export default function TimeManagement() {
   return (
       <Stack.Navigator>
         <Stack.Screen name="Overview" component={Overview} />
-        <Stack.Screen name="WeekView" component={WeekView} />
-        <Stack.Screen name="MonthView" component={MonthView} />
+        <Stack.Screen name="AgendaView" component={AgendaView} />
       </Stack.Navigator>
   );
 }

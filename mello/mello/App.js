@@ -8,7 +8,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from './Home'
 import Settings from './Settings';
 import TimeManagement from './TimeManagement';
-import WeekView from './WeekView';
 
 
 const Drawer = createDrawerNavigator();

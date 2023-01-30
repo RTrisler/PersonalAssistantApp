@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { Calendar } from 'react-native-calendars';
 import 'react-native-gesture-handler';
-import WeekView from './WeekView';
+import WeekView from './AgendaView';
 
 const BGColor = "#004052"
 const LGreen = "#2AA198"
