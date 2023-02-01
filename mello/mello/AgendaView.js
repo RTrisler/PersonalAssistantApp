@@ -4,6 +4,7 @@ import { Agenda, DateData } from 'react-native-calendars';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Divider, Card, Button, Modal, TextInput } from 'react-native-paper';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { color } from 'react-native-reanimated';
 
 
 // 2AA198, #003847, 002B36
@@ -66,7 +67,7 @@ export default function AgendaView() {
   const renderItem = (item) => {
     return (
     <TouchableOpacity style={styles.itemBorder}>
-      <Card>
+      <Card style={{ backgroundColor: LGreen }}>
         <Card.Content>
           <View style={styles.item}>
             <View style={styles.itemTimes}>
@@ -244,7 +245,7 @@ const styles = StyleSheet.create({
   },
   itemBorder: {
     marginRight: 10,
-    marginTop: 17
+    marginTop: 17,
   },
   item: { 
     justifyContent: 'space-between',
