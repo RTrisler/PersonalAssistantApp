@@ -6,6 +6,7 @@ import 'react-native-gesture-handler'
 
 const BGColor = "#004052"
 
+
 export default function Home() {
   return (
     <View style={styles.container}>
