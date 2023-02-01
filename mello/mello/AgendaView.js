@@ -103,11 +103,6 @@ export default function AgendaView() {
   }
 
   //making an event
-  const [isEventMakerVisible, setEventMakerVisible] = useState(false);
-  const toggleEventMaker = () => {
-    console.log(isEventMakerVisible)
-    setEventMakerVisible(!isEventMakerVisible);
-  };
 
   //vars for making an event date
   const [startDate, setStartDate] = useState(new Date());
@@ -115,7 +110,20 @@ export default function AgendaView() {
   const [endTime, setEndTime] = useState(new Date());
   const [nameText, setNameText] = useState('empty');
   const [noteText, setNoteText] = useState('empty');
+  const [isEventMakerVisible, setEventMakerVisible] = useState(false);
 
+  //making the event maker modal show up or not
+  const toggleEventMaker = () => {
+    setEventMakerVisible(!isEventMakerVisible);
+  };
+
+  const resetEventMakerVar = () => {
+    setStartDate(new Date());
+    setStartTime(new Date());
+    setEndTime(new Date());
+    setNameText('empty');
+    setNameText('empty');
+  }
   //functions for changing date/time vars
   const onChangeStartDate = (event, selectedStartDate) => {
     const currentStartDate = selectedStartDate;
@@ -129,8 +137,9 @@ export default function AgendaView() {
     const currentEndTime = selectedEndTime;
     setEndTime(currentEndTime);
   };
-
+  
   const addToEvents = () => {
+    if(nameText == 'empty') return;
     setTimeout(() => {
       console.log(startDate.getDate())
       const startDateStr = getFormattedDate(startDate);
@@ -153,6 +162,7 @@ export default function AgendaView() {
                "timestamp": startDate.valueOf() - (startDate.valueOf() % 100000),
                "year": startDate.getFullYear()
               })
+    toggleEventMaker();
   }
 
 
