@@ -255,15 +255,15 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   calendarTheme: {
-    backgroundColor: LGreen,
-    calendarBackground: BGColor,
+    backgroundColor: BGColor,
+    calendarBackground: DGreen,
     textSectionTitleColor: '#b6c1cd',
     textSectionTitleDisabledColor: '#d9e1e8',
     selectedDayBackgroundColor: '#00adf5',
     selectedDayTextColor: '#ffffff',
     todayTextColor: '#00adf5',
     dayTextColor: LGreen,
-    textDisabledColor: DGreen,
+    textDisabledColor: BGColor,
     dotColor: '#00adf5',
     selectedDotColor: '#ffffff',
     arrowColor: 'orange',
