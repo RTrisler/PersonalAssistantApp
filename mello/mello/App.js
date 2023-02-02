@@ -9,7 +9,6 @@ import { Ionicons } from 'react-native-vector-icons/Ionicons';
 import Home from './Home'
 import Settings from './Settings';
 import TimeManagement from './TimeManagement';
-import WeekView from './WeekView';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 const TabNav = createBottomTabNavigator();
@@ -17,8 +16,11 @@ function TheTabs(){
   return(
     <TabNav.Navigator screenOptions={{
          tabBarActiveTintColor: '#467599',
-         tabBarInactiveTintColor: '#fcf7ff', tabBarActiveBackgroundColor: '#92828d',
-         tabBarInactiveBackgroundColor:'#022b3a'}}>
+         tabBarInactiveTintColor: '#fcf7ff', 
+         tabBarActiveBackgroundColor: '#92828d',
+         tabBarInactiveBackgroundColor:'#022b3a',
+         headerShown: false
+         }}>
       <TabNav.Screen name="Home" component={Home}/>
       <TabNav.Screen name="Manage Time" component={TimeManagement}/>
       <TabNav.Screen name='Settings' component={Settings}/>
