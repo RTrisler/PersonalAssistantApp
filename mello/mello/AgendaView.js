@@ -4,8 +4,6 @@ import { Agenda, DateData } from 'react-native-calendars';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Divider, Card, Button, Modal, TextInput } from 'react-native-paper';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { color } from 'react-native-reanimated';
-
 
 // 2AA198, #003847, 002B36
 const BGColor = "#003847"
@@ -32,13 +30,13 @@ const getFormattedDate = (date) => {
 export default function AgendaView() {
   const [items, setItems] = useState({
     '2023-01-30': [
-      {name: 'nametest', timeDueStart: '12:30', timeDueEnd: '13:30', note: 'note test'},
-      {name: 'csc 330', timeDueStart: '11:00', timeDueEnd: '12:15', note: 'go to class nerd'},
-      {name: 'csc 470', timeDueStart: '11:00', timeDueEnd: '12:15', note: 'go to class nerd'},
-      {name: 'csc 405', timeDueStart: '2:00', timeDueEnd: '3:15', note: 'go to class nerd'}
+      {name: 'nametest', timeDueStart: '12:30', timeDueEnd: '13:30', note: 'note test', date: '2023-01-30'},
+      {name: 'csc 330', timeDueStart: '11:00', timeDueEnd: '12:15', note: 'go to class nerd', date: '2023-01-30'},
+      {name: 'csc 470', timeDueStart: '11:00', timeDueEnd: '12:15', note: 'go to class nerd', date: '2023-01-30'},
+      {name: 'csc 405', timeDueStart: '2:00', timeDueEnd: '3:15', note: 'go to class nerd', date: '2023-01-30'}
     ],
     '2023-01-31': [
-      {name: 'do thing', timeDueStart: '2:00', timeDueEnd: '3:15', note: 'note about thing'}
+      {name: 'do thing', timeDueStart: '2:00', timeDueEnd: '3:15', note: 'note about thing',date: '2023-01-31'}
     ]
   });
 
@@ -71,12 +69,11 @@ export default function AgendaView() {
         <Card.Content>
           <View style={styles.item}>
             <View style={styles.itemTimes}>
-              <Text style={{fontSize: 17}}>{item.timeDueStart}</Text>
-              <Text style={{fontSize: 17}}>{item.timeDueEnd}</Text>
+              <Text style={{fontSize: 17,fontWeight: 'bold', color: BGColor}}>{item.timeDueStart}</Text>
+              <Text style={{fontSize: 17,fontWeight: 'bold', color: BGColor}}>{item.timeDueEnd}</Text>
             </View>
-            <Text style={{fontSize: 23, fontWeight: 'bold'}}>{item.name}</Text>
-            
-            <Text style={{fontSize: 16}}>{item.note}</Text>
+            <Text style={{fontSize: 23, fontWeight: 'bold', color: BGColor}}>{item.name}</Text>
+            <Text style={{fontSize: 16, color: BGColor}}>{item.note}</Text>
           </View>
         </Card.Content>
       </Card>
@@ -179,7 +176,6 @@ export default function AgendaView() {
         <Agenda
           items={items}
           loadItemsForMonth={loadItems}
-          selected={getFormattedDate(currentDate)}
           showClosingKnob={true}
           renderItem={renderItem}
           renderEmptyDate={renderEmptyItem}
@@ -227,7 +223,7 @@ export default function AgendaView() {
             </Card>
       </Modal>
     </View>
-  );
+  );;
 }
  
 const styles = StyleSheet.create({

@@ -10,6 +10,7 @@ import Home from './Home'
 import Settings from './Settings';
 import TimeManagement from './TimeManagement';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import FinanceManagement from './FinanceManagement';
 
 const TabNav = createBottomTabNavigator();
 function TheTabs(){
@@ -21,9 +22,10 @@ function TheTabs(){
          tabBarInactiveBackgroundColor:'#022b3a',
          headerShown: false
          }}>
-      <TabNav.Screen name="Home" component={Home}/>
-      <TabNav.Screen name="Manage Time" component={TimeManagement}/>
+      <TabNav.Screen name='Home' component={Home}/>
+      <TabNav.Screen name='Manage Time' component={TimeManagement}/>
       <TabNav.Screen name='Settings' component={Settings}/>
+      <TabNav.Screen name='Manage Finances' component={FinanceManagement}/>
     </TabNav.Navigator>
   );
 }
