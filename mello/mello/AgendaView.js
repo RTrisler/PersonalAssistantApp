@@ -166,10 +166,9 @@ export default function AgendaView() {
     setTimeout(() => {
       console.log(startDate.getDate())
       const startDateStr = getFormattedDate(startDate);
-      console.log(startDateStr);
       const eventItem = {name: nameText, 
-                         timeDueStart: startTime.getHours() + ':' + (startTime.getMinutes()), 
-                         timeDueEnd: endTime.getHours() + ':' + endTime.getMinutes(), 
+                         timeDueStart: getFormattedTime(startTime), 
+                         timeDueEnd: getFormattedTime(endTime), 
                          note: noteText};
       if(!items[startDateStr]) {
         items[startDateStr] = [eventItem];
