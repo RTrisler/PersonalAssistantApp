@@ -1,11 +1,9 @@
 import React, {useState} from 'react';
-import { StyleSheet, View, Text} from 'react-native';
+import { StyleSheet, View, Text, Platform } from 'react-native';
 import { Agenda, DateData } from 'react-native-calendars';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Divider, Card, Button, Modal, TextInput } from 'react-native-paper';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { color } from 'react-native-reanimated';
-
 
 // 2AA198, #003847, 002B36
 const BGColor = "#003847"
@@ -27,6 +25,19 @@ const getFormattedDate = (date) => {
     fCDateDate = '0' + fCDateDate;
   }
   const fCDateStr = date.getFullYear() + '-' + fCDateMonth + '-' + fCDateDate;
+  return fCDateStr;
+};
+
+const getFormattedTime = (date) => {
+  let fCDateHour = date.getHours()+ '';
+  if(fCDateHour.length <2) {
+    fCDateHour = '0' + fCDateHour;
+  }
+  let fCDateMinute = date.getMinutes() + '';
+  if(fCDateMinute.length <2) {
+    fCDateMinute = '0' + fCDateMinute;
+  }
+  const fCDateStr = fCDateHour + ':' + fCDateMinute;
   return fCDateStr;
 };
 export default function AgendaView() {
@@ -85,7 +96,7 @@ export default function AgendaView() {
 
   const renderEmptyItem = () => {
     return (<View style={{justifyContent: 'center', alignContent: 'center'}}>
-      <Divider bold={true}/>
+      <Divider bold={true} style={{backgroundColor: LGreen}}/>
     </View>)
   }
 
@@ -112,15 +123,19 @@ export default function AgendaView() {
   const [nameText, setNameText] = useState('empty');
   const [noteText, setNoteText] = useState('empty');
   const [isEventMakerVisible, setEventMakerVisible] = useState(false);
-
+  const isIOS = Platform.OS === 'ios';
+  const [startDatePicker, setStartDatePicker] = useState(false);
+  const [startTimePicker, setStartTimePicker] = useState(false);
+  const [endTimePicker, setEndTimePicker] = useState(false);
   //making the event maker modal show up or not
   const toggleEventMaker = () => {
     setEventMakerVisible(!isEventMakerVisible);
+    resetEventMakerVar();
   };
 
   const resetEventMakerVar = () => {
     setStartDate(new Date());
-    setStartTime(new Date());
+    setstartTime(new Date());
     setEndTime(new Date());
     setNameText('empty');
     setNameText('empty');
@@ -128,15 +143,22 @@ export default function AgendaView() {
   //functions for changing date/time vars
   const onChangeStartDate = (event, selectedStartDate) => {
     const currentStartDate = selectedStartDate;
+    setStartDatePicker(false);
     setStartDate(currentStartDate);
+    
   };
   const onChangeStartTime = (event, selectedstartTime) => {
+
     const currentstartTime = selectedstartTime;
+    setStartTimePicker(false);
     setstartTime(currentstartTime);
+    
   };
   const onChangeEndTime = (event, selectedEndTime) => {
     const currentEndTime = selectedEndTime;
+    setEndTimePicker(false);
     setEndTime(currentEndTime);
+    
   };
   
   const addToEvents = () => {
@@ -146,7 +168,7 @@ export default function AgendaView() {
       const startDateStr = getFormattedDate(startDate);
       console.log(startDateStr);
       const eventItem = {name: nameText, 
-                         timeDueStart: startTime.getHours() + ':' + startTime.getMinutes(), 
+                         timeDueStart: startTime.getHours() + ':' + (startTime.getMinutes()), 
                          timeDueEnd: endTime.getHours() + ':' + endTime.getMinutes(), 
                          note: noteText};
       if(!items[startDateStr]) {
@@ -166,13 +188,23 @@ export default function AgendaView() {
     toggleEventMaker();
   }
 
+  const toggleStartDatePicker = () => {
+    setStartDatePicker(true);
+  }
 
+  const toggleStartTimePicker = () => {
+    setStartTimePicker(true);
+  }
+
+  const toggleEndTimePicker = () => {
+    setEndTimePicker(true);
+  }
   return (
     <View style = {styles.container}>
       <View style = {styles.addButton}>
-        <View style = {{flexDirection: 'row', justifyContent: 'space-around'}}>
-          <Button onPress={toggleEventMaker} buttonColor={DGreen} textColor={LGreen}>
-            <Text style = {{fontSize: 20}}> Add Event </Text>
+        <View style = {{flexDirection: 'row-reverse', justifyContent: 'space-around'}}>
+          <Button onPress={toggleEventMaker} buttonColor={DGreen} textColor={LGreen} style={{width: '100%'}}>
+            <Text style = {{fontSize: 20,minWidth: '90%'}}> Add Event </Text>
           </Button>
         </View>
       </View>
@@ -198,21 +230,24 @@ export default function AgendaView() {
                   <Text style={{ fontWeight: 'bold', fontSize: 20, color: LGreen}}>
                     Date:
                   </Text>
-                  <DateTimePicker value={startDate} mode={'date'} onChange={onChangeStartDate}/>
+                  {(isIOS|| startDatePicker) && <DateTimePicker value={startDate} mode={'date'} onChange={onChangeStartDate}/>}
+                  {!isIOS  && <Button buttonColor={DGreen} textColor={LGreen} onPress={toggleStartDatePicker}>{getFormattedDate(startDate)}</Button>}
                 </View>
 
                 <View style={styles.dateTimeField}>
                   <Text style={{ fontWeight: 'bold', fontSize: 20, color: LGreen }}>
                     Start:
                   </Text>
-                  <DateTimePicker value={startTime} mode={'time'} onChange={onChangeStartTime} />
+                  {(isIOS || startTimePicker) && <DateTimePicker value={startTime} mode={'time'} onChange={onChangeStartTime}/>}
+                  {!isIOS && <Button buttonColor={DGreen} textColor={LGreen} onPress={toggleStartTimePicker}>{getFormattedTime(startTime)}</Button>}
                 </View>
 
                 <View style={styles.dateTimeField}>
                   <Text style={{ fontWeight: 'bold', fontSize: 20, color: LGreen }}>
                     End:
                   </Text>
-                  <DateTimePicker value={startTime} mode={'time'} onChange={onChangeEndTime} />
+                  {(isIOS || endTimePicker) && <DateTimePicker value={endTime} mode={'time'} onChange={onChangeEndTime}/>}
+                  {!isIOS && <Button buttonColor={DGreen} textColor={LGreen} onPress={toggleEndTimePicker}>{getFormattedTime(endTime)}</Button>}
                 </View>
 
                 <View style={{flexDirection:'row', justifyContent:'space-between', paddingTop: 10, paddingBottom: 10}}>
@@ -232,8 +267,9 @@ export default function AgendaView() {
  
 const styles = StyleSheet.create({
   container: {
+    paddingTop: Platform.OS === 'ios' ? '12%' : '10%',
     flex: 1,
-    backgroundColor: LGreen
+    backgroundColor: LGreen,
   },
   calendar: {
     height: '90%'
@@ -286,6 +322,6 @@ const styles = StyleSheet.create({
 
   },
   eventMaker: {
-    backgroundColor: BGColor
+    backgroundColor: BGColor,
   }
 });

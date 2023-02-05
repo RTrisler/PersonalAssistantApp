@@ -10,6 +10,7 @@ import Home from './Home'
 import Settings from './Settings';
 import TimeManagement from './TimeManagement';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import AgendaView from './AgendaView';
 
 const TabNav = createBottomTabNavigator();
 function TheTabs(){
@@ -22,7 +23,7 @@ function TheTabs(){
          headerShown: false
          }}>
       <TabNav.Screen name="Home" component={Home}/>
-      <TabNav.Screen name="Manage Time" component={TimeManagement}/>
+      <TabNav.Screen name="Manage Time" component={AgendaView}/>
       <TabNav.Screen name='Settings' component={Settings}/>
     </TabNav.Navigator>
   );
