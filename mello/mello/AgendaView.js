@@ -82,7 +82,7 @@ export default function AgendaView() {
 
   const renderEmptyItem = () => {
     return (<View style={{justifyContent: 'center', alignContent: 'center'}}>
-      <Divider bold={true}/>
+      <Divider bold={true} style={{backgroundColor: LGreen}}/>
     </View>)
   }
 

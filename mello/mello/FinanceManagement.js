@@ -1,25 +1,32 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import { PlaidLink, LinkSuccess, LinkExit } from 'react-native-plaid-link-sdk'
+import { Button } from 'react-native-paper';
+import { WebView } from 'react-native-webview';
+import { useAssets } from 'expo-asset';
+
+// 2AA198, #003847, 002B36
+const BGColor = "#003847"
+const LGreen = "#2AA198"
+const DGreen = "#002B36"
+
+const TellerHTML = require('./assets/teller.html');
+
 
 export default function FinanceManagement() {
-  return (
-    <View style={styles.container}>
-      <PlaidLink
-        tokenConfig={{ token: '#GENERATED_LINK_TOKEN#', noLoadingState: false }}
-        onSuccess={(success) => console.log(success)}
-        onExit={(exit) => console.log(exit)}
-      >
-        <Text>Add Account</Text>
-      </PlaidLink>
-    </View>
-  )
-}
+  const doThing = () => {
+    console.log('thing');
+  }
 
+  const [html, error] = useAssets(TellerHTML);
+
+  return (
+      <WebView originWhitelist={['*']} source={TellerHTML} style={{flex: 1}} javaScriptEnabled={true} />
+  );
+}
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: BGColor,
     alignItems: 'center',
     justifyContent: 'center'
   }
