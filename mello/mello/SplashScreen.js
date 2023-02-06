@@ -37,7 +37,7 @@ export default function SplashScreen() {
         Animated.timing(
           startAnimation,
           {
-            toValue: Dimensions.get('window').height + (edges.top + 65),
+            toValue: -Dimensions.get('window').height,
             useNativeDriver: true
           }
         ),

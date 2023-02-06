@@ -8,6 +8,7 @@ import 'react-native-gesture-handler'
 import AgendaView from './AgendaView';
 import Settings from './Settings';
 import TimeManagement from './TimeManagement';
+import TimeMediator from './TimeMediator';
 
 const BGColor = "#004052"
 
@@ -22,6 +23,7 @@ function TheTabs(){
          headerShown: false
          }}>
       <TabNav.Screen name="Manage Time" component={TimeManagement}/>
+      <TabNav.Screen name='Time' component={TimeMediator}/>
       <TabNav.Screen name='Settings' component={Settings}/>
     </TabNav.Navigator>
   );
