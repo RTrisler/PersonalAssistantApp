@@ -2,25 +2,39 @@ import React from 'react'
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import 'react-native-gesture-handler'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+
+import Settings from './Settings';
+import TimeManagement from './TimeManagement';
 
 const BGColor = "#004052"
 
 
-export default function Home() {
-  return (
-    <View style={styles.container}>
-      <Text>Mello Home</Text>
-      <StatusBar style="auto" />
-    </View>
+const TabNav = createBottomTabNavigator();
+function TheTabs(){
+  return(
+    <TabNav.Navigator screenOptions={{
+         tabBarActiveTintColor: '#467599',
+         tabBarInactiveTintColor: '#fcf7ff', 
+         tabBarActiveBackgroundColor: '#92828d',
+         tabBarInactiveBackgroundColor:'#022b3a',
+         headerShown: false
+         }}>
+      <TabNav.Screen name="Home" component={Home}/>
+      <TabNav.Screen name="Manage Time" component={TimeManagement}/>
+      <TabNav.Screen name='Settings' component={Settings}/>
+    </TabNav.Navigator>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: BGColor,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+
+export default function Home() {
+  return (
+    <NavigationContainer>
+      <TheTabs></TheTabs>
+    </NavigationContainer>
+  );
+}
+
