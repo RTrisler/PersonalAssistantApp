@@ -7,9 +7,9 @@ import 'react-native-gesture-handler'
 
 import AgendaView from './AgendaView';
 import Settings from './Settings';
+import TimeManagement from './TimeManagement';
 
 const BGColor = "#004052"
-
 
 const TabNav = createBottomTabNavigator();
 function TheTabs(){
@@ -21,8 +21,7 @@ function TheTabs(){
          tabBarInactiveBackgroundColor:'#022b3a',
          headerShown: false
          }}>
-      <TabNav.Screen name="Home" component={Home}/>
-      <TabNav.Screen name="Manage Time" component={AgendaView}/>
+      <TabNav.Screen name="Manage Time" component={TimeManagement}/>
       <TabNav.Screen name='Settings' component={Settings}/>
     </TabNav.Navigator>
   );
@@ -31,9 +30,9 @@ function TheTabs(){
 export default function Home() {
   return (
     <NavigationContainer>
-      <View style={styles.container}>
-      </View>
+      <TheTabs />
     </NavigationContainer>
+    
   );
 }
 

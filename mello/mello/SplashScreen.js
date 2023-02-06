@@ -2,10 +2,16 @@ import React, { useEffect, useRef } from 'react'
 import { Dimensions, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Animated } from 'react-native-web';
-import Home from './Home';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
+import Home from './Home';
+import AgendaView from './AgendaView';
+import Settings from './Settings';
+import TimeManagement from './TimeManagement';
 
 const BGColor = "#004052"
+
 
 
 export default function SplashScreen() {
@@ -31,7 +37,7 @@ export default function SplashScreen() {
         Animated.timing(
           startAnimation,
           {
-            toValue: -Dimensions.get('window').height + (edges.top + 65),
+            toValue: Dimensions.get('window').height + (edges.top + 65),
             useNativeDriver: true
           }
         ),
@@ -60,52 +66,53 @@ export default function SplashScreen() {
   },[])
 
   return (
-    <View style={{
-      position: 'absolute',
-      top: 0,
-      bottom: 0,
-      left: 0,
-      right: 0,
-    }}>
-      <Animated.View style={{
-        flex: 1,
-        backgroundColor: BGColor,
-        zIndex: 1,
-        transform: [
-          { translateY: startAnimation}
-        ]
-    }}>
-      <Animated.View style={{
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}>
-        <Animated.Text style={{
-          fontSize: 25,
-          fontWeight: 'bold',
-          color: 'white',
-          transform: [
-            { translateY: moveTitle.y },
-            { scale: scaleTitle}
-          ]
-        }}>Mello</Animated.Text>
-
-      </Animated.View>
-      </Animated.View>
-
-      <Animated.View style={{
+      <View style={{
         position: 'absolute',
         top: 0,
         bottom: 0,
         left: 0,
         right: 0,
-        backgroundColor: 'rgba(0,0,0,0.04)',
-        zIndex: 0
       }}>
+        <Animated.View style={{
+          flex: 1,
+          backgroundColor: BGColor,
+          zIndex: 1,
+          transform: [
+            { translateY: startAnimation}
+          ]
+      }}>
+        <Animated.View style={{
+          flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+          <Animated.Text style={{
+            fontSize: 25,
+            fontWeight: 'bold',
+            color: 'white',
+            transform: [
+              { translateY: moveTitle.y },
+              { scale: scaleTitle}
+            ]
+          }}>Mello</Animated.Text>
 
-        <Home></Home>
-        
-      </Animated.View>
-    </View>
+        </Animated.View>
+        </Animated.View>
+
+        <Animated.View style={{
+          position: 'absolute',
+          top: 0,
+          bottom: 0,
+          left: 0,
+          right: 0,
+          backgroundColor: 'rgba(0,0,0,0.04)',
+          zIndex: 0
+        }}>
+
+          <Home></Home>
+
+        </Animated.View>
+          
+      </View>
   );
 }
