@@ -11,6 +11,7 @@ import Settings from './Settings';
 import TimeManagement from './TimeManagement';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import AgendaView from './AgendaView';
+import GroceryAndDiet from './GroceryAndDiet';
 
 const TabNav = createBottomTabNavigator();
 function TheTabs(){
@@ -24,6 +25,7 @@ function TheTabs(){
          }}>
       <TabNav.Screen name="Home" component={Home}/>
       <TabNav.Screen name="Manage Time" component={AgendaView}/>
+      <TabNav.Screen name='Grocery and Diet' component={GroceryAndDiet}/>
       <TabNav.Screen name='Settings' component={Settings}/>
     </TabNav.Navigator>
   );
