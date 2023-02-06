@@ -3,11 +3,10 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import 'react-native-gesture-handler'
 
-
+import AgendaView from './AgendaView';
 import Settings from './Settings';
-import TimeManagement from './TimeManagement';
 
 const BGColor = "#004052"
 
@@ -23,18 +22,26 @@ function TheTabs(){
          headerShown: false
          }}>
       <TabNav.Screen name="Home" component={Home}/>
-      <TabNav.Screen name="Manage Time" component={TimeManagement}/>
+      <TabNav.Screen name="Manage Time" component={AgendaView}/>
       <TabNav.Screen name='Settings' component={Settings}/>
     </TabNav.Navigator>
   );
 }
 
-
 export default function Home() {
   return (
     <NavigationContainer>
-      <TheTabs></TheTabs>
+      <View style={styles.container}>
+      </View>
     </NavigationContainer>
   );
 }
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'black',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
