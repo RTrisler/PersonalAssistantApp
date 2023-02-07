@@ -1,9 +1,11 @@
-import React, {useState} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import { StyleSheet, View, Text, Platform } from 'react-native';
 import { Agenda, DateData } from 'react-native-calendars';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Divider, Card, Button, Modal, TextInput } from 'react-native-paper';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import * as Notifications from 'expo-notifications';
+import * as Device from 'expo-device';
 
 // 2AA198, #003847, 002B36
 const BGColor = "#003847"
@@ -41,6 +43,30 @@ const getFormattedTime = (date) => {
   return fCDateStr;
 };
 export default function AgendaView() {
+  
+  const [pushToken, setPushToken] = useState('');
+  const [notify, setNotify] = useState(false);
+  const notificationListener = useRef();
+  const responseListener = useRef();
+  //Notification registering stuff
+  useEffect(() => {
+    notifyRegister().then(token => setPushToken(token)).catch((error)=>console.error(error));
+    
+    notificationListener.current = Notifications.addNotificationReceivedListener(notify => {
+        setNotify(notify);
+    });
+    
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+        console.log(response);
+    });
+
+    return () => {
+        Notifications.removeNotificationSubscription(notificationListener.current);
+        Notifications.removeNotificationSubscription(responseListener.current);
+    }
+}, []);
+
+
   const [items, setItems] = useState({
     '2023-01-30': [
       {name: 'nametest', timeDueStart: '12:30', timeDueEnd: '13:30', note: 'note test'},
@@ -185,6 +211,9 @@ export default function AgendaView() {
                "year": startDate.getFullYear()
               })
     toggleEventMaker();
+    const endTimeStr = endTime.toTimeString().slice(0,9);
+    const timeDifference = endTime.getTime()-startDate.getTime();
+    schedulePushNotification(nameText,endTimeStr,timeDifference);
   }
 
   const toggleStartDatePicker = () => {
@@ -324,3 +353,58 @@ const styles = StyleSheet.create({
     backgroundColor: BGColor,
   }
 });
+
+
+//Notification system
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
+
+async function notifyRegister() {
+  let token;
+
+  if (Platform.OS === 'android') {
+    await Notifications.setNotificationChannelAsync('default', {
+      name: 'default',
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: '#FF231F7C',
+    });
+  }
+
+  if (Device.isDevice) {
+    const { status: existingStatus } = await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+    if (existingStatus !== 'granted') {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+    if (finalStatus !== 'granted') {
+      alert('Failed to get push token for push notification!');
+      return;
+    }
+    token = (await Notifications.getExpoPushTokenAsync()).data;
+    console.log(token);
+  } else {
+    alert('Must use physical device for Push Notifications');
+  }
+
+  return token;
+}
+
+async function schedulePushNotification(message,time,triggerTime) {
+  console.log(triggerTime);
+
+  await Notifications.scheduleNotificationAsync({
+    content: {
+      title: message,
+      body: time,
+      data: { data:'goes here' }
+    },
+    trigger:{ seconds: (triggerTime/1000) - 6 },
+  });
+}
