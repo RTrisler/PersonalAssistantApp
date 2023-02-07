@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
@@ -8,7 +8,8 @@ import 'react-native-gesture-handler'
 import AgendaView from './AgendaView';
 import Settings from './Settings';
 import TimeManagement from './TimeManagement';
-import TimeMediator from './TimeMediator';
+import Character from './Character';
+
 
 const BGColor = "#004052"
 
@@ -22,8 +23,8 @@ function TheTabs(){
          tabBarInactiveBackgroundColor:'#022b3a',
          headerShown: false
          }}>
+      <TabNav.Screen name='Home' component={Character}/>
       <TabNav.Screen name="Manage Time" component={TimeManagement}/>
-      <TabNav.Screen name='Time' component={TimeMediator}/>
       <TabNav.Screen name='Settings' component={Settings}/>
     </TabNav.Navigator>
   );
