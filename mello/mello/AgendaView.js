@@ -229,13 +229,11 @@ export default function AgendaView() {
   }
   return (
     <View style = {styles.container}>
-      <View style = {styles.addButton}>
         <View style = {{flexDirection: 'row-reverse', justifyContent: 'space-around'}}>
           <Button onPress={toggleEventMaker} buttonColor={DGreen} textColor={LGreen} style={{width: '100%'}}>
-            <Text style = {{fontSize: 20,minWidth: '90%'}}> Add Event </Text>
+            <Text style = {{fontSize: 20, minWidth: '90%',}}> Add Event </Text>
           </Button>
         </View>
-      </View>
         <Agenda
           items={items}
           loadItemsForMonth={loadItems}
@@ -295,9 +293,10 @@ export default function AgendaView() {
  
 const styles = StyleSheet.create({
   container: {
-    paddingTop: Platform.OS === 'ios' ? '12%' : '10%',
+    padding: '10px',
     flex: 1,
-    backgroundColor: LGreen,
+    backgroundColor: 'white',
+    borderRadius: '10px'
   },
   calendar: {
     height: '90%'
@@ -321,7 +320,7 @@ const styles = StyleSheet.create({
   },
   calendarTheme: {
     backgroundColor: BGColor,
-    calendarBackground: DGreen,
+    calendarBackground: 'white',
     textSectionTitleColor: '#b6c1cd',
     textSectionTitleDisabledColor: '#d9e1e8',
     selectedDayBackgroundColor: '#00adf5',
