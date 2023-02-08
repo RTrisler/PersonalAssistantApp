@@ -5,40 +5,42 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import 'react-native-gesture-handler'
 import AgendaView from './AgendaView';
-
-
-
-function Overview({ navigation }) {
-  return(
-    <View style={styles.container}>  
-      <View style={styles.todoContainer}>
-          <Text styles={styles.todoText}>Todo List</Text>
-      </View>
-        <TouchableOpacity style={styles.touchableOpacity} onPress={() => navigation.navigate('Mello')}>
-          <View style={styles.reminderButton} >
-            <Text styles={styles.buttonText}>Reminders</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.touchableOpacity2} onPress={() => navigation.navigate('AgendaView')}>
-          <View style={styles.calendarButton}>
-            <Text styles={styles.buttonText}>Go To Calendar</Text>
-          </View>
-        </TouchableOpacity>
-    </View>
-  )
-}
-
-const Stack = createNativeStackNavigator();
+import { LinearGradient } from 'expo-linear-gradient';
 
 // 2AA198, #003847, 002B36
 const BGColor = "#003847"
 const LGreen = "#2AA198"
 const DGreen = "#002B36"
 
+const Stack = createNativeStackNavigator();
+
+function Overview({ navigation }) {
+  return(
+      <LinearGradient
+          // Background Linear Gradient
+          colors={[ BGColor, 'white']}
+          style={styles.container}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+        >
+          <View style={styles.dayContainer}>
+
+          </View>
+          <View style={styles.calendarContainer}>
+            <AgendaView></AgendaView>
+          </View>
+        </LinearGradient>
+      
+      
+
+  )
+}
 
 export default function TimeManagement() {
   return (
-      <Stack.Navigator>
+      <Stack.Navigator screenOptions={{
+        headerShown: false
+        }}>
         <Stack.Screen name="Overview" component={Overview} />
         <Stack.Screen name="AgendaView" component={AgendaView} />
       </Stack.Navigator>
@@ -47,64 +49,24 @@ export default function TimeManagement() {
 
 const styles = StyleSheet.create({
   container: {
-      flex: 1,
-      backgroundColor: BGColor,
-      alignItems: 'center',
-      borderRadius: 3,
-      elevation: 3,
-      paddingTop: 20
-    },
-    todoContainer: {
-      height: '40%',
-      width: 400,
-      marginBottom: 10,
-      backgroundColor: DGreen,
-      alignItems: 'center',
-      justifyContent: 'center',
-      borderRadius: 10,
-      elevation: 3,
-    },
-    todoText: {
-      color: 'white',
-      fontWeight: 'bold',
-      textTransform: 'uppercase',
-      textAlign: 'center',
-    },
-    touchableOpacity: {
-      height: '40%',
-      width: 400,
-      marginBottom: 10,
-      alignItems: 'center',
-      justifyContent: 'center',
-      borderRadius: 8,
-      backgroundColor: DGreen,
-    },
-    touchableOpacity2: {
-      height: '10%',
-      width: 400,
-      marginBottom: 10,
-      alignItems: 'center',
-      justifyContent: 'center',
-      borderRadius: 8,
-      backgroundColor: DGreen,
-    },
-    reminderButton: {
-      height: '100%',
-      width: 400,
-      marginBottom: 10,
-      alignItems: 'center',
-      justifyContent: 'center',
-      borderRadius: 8,
-      backgroundColor: DGreen,
-    },
-    calendarButton: {
-      alignItems: 'center',
-      justifyContent: 'center',
-      borderRadius: 10,
-      height: '15%',
-      width: 400,
-      flex: 1,
-      backgroundColor: LGreen,
-    },
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  dayContainer: {
+    width: '40%',
+    height: '90%',
+    backgroundColor: 'white',
+    borderRadius: '10px',
+    marginLeft: '50px'
+  },
+  calendarContainer: {
+    width: '40%',
+    height: '90%',
+    backgroundColor: 'black',
+    borderRadius: '10px',
+    marginRight: '50px'
+  }
     
 });
