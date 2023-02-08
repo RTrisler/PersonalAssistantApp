@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
     
   },
   calendarContainer: {
-    width: '60%',
+    width: '50%',
     height: '90%',
     backgroundColor: 'black',
     borderRadius: '10px',
