@@ -8,6 +8,7 @@ import AgendaView from './AgendaView';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useFonts } from 'expo-font';
 import { Divider, Card, Button, Modal, TextInput, Surface } from 'react-native-paper';
+import MonthView from './MonthView';
 
 // 2AA198, #003847, 002B36
 const BGColor = "#003847"
@@ -77,6 +78,7 @@ function Overview({ navigation }) {
             </View>
           </Surface>
           <Surface style={styles.calendarContainer} elevation={5}>
+            <MonthView></MonthView>
           </Surface>
         </LinearGradient>
       );
@@ -111,7 +113,6 @@ const styles = StyleSheet.create({
     marginLeft: '50px',
     paddingTop: '5px',
     justifyContent: 'space-between',
-    overflow: 'hidden',
   },
   dayDisplay: {
     flex: 1,
