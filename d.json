@@ -1,0 +1,240 @@
+[
+    {
+        "amount": 0,
+        "foodNutrientDerivation": {
+            "code": "LCCS",
+            "description": "Calculated from value per serving size measure",
+            "id": 70
+        },
+        "id": 24497753,
+        "nutrient": {
+            "id": 1257,
+            "name": "Fatty acids, total trans",
+            "number": "605",
+            "rank": 15400,
+            "unitName": "g"
+        },
+        "type": "FoodNutrient"
+    },
+    {
+        "amount": 9.41,
+        "foodNutrientDerivation": {
+            "code": "LCCS",
+            "description": "Calculated from value per serving size measure",
+            "id": 70
+        },
+        "id": 24497742,
+        "nutrient": {
+            "id": 1004,
+            "name": "Total lipid (fat)",
+            "number": "204",
+            "rank": 800,
+            "unitName": "g"
+        },
+        "type": "FoodNutrient"
+    },
+    {
+        "amount": 1.18,
+        "foodNutrientDerivation": {
+            "code": "LCCS",
+            "description": "Calculated from value per serving size measure",
+            "id": 70
+        },
+        "id": 24497743,
+        "nutrient": {
+            "id": 1005,
+            "name": "Carbohydrate, by difference",
+            "number": "205",
+            "rank": 1110,
+            "unitName": "g"
+        },
+        "type": "FoodNutrient"
+    },
+    {
+        "amount": 82,
+        "foodNutrientDerivation": {
+            "code": "LCCS",
+            "description": "Calculated from value per serving size measure",
+            "id": 70
+        },
+        "id": 24497752,
+        "nutrient": {
+            "id": 1253,
+            "name": "Cholesterol",
+            "number": "601",
+            "rank": 15700,
+            "unitName": "mg"
+        },
+        "type": "FoodNutrient"
+    },
+    {
+        "amount": 1.18,
+        "foodNutrientDerivation": {
+            "code": "LCCS",
+            "description": "Calculated from value per serving size measure",
+            "id": 70
+        },
+        "id": 24497745,
+        "nutrient": {
+            "id": 2000,
+            "name": "Sugars, total including NLEA",
+            "number": "269",
+            "rank": 1510,
+            "unitName": "g"
+        },
+        "type": "FoodNutrient"
+    },
+    {
+        "amount": 0,
+        "foodNutrientDerivation": {
+            "code": "LCCD",
+            "description": "Calculated from a daily value percentage per serving size measure",
+            "id": 75
+        },
+        "id": 24497751,
+        "nutrient": {
+            "id": 1162,
+            "name": "Vitamin C, total ascorbic acid",
+            "number": "401",
+            "rank": 6300,
+            "unitName": "mg"
+        },
+        "type": "FoodNutrient"
+    },
+    {
+        "amount": 2.94,
+        "foodNutrientDerivation": {
+            "code": "LCCS",
+            "description": "Calculated from value per serving size measure",
+            "id": 70
+        },
+        "id": 24497754,
+        "nutrient": {
+            "id": 1258,
+            "name": "Fatty acids, total saturated",
+            "number": "606",
+            "rank": 9700,
+            "unitName": "g"
+        },
+        "type": "FoodNutrient"
+    },
+    {
+        "amount": 0,
+        "foodNutrientDerivation": {
+            "code": "LCCD",
+            "description": "Calculated from a daily value percentage per serving size measure",
+            "id": 75
+        },
+        "id": 24497747,
+        "nutrient": {
+            "id": 1087,
+            "name": "Calcium, Ca",
+            "number": "301",
+            "rank": 5300,
+            "unitName": "mg"
+        },
+        "type": "FoodNutrient"
+    },
+    {
+        "amount": 0,
+        "foodNutrientDerivation": {
+            "code": "LCCD",
+            "description": "Calculated from a daily value percentage per serving size measure",
+            "id": 75
+        },
+        "id": 24497746,
+        "nutrient": {
+            "id": 1079,
+            "name": "Fiber, total dietary",
+            "number": "291",
+            "rank": 1200,
+            "unitName": "g"
+        },
+        "type": "FoodNutrient"
+    },
+    {
+        "amount": 353,
+        "foodNutrientDerivation": {
+            "code": "LCCS",
+            "description": "Calculated from value per serving size measure",
+            "id": 70
+        },
+        "id": 24497749,
+        "nutrient": {
+            "id": 1093,
+            "name": "Sodium, Na",
+            "number": "307",
+            "rank": 5800,
+            "unitName": "mg"
+        },
+        "type": "FoodNutrient"
+    },
+    {
+        "amount": 188,
+        "foodNutrientDerivation": {
+            "code": "LCCS",
+            "description": "Calculated from value per serving size measure",
+            "id": 70
+        },
+        "id": 24497744,
+        "nutrient": {
+            "id": 1008,
+            "name": "Energy",
+            "number": "208",
+            "rank": 300,
+            "unitName": "kcal"
+        },
+        "type": "FoodNutrient"
+    },
+    {
+        "amount": 24.71,
+        "foodNutrientDerivation": {
+            "code": "LCCS",
+            "description": "Calculated from value per serving size measure",
+            "id": 70
+        },
+        "id": 24497741,
+        "nutrient": {
+            "id": 1003,
+            "name": "Protein",
+            "number": "203",
+            "rank": 600,
+            "unitName": "g"
+        },
+        "type": "FoodNutrient"
+    },
+    {
+        "amount": 0,
+        "foodNutrientDerivation": {
+            "code": "LCCD",
+            "description": "Calculated from a daily value percentage per serving size measure",
+            "id": 75
+        },
+        "id": 24497750,
+        "nutrient": {
+            "id": 1104,
+            "name": "Vitamin A, IU",
+            "number": "318",
+            "rank": 7500,
+            "unitName": "IU"
+        },
+        "type": "FoodNutrient"
+    },
+    {
+        "amount": 0.42,
+        "foodNutrientDerivation": {
+            "code": "LCCD",
+            "description": "Calculated from a daily value percentage per serving size measure",
+            "id": 75
+        },
+        "id": 24497748,
+        "nutrient": {
+            "id": 1089,
+            "name": "Iron, Fe",
+            "number": "303",
+            "rank": 5400,
+            "unitName": "mg"
+        },
+        "type": "FoodNutrient"
+    }
+]
