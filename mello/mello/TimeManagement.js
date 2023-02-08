@@ -120,11 +120,13 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     height: '20%',
     marginBottom: '10px',
+    justifyContent: 'center',
   },
   dateText: {
-    fontSize: 50,
+    fontSize: 30,
     fontFamily: 'BebasNeue-Regular',
     color: 'white',
+    paddingLeft: '30px',
     alignSelf: 'center',
   },
   timeText: {
@@ -132,26 +134,28 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     fontFamily: 'BebasNeue-Regular',
     color: 'white',
-    paddingTop: '60px'
+    paddingLeft: '20px',
+    paddingTop: '20px',
   },
   cityText: {
     fontSize: 30,
-    alignSelf: 'center',
     fontFamily: 'BebasNeue-Regular',
     color: 'white',
+    paddingLeft: '20px',
+    alignSelf: 'center',
   },
   dayText: {
     fontFamily: 'BebasNeue-Regular',
-    fontSize: 20,
+    fontSize: 15,
     color: 'white',
     paddingLeft: '10px',
-    paddingBottom: '10px',
   },
   monthText: {
     fontFamily: 'BebasNeue-Regular',
-    fontSize: 50,
+    fontSize: 30,
     color: 'white',
     alignSelf: 'center',
+    paddingLeft: '30px',
   },
   dayEvents: {
     height: '75%',
