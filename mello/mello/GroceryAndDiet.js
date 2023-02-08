@@ -41,10 +41,10 @@ export default function GroceryAndDiet() {
     //reset newitemname
     setNewItemName('');
     const oldList = list;
-    const cat = category;
+    const cat = category || -1;
     console.log(cat);
     //add to list quickly
-    setList([...oldList, { name: itemToAdd, ID: -1,  foodData: "" , itemCategory: categories[cat]}]);
+    setList([...oldList, { name: itemToAdd, ID: -1,  foodData: "" , itemCategory: cat == -1 ? "" : categories[cat]}]);
     hideItemAdder();
     //if not a food then no point in getting data from database
     if(category == '' || cat > 7) return;
@@ -71,7 +71,7 @@ export default function GroceryAndDiet() {
         const fatV = fat ? (fat.amount + fat.unitName) : "0g";
         const cholV = cholesterol ? (cholesterol.amount + cholesterol.unitName) : "0g";
         let fDataStr = "Cal " + calV + "\t " + "Carbs " + carbV + "\t " + "Protein " + protV  + "\n" + "Fat " + fatV + "\t " + "Cholesterol " + cholV;
-        setList([...oldList, { name: itemToAdd, ID: fData[0],  foodData: fDataStr, itemCategory: categories[cat] }]);
+        setList([...oldList, { name: itemToAdd, ID: fData[0],  foodData: fDataStr, itemCategory: cat == -1 ? "" : categories[cat] }]);
     }
     
 
@@ -105,7 +105,7 @@ export default function GroceryAndDiet() {
         {list.map((item, index) => (
           <Surface key={item.name} style={styles.itemContainer}>
             <View style={styles.itemDetailsContainer}>
-              <View style ={{justifyContent: 'space-around', flexDirection: 'row'}}>
+              <View style ={{justifyContent: 'space-between', flexDirection: 'row'}}>
                 <Text style={styles.itemText}>{item.name}</Text>
                 <Text style={styles.categoryText}>{item.itemCategory.value}</Text>
               </View>
@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
     color: LGreen
   },
   categoryText: {
-    fontSize: 20,
+    fontSize: 25,
     color: LGreen
   },
   itemDetails: {
