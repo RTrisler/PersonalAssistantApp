@@ -7,7 +7,6 @@ import 'react-native-gesture-handler'
 
 import AgendaView from './AgendaView';
 import Settings from './Settings';
-import TimeManagement from './TimeManagement';
 import Character from './Character';
 import GroceryAndDiet from './GroceryAndDiet'
 
@@ -25,7 +24,7 @@ function TheTabs(){
          headerShown: false
          }}>
       <TabNav.Screen name='Home' component={Character}/>
-      <TabNav.Screen name="Manage Time" component={TimeManagement}/>
+      <TabNav.Screen name="Manage Time" component={AgendaView}/>
       <TabNav.Screen name="Groceries and Diet" component={GroceryAndDiet}/>
       <TabNav.Screen name='Settings' component={Settings}/>
     </TabNav.Navigator>

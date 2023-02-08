@@ -8,7 +8,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from './Home';
 import AgendaView from './AgendaView';
 import Settings from './Settings';
-import TimeManagement from './TimeManagement';
 
 const BGColor = "#004052"
 
