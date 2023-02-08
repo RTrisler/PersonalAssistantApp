@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View,  StyleSheet,SafeAreaView } from 'react-native';
+import { View,  StyleSheet,SafeAreaView, Platform } from 'react-native';
 import { TextInput, List, Checkbox, Divider, Surface, Text, Button, IconButton, Modal, Card } from 'react-native-paper';
 import axios from 'axios';
 import { SelectList } from 'react-native-dropdown-select-list';
@@ -100,7 +100,7 @@ export default function GroceryAndDiet() {
 
   return (
     <SafeAreaView style={styles.container}>
-        <Button onPress={showItemAdder} style={styles.showAdderButton}><Text style={{fontSize: 20, fontWeight: 'bold', color: LGreen}}>Add</Text></Button>
+        <Button onPress={showItemAdder} style={styles.showAdderButton}><Text style={{fontSize: 20, fontWeight: 'bold', color: LGreen}}>Add Item</Text></Button>
       <List.Section style={{backgroundColor: BGColor}}>
         {list.map((item, index) => (
           <Surface key={item.name} style={styles.itemContainer}>
@@ -142,6 +142,7 @@ export default function GroceryAndDiet() {
 
 const styles = StyleSheet.create({
   container: {
+    paddingTop: Platform.OS === 'ios' ? '12%' : '10%',
     flex: 1,
     backgroundColor: BGColor,
   },

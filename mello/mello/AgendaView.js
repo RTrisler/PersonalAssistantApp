@@ -84,7 +84,7 @@ export default function AgendaView() {
   const loadItems = async (date) => {
     setTimeout(() => {
       //for each day within 60 days of the current date
-      for(let dayOffset = -45; dayOffset < 45; dayOffset++) {
+      for(let dayOffset = -9; dayOffset < 9; dayOffset++) {
         //get date key to put into item list   day  hour sec  milli
         const time = date.timestamp + dayOffset * 24 * 60 * 60 * 1000;
         const strTime = timeToString(time);
