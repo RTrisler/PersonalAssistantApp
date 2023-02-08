@@ -1,19 +1,53 @@
 import React, { useState } from 'react';
 import { View,  StyleSheet,SafeAreaView } from 'react-native';
-import { TextInput, List, Checkbox, Divider, Surface, Text, Button, IconButton } from 'react-native-paper';
+import { TextInput, List, Checkbox, Divider, Surface, Text, Button, IconButton, Modal, Card } from 'react-native-paper';
 import axios from 'axios';
+import { SelectList } from 'react-native-dropdown-select-list';
+import Toast from 'react-native-toast-message';
 
 const BGColor = "#003847"
 const LGreen = "#2AA198"
 const DGreen = "#002B36"
 
 export default function GroceryAndDiet() {
+  //vars for adding items
+  const [itemAdderVisible, setItemAdderVisible] = useState(false);
+  const [category, setCategory] = useState('');
+  const categories = [
+    {key:'1', value:'Vegetables'},
+    {key:'2', value:'Fruit'},
+    {key:'3', value:'Meat'},
+    {key:'4', value:'Grains'},
+    {key:'6', value:'Frozen'},
+    {key:'7', value:'Canned'},
+    {key:'8', value:'Drinks'},
+    {key:'9', value:'Misc'},
+    {key:'10',value:'Not Food'}
+  ]
+  const showItemAdder = () => setItemAdderVisible(true);
+  const hideItemAdder = () => setItemAdderVisible(false);
   const [list, setList] = useState([]);
   const [newItemName, setNewItemName] = useState('');
+  //the actual adding part
   const handleAddItem = async () => {
-    if(newItemName == '') return;
+    if(newItemName == '') {
+      Toast.show({
+        type: 'error',
+        text1: 'Item needs a name'
+      })
+      return;
+    }
     const itemToAdd = newItemName;
-    const fData = await fetchData(itemToAdd);
+    //reset newitemname
+    setNewItemName('');
+    const oldList = list;
+    //add to list quickly
+    setList([...oldList, { name: itemToAdd, ID: -1,  foodData: "" }]);
+    hideItemAdder();
+    //if not a food then no point in getting data from database
+    if(category == '' || category > 9) return;
+    const fData = await fetchData(itemToAdd.replace(/[^a-zA-Z ]/g, ''));
+    //
     if(fData[0] != -1) {
         let fDataMap = fData[1].map(nutrient => {
             return {
@@ -40,13 +74,10 @@ export default function GroceryAndDiet() {
         console.log(fatV);
         console.log(cholV);
         let fDataStr = "Cal " + calV + "\t " + "Carbs " + carbV + "\t " + "Protein " + protV  + "\n" + "Fat " + fatV + "\t " + "Cholesterol " + cholV;
-        setList([...list, { name: newItemName, ID: fData[0],  foodData: fDataStr }]);
-    }
-    else{
-        setList([...list, { name: newItemName, ID: fData[0],  foodData: "" }]);
+        setList([...oldList, { name: itemToAdd, ID: fData[0],  foodData: fDataStr }]);
     }
     
-    setNewItemName('');
+
   };
  
   const handleDeleteItem = (index) => {
@@ -72,10 +103,7 @@ export default function GroceryAndDiet() {
 
   return (
     <SafeAreaView style={styles.container}>
-        <View style={{flexDirection: 'row', justifyContent: 'space-around',backgroundColor: BGColor}}>
-            <TextInput placeholder='Item name' onChangeText={setNewItemName} textColor="#2AA198" value={newItemName} style={{minWidth: '80%'}}/>
-            <Button onPress={handleAddItem} style={styles.addButton}><Text style={{fontSize: 20, fontWeight: 'bold', color: LGreen}}>Add</Text></Button>
-        </View>
+        <Button onPress={showItemAdder} style={styles.showAdderButton}><Text style={{fontSize: 20, fontWeight: 'bold', color: LGreen}}>Add</Text></Button>
       <List.Section style={{backgroundColor: BGColor}}>
         {list.map((item, index) => (
           <Surface key={item.name} style={styles.itemContainer}>
@@ -92,6 +120,22 @@ export default function GroceryAndDiet() {
           </Surface>
         ))}
       </List.Section>
+      <Modal visible={itemAdderVisible} onDismiss={hideItemAdder}>
+            <Card style={styles.itemAdder}>
+              <TextInput placeholder='Item name' onChangeText={setNewItemName} textColor="#2AA198" value={newItemName} style={{minWidth: '80%'}}/>
+              <SelectList setSelected={setCategory} data={categories} save="key" inputStyles={{color: LGreen}} dropdownTextStyles={{color: LGreen}}/>
+              <View style={{flexDirection:'row', justifyContent:'space-between', paddingVertical: 10, paddingHorizontal: 5}}>
+              <Button onPress={handleAddItem} buttonColor={DGreen} textColor={LGreen}>
+                <Text style = {{fontSize: 20, fontWeight: 'bold', color: LGreen}}> Save </Text>
+              </Button>
+              <Button onPress={hideItemAdder} buttonColor={DGreen} textColor={LGreen}>
+                <Text style = {{fontSize: 20, fontWeight: 'bold', color: LGreen}}> Cancel </Text>
+              </Button>
+              </View>
+            </Card>
+            <Toast />
+        </Modal>
+        
     </SafeAreaView>
   );
 };
@@ -106,6 +150,10 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   addButton: {
+    backgroundColor: DGreen,
+    marginTop: 10,
+  },
+  showAdderButton: {
     backgroundColor: DGreen,
     marginTop: 10,
   },
@@ -131,5 +179,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     backgroundColor: LGreen
   },
+  itemAdder: {
+    backgroundColor: BGColor,
+  }
 });
 

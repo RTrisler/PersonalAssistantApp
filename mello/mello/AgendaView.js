@@ -4,6 +4,7 @@ import { Agenda, DateData } from 'react-native-calendars';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Divider, Card, Button, Modal, TextInput } from 'react-native-paper';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import Toast from 'react-native-toast-message';
 
 // 2AA198, #003847, 002B36
 const BGColor = "#003847"
@@ -54,7 +55,7 @@ export default function AgendaView() {
   });
 
   //loading items from the item list to agenda
-  const loadItems = (date) => {
+  const loadItems = async (date) => {
     setTimeout(() => {
       //for each day within 60 days of the current date
       for(let dayOffset = -45; dayOffset < 45; dayOffset++) {
@@ -112,6 +113,9 @@ export default function AgendaView() {
                "year": currentDate.getFullYear()
               })
     setStarted(true);
+    for(let i = 0; i < items.length; i++) {
+      console.log(items[i]);
+    }
   }
 
   //making an event
@@ -162,7 +166,13 @@ export default function AgendaView() {
   };
   
   const addToEvents = () => {
-    if(nameText == 'empty') return;
+    if(nameText == 'empty'){
+      Toast.show({
+        type: 'error',
+        text1: 'Event needs a name'
+      })
+      return;
+    }
     setTimeout(() => {
       console.log(startDate.getDate())
       const startDateStr = getFormattedDate(startDate);
@@ -209,6 +219,7 @@ export default function AgendaView() {
       </View>
         <Agenda
           items={items}
+          onDayChange={loadItems}
           loadItemsForMonth={loadItems}
           selected={getFormattedDate(currentDate)}
           showClosingKnob={true}
@@ -251,15 +262,17 @@ export default function AgendaView() {
 
                 <View style={{flexDirection:'row', justifyContent:'space-between', paddingTop: 10, paddingBottom: 10}}>
                   <Button onPress={addToEvents} buttonColor={DGreen} textColor={LGreen}>
-                    <Text style = {{fontSize: 20}}> Save </Text>
+                    <Text style = {{fontSize: 20, fontWeight: 'bold'}}> Save </Text>
                   </Button>
                   <Button onPress={toggleEventMaker} buttonColor={DGreen} textColor={LGreen}>
-                    <Text style = {{fontSize: 20}}> Cancel </Text>
+                    <Text style = {{fontSize: 20, fontWeight: 'bold'}}> Cancel </Text>
                   </Button>
                 </View>
               </View>
             </Card>
+            <Toast />
       </Modal>
+      
     </View>
   );
 }
