@@ -9,6 +9,7 @@ import AgendaView from './AgendaView';
 import Settings from './Settings';
 import TimeManagement from './TimeManagement';
 import Character from './Character';
+import GroceryAndDiet from './GroceryAndDiet'
 
 
 const BGColor = "#004052"
@@ -25,6 +26,7 @@ function TheTabs(){
          }}>
       <TabNav.Screen name='Home' component={Character}/>
       <TabNav.Screen name="Manage Time" component={TimeManagement}/>
+      <TabNav.Screen name="Groceries and Diet" component={GroceryAndDiet}/>
       <TabNav.Screen name='Settings' component={Settings}/>
     </TabNav.Navigator>
   );

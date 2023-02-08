@@ -14,15 +14,15 @@ export default function GroceryAndDiet() {
   const [itemAdderVisible, setItemAdderVisible] = useState(false);
   const [category, setCategory] = useState('');
   const categories = [
-    {key:'1', value:'Vegetables'},
-    {key:'2', value:'Fruit'},
-    {key:'3', value:'Meat'},
-    {key:'4', value:'Grains'},
-    {key:'6', value:'Frozen'},
-    {key:'7', value:'Canned'},
-    {key:'8', value:'Drinks'},
-    {key:'9', value:'Misc'},
-    {key:'10',value:'Not Food'}
+    {key:'0', value:'Vegetables'},
+    {key:'1', value:'Fruit'},
+    {key:'2', value:'Meat'},
+    {key:'3', value:'Grains'},
+    {key:'4', value:'Frozen'},
+    {key:'5', value:'Canned'},
+    {key:'6', value:'Drinks'},
+    {key:'7', value:'Misc'},
+    {key:'8',value:'Not Food'}
   ]
   const showItemAdder = () => setItemAdderVisible(true);
   const hideItemAdder = () => setItemAdderVisible(false);
@@ -41,11 +41,13 @@ export default function GroceryAndDiet() {
     //reset newitemname
     setNewItemName('');
     const oldList = list;
+    const cat = category;
+    console.log(cat);
     //add to list quickly
-    setList([...oldList, { name: itemToAdd, ID: -1,  foodData: "" }]);
+    setList([...oldList, { name: itemToAdd, ID: -1,  foodData: "" , itemCategory: categories[cat]}]);
     hideItemAdder();
     //if not a food then no point in getting data from database
-    if(category == '' || category > 9) return;
+    if(category == '' || cat > 7) return;
     const fData = await fetchData(itemToAdd.replace(/[^a-zA-Z ]/g, ''));
     //
     if(fData[0] != -1) {
@@ -68,13 +70,8 @@ export default function GroceryAndDiet() {
         const protV = protein ? (protein.amount + protein.unitName) : "0g";
         const fatV = fat ? (fat.amount + fat.unitName) : "0g";
         const cholV = cholesterol ? (cholesterol.amount + cholesterol.unitName) : "0g";
-        console.log(calV);
-        console.log(carbV);
-        console.log(protV);
-        console.log(fatV);
-        console.log(cholV);
         let fDataStr = "Cal " + calV + "\t " + "Carbs " + carbV + "\t " + "Protein " + protV  + "\n" + "Fat " + fatV + "\t " + "Cholesterol " + cholV;
-        setList([...oldList, { name: itemToAdd, ID: fData[0],  foodData: fDataStr }]);
+        setList([...oldList, { name: itemToAdd, ID: fData[0],  foodData: fDataStr, itemCategory: categories[cat] }]);
     }
     
 
@@ -108,7 +105,10 @@ export default function GroceryAndDiet() {
         {list.map((item, index) => (
           <Surface key={item.name} style={styles.itemContainer}>
             <View style={styles.itemDetailsContainer}>
-              <Text style={styles.itemText}>{item.name}</Text>
+              <View style ={{justifyContent: 'space-around', flexDirection: 'row'}}>
+                <Text style={styles.itemText}>{item.name}</Text>
+                <Text style={styles.categoryText}>{item.itemCategory.value}</Text>
+              </View>
               <Text style={styles.itemDetails}>{item.foodData}</Text>
             </View>
             <IconButton
@@ -168,6 +168,10 @@ const styles = StyleSheet.create({
   },
   itemText: {
     fontSize: 25,
+    color: LGreen
+  },
+  categoryText: {
+    fontSize: 20,
     color: LGreen
   },
   itemDetails: {
