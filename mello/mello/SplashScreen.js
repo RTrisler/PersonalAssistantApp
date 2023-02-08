@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
-import { Dimensions, Text, View } from 'react-native';
+import { Dimensions, Text, View, Animated } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Animated } from 'react-native-web';
+//import { Animated } from 'react-native-web';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
