@@ -266,7 +266,7 @@ export default function AgendaView() {
                   <Text style={{ fontWeight: 'bold', fontSize: 20, color: LGreen }}>
                     End:
                   </Text>
-                  <TimePickerModal locale="en" visible={startTimePicker} onDismiss={toggleEndTimePicker} onConfirm={onChangeEndTime}/>
+                  <TimePickerModal locale="en" visible={endTimePicker} onDismiss={toggleEndTimePicker} onConfirm={onChangeEndTime}/>
                   <Button buttonColor={DGreen} textColor={LGreen} onPress={toggleEndTimePicker}>{getFormattedTime(endTime)}</Button>
                 </View>
 
