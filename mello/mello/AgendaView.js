@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, Platform } from 'react-native';
 import { Agenda, DateData } from 'react-native-calendars';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Divider, Card, Button, Modal, TextInput } from 'react-native-paper';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import { DatePickerModal, TimePickerModal } from 'react-native-paper-dates';
 //import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
 import Toast from 'react-native-toast-message';
@@ -46,13 +46,13 @@ const getFormattedTime = (date) => {
 export default function AgendaView() {
 
   const [items, setItems] = useState({
-    '2023-01-30': [
+    '2023-02-18': [
       {name: 'nametest', timeDueStart: '12:30', timeDueEnd: '13:30', note: 'note test'},
       {name: 'csc 330', timeDueStart: '11:00', timeDueEnd: '12:15', note: 'go to class nerd'},
       {name: 'csc 470', timeDueStart: '11:00', timeDueEnd: '12:15', note: 'go to class nerd'},
       {name: 'csc 405', timeDueStart: '2:00', timeDueEnd: '3:15', note: 'go to class nerd'}
     ],
-    '2023-01-31': [
+    '2023-02-19': [
       {name: 'do thing', timeDueStart: '2:00', timeDueEnd: '3:15', note: 'note about thing'}
     ]
   });
@@ -125,7 +125,7 @@ export default function AgendaView() {
 
   //vars for making an event date
   const [startDate, setStartDate] = useState(new Date());
-  const [startTime, setstartTime] = useState(new Date());
+  const [startTime, setStartTime] = useState(new Date());
   const [endTime, setEndTime] = useState(new Date());
   const [nameText, setNameText] = useState('empty');
   const [noteText, setNoteText] = useState('empty');
@@ -148,25 +148,31 @@ export default function AgendaView() {
     setNameText('empty');
   }
   //functions for changing date/time vars
-  const onChangeStartDate = (event, selectedStartDate) => {
-    const currentStartDate = selectedStartDate;
-    setStartDatePicker(false);
-    setStartDate(currentStartDate);
-    
-  };
-  const onChangeStartTime = (event, selectedstartTime) => {
-
-    const currentstartTime = selectedstartTime;
-    setStartTimePicker(false);
-    setstartTime(currentstartTime);
-    
-  };
-  const onChangeEndTime = (event, selectedEndTime) => {
-    const currentEndTime = selectedEndTime;
-    setEndTimePicker(false);
-    setEndTime(currentEndTime);
-    
-  };
+  const onChangeStartDate = React.useCallback(
+    (params) => {
+      setStartDatePicker(false)
+      setStartDate(params.date);
+    },
+    [setStartDatePicker,setStartDate]
+  );
+  const onChangeStartTime = React.useCallback(
+    ({hours, minutes}) => {
+      setStartTimePicker(false)
+      const t = new Date();
+      const value = new Date(t.getFullYear(), t.getMonth(), t.getDate(), hours, minutes, 0,0);
+      setStartTime(value);
+    },
+    [setStartTimePicker,setStartTime]
+  );
+  const onChangeEndTime = React.useCallback(
+    ({hours,minutes}) => {
+      setEndTimePicker(false)
+      const t = new Date();
+      const value = new Date(t.getFullYear(), t.getMonth(), t.getDate(), hours, minutes, 0,0);
+      setEndTime(value);
+    },
+    [setEndTimePicker,setEndTime]
+  );
   
   const addToEvents = () => {
     if(nameText == 'empty'){
@@ -204,15 +210,15 @@ export default function AgendaView() {
   }
 
   const toggleStartDatePicker = () => {
-    setStartDatePicker(true);
+    setStartDatePicker(!startDatePicker);
   }
 
   const toggleStartTimePicker = () => {
-    setStartTimePicker(true);
+    setStartTimePicker(!startTimePicker);
   }
 
   const toggleEndTimePicker = () => {
-    setEndTimePicker(true);
+    setEndTimePicker(!endTimePicker);
   }
   return (
     <View style = {styles.container}>
@@ -244,24 +250,24 @@ export default function AgendaView() {
                   <Text style={{ fontWeight: 'bold', fontSize: 20, color: LGreen}}>
                     Date:
                   </Text>
-                  {(isIOS|| startDatePicker) && <DateTimePicker value={startDate} mode={'date'} onChange={onChangeStartDate}/>}
-                  {!isIOS  && <Button buttonColor={DGreen} textColor={LGreen} onPress={toggleStartDatePicker}>{getFormattedDate(startDate)}</Button>}
+                  <DatePickerModal locale="en" mode="single" date={startDate} onConfirm={onChangeStartDate} onDismiss={toggleStartDatePicker} visible={startDatePicker}/>
+                  <Button buttonColor={DGreen} textColor={LGreen} onPress={toggleStartDatePicker}>{getFormattedDate(startDate)}</Button>
                 </View>
 
                 <View style={styles.dateTimeField}>
                   <Text style={{ fontWeight: 'bold', fontSize: 20, color: LGreen }}>
                     Start:
                   </Text>
-                  {(isIOS || startTimePicker) && <DateTimePicker value={startTime} mode={'time'} onChange={onChangeStartTime}/>}
-                  {!isIOS && <Button buttonColor={DGreen} textColor={LGreen} onPress={toggleStartTimePicker}>{getFormattedTime(startTime)}</Button>}
+                  <TimePickerModal locale="en" visible={startTimePicker} onDismiss={toggleStartTimePicker} onConfirm={onChangeStartTime}/>
+                  <Button buttonColor={DGreen} textColor={LGreen} onPress={toggleStartTimePicker}>{getFormattedTime(startTime)}</Button>
                 </View>
 
                 <View style={styles.dateTimeField}>
                   <Text style={{ fontWeight: 'bold', fontSize: 20, color: LGreen }}>
                     End:
                   </Text>
-                  {(isIOS || endTimePicker) && <DateTimePicker value={endTime} mode={'time'} onChange={onChangeEndTime}/>}
-                  {!isIOS && <Button buttonColor={DGreen} textColor={LGreen} onPress={toggleEndTimePicker}>{getFormattedTime(endTime)}</Button>}
+                  <TimePickerModal locale="en" visible={startTimePicker} onDismiss={toggleEndTimePicker} onConfirm={onChangeEndTime}/>
+                  <Button buttonColor={DGreen} textColor={LGreen} onPress={toggleEndTimePicker}>{getFormattedTime(endTime)}</Button>
                 </View>
 
                 <View style={{flexDirection:'row', justifyContent:'space-between', paddingTop: 10, paddingBottom: 10}}>
