@@ -1,0 +1,36 @@
+#container{
+    flex: 1;
+    margin:auto;
+    width: 1000px;
+    height: 1123px;
+    background-color: aqua;
+}
+
+#body{
+    position:absolute;
+    width:794px;   /* width of actual image */
+    height:1123px; /* height of actual image */
+    background-image: url("../img/robot1bodybitmap.png");
+    background-repeat: no-repeat;
+}
+
+#background{
+    bottom: 1246px;
+    right: 1119px;
+    position: absolute;
+    color: black;
+}
+
+#head, #wheels{
+    position:absolute;
+    width:794px;   /* width of actual image */
+    height:1123px; /* height of actual image */
+}
+
+.head1{
+    background-image: url("../img/eyes/robot1headbitmap.png");
+}
+
+.wheels1{
+    background-image: url("../img/ears/robot1wheelsbitmap.png");
+}
