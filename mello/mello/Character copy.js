@@ -15,17 +15,17 @@ export default function Character() {
     this.setState({[field]:val});
   }
 
-  render() {
-    return(
-      <div className='app'>
-        <div className='div'>
-          <progressbar width={400} percent = {this.state.percent}/>
-          <button 
-            onClick={()=>
-            this.updateProgress('percent', this.state.percent + .1)
-          }>add</button>
-        </div>
-      </div>
-    );
-  }
+  //render() {
+   // return(
+    //  <div className='app'>
+    //    <div className='div'>
+    //      <progressbar width={400} percent = {this.state.percent}/>
+    //      <button 
+    //        onClick={()=>
+    //        this.updateProgress('percent', this.state.percent + .1)
+    //      }>add</button>
+   //     </div>
+   //   </div>
+  //  );
+//  }
 }
