@@ -1,31 +1,37 @@
-import React from 'react';
-import { StatusBar } from 'expo-status-bar';
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import LinearProgress from '@mui/material/LinearProgress';
 import { StyleSheet, Text, View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import 'react-native-gesture-handler'
 
-import './ProgressBar.css'
+export default function LinearDeterminate() {
+  const [progress, setProgress] = React.useState(0);
 
-export default function Character() {
-  state = {
-    percent:0
-  }
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      setProgress((oldProgress) => {
+        if (oldProgress === 100) {
+          return 0;
+        }
+        const diff = Math.random() * 10;
+        return Math.min(oldProgress + diff, 100);
+      });
+    }, 500);
 
-  updateProgress = (field, val) => {
-    this.setState({[field]:val});
-  }
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
 
-  render() {
-    return(
-      <div className='app'>
+  return (
+    <div className='app'>
         <div className='div'>
-          <progressbar width={400} percent = {this.state.percent}/>
+          <text>fart</text>
+        <LinearProgress variant="determinate" value={progress} />
           <button 
             onClick={()=>
             this.updateProgress('percent', this.state.percent + .1)
           }>add</button>
         </div>
       </div>
-    );
-  }
+  );
 }
