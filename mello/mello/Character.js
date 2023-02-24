@@ -24,12 +24,12 @@ const [level, setLevel] = React.useState(0);
           <button 
             onClick={()=>{ 
               setProgress((oldProgress) => {
-                if (oldProgress === 100) {
-                  setLevel(level+1)
-                  return 0;
-                }
-                  return oldProgress + 10
-                  
+                  setProgress(oldProgress+10)
+                  if (oldProgress === 100){
+                    setLevel(level+1)
+                    return 0; 
+                  }
+                
               });
           }}>add</button> <text>Your level is: {level}</text>
         
