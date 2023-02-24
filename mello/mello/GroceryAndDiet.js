@@ -96,11 +96,21 @@ export default function GroceryAndDiet() {
         console.log(err);
         return [-1, {}];
       }
-};
+    };
 
+  const [groceryView, setGroceryView] = useState(true);
+
+  const toggleGroceryView = () => {
+    setGroceryView(!groceryView);
+  };
   return (
     <SafeAreaView style={styles.container}>
-        <Button onPress={showItemAdder} style={styles.showAdderButton}><Text style={{fontSize: 20, fontWeight: 'bold', color: LGreen}}>Add Item</Text></Button>
+      {groceryView ? (
+      <View>
+      <View style={{flexDirection: 'row', paddingHorizontal: '1%', justifyContent: 'space-between'}}>
+        <Button onPress={showItemAdder} style={{...styles.showAdderButton}}><Text style={{fontSize: 20, fontWeight: 'bold', color: LGreen}}>Add Item</Text></Button>
+        <IconButton icon='book' iconColor={LGreen} onPress={toggleGroceryView}></IconButton>
+      </View>
       <List.Section style={{backgroundColor: BGColor}}>
         {list.map((item, index) => (
           <Surface key={item.name} style={styles.itemContainer}>
@@ -120,7 +130,15 @@ export default function GroceryAndDiet() {
           </Surface>
         ))}
       </List.Section>
-      <Modal visible={itemAdderVisible} onDismiss={hideItemAdder}>
+
+        </View>)
+        :
+        (
+          <View>
+
+          </View>
+        )}
+              <Modal visible={itemAdderVisible} onDismiss={hideItemAdder}>
             <Card style={styles.itemAdder}>
               <TextInput placeholder='Item name' onChangeText={setNewItemName} textColor="#2AA198" value={newItemName} style={{minWidth: '80%'}}/>
               <SelectList setSelected={setCategory} data={categories} save="key" inputStyles={{color: LGreen}} dropdownTextStyles={{color: LGreen}}/>
@@ -135,8 +153,8 @@ export default function GroceryAndDiet() {
             </Card>
             <Toast />
         </Modal>
-        
     </SafeAreaView>
+    
   );
 };
 
@@ -157,6 +175,7 @@ const styles = StyleSheet.create({
   showAdderButton: {
     backgroundColor: DGreen,
     marginTop: 10,
+    minWidth: '80%'
   },
   itemContainer: {
     backgroundColor: BGColor,
