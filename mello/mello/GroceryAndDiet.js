@@ -175,6 +175,11 @@ export default function GroceryAndDiet() {
     setRecipeSteps(recipes.filter((item, i) => i !== index))
   }
 
+  const [groceryView, setGroceryView] = useState(true);
+
+  const toggleGroceryView = () => {
+    setGroceryView(!groceryView);
+  };
   return (
     <SafeAreaView style={styles.container}>
       
@@ -347,6 +352,7 @@ export default function GroceryAndDiet() {
 
         <Toast />
     </SafeAreaView>
+    
   );
 };
 
