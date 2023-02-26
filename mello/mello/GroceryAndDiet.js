@@ -210,8 +210,10 @@ export default function GroceryAndDiet() {
   const [newIngredientQty, setNewIngredientQty] = useState(1);
   const handleAddIngredient = () => {
     const ingred = newIngredient;
+    const qty = newIngredientQty
     setNewIngredient('');
-    setRecipeIngredients([...recipeIngredients, ingred]);
+    setNewIngredientQty(0);
+    setRecipeIngredients([...recipeIngredients, {name: ingred, Qty: newIngredientQty}]);
   }
 
   const [recipeSteps, setRecipeSteps] = useState([]);
