@@ -5,6 +5,7 @@ import axios from 'axios';
 import { SelectList } from 'react-native-dropdown-select-list';
 import Toast from 'react-native-toast-message';
 import { ScrollView } from 'react-native-gesture-handler';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const BGColor = "#003847"
 const LGreen = "#2AA198"
@@ -180,6 +181,22 @@ export default function GroceryAndDiet() {
   const toggleGroceryView = () => {
     setGroceryView(!groceryView);
   };
+
+
+  const [recipeAdderVisible, setRecipeAdderVisible] = useState(false);
+  const hideRecipeAdder = () => {
+    setRecipeAdderVisible(false);
+  };
+  const showRecipeAdder = () => {
+    setRecipeAdderVisible(true);
+  };
+  const [newRecipeName, setNewRecipeName] = useState("");
+  const [recipes, setRecipes] = useState([]);
+  const handleAddRecipe = () => {
+    setRecipes([...recipes, {name: newRecipeName}]);
+  };
+
+
   return (
     <SafeAreaView style={styles.container}>
       
@@ -352,7 +369,6 @@ export default function GroceryAndDiet() {
 
         <Toast />
     </SafeAreaView>
-    
   );
 };
 
