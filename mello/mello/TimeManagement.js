@@ -9,6 +9,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useFonts } from 'expo-font';
 import { Divider, Card, Button, Modal, TextInput, Surface } from 'react-native-paper';
 import MonthView from './MonthView';
+import TodoAppScreen from './ToDoAppScreen';
 
 // 2AA198, #003847, 002B36
 const BGColor = "#003847"
@@ -74,11 +75,11 @@ function Overview({ navigation }) {
               <Text style={styles.cityText}> Ruston </Text>
             </View>
             <View style={styles.dayEvents}>
-              <AgendaView></AgendaView>
+              <TodoAppScreen></TodoAppScreen>
             </View>
           </Surface>
           <Surface style={styles.calendarContainer} elevation={5}>
-            <MonthView></MonthView>
+            <AgendaView></AgendaView>
           </Surface>
         </LinearGradient>
       );
