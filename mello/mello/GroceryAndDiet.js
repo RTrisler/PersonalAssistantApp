@@ -103,9 +103,25 @@ export default function GroceryAndDiet() {
     };
 
   const [groceryView, setGroceryView] = useState(true);
+  const [recipeView, setRecipeView] = useState(false);
+  const [mealPlanView, setMealPlanView] = useState(false);
 
   const toggleGroceryView = () => {
-    setGroceryView(!groceryView);
+    setMealPlanView(false);
+    setRecipeView(false);
+    setGroceryView(true);
+    
+  };
+  const toggleRecipeView = () => {
+    
+    setMealPlanView(false)
+    setGroceryView(false);
+    setRecipeView(true);
+  };
+  const toggleMealPlanView = () => {
+    setRecipeView(false);
+    setGroceryView(false);
+    setMealPlanView(true);
   };
 
 
@@ -162,11 +178,12 @@ export default function GroceryAndDiet() {
   return (
     <SafeAreaView style={styles.container}>
       
-      {groceryView ? (
+      {groceryView && (
       <View style={{flex:1}}>
         <View style={{flexDirection: 'row', paddingHorizontal: '1%', justifyContent: 'space-between'}}>
           <Button onPress={showItemAdder} style={styles.showAdderButton}><Text style={{fontSize: 20, fontWeight: 'bold', color: LGreen}}>Add Grocery Item</Text></Button>
-          <IconButton icon='book' iconColor={LGreen} onPress={toggleGroceryView}></IconButton>
+          <IconButton icon='book' iconColor={LGreen} onPress={toggleRecipeView}></IconButton>
+          <IconButton icon='calendar' iconColor={LGreen} onPress={toggleMealPlanView}></IconButton>
         </View>
         <ScrollView>
         <List.Section style={{backgroundColor: BGColor}}>
@@ -191,13 +208,14 @@ export default function GroceryAndDiet() {
         </List.Section>
         </ScrollView>
         </View>
-        )
-        :
-        (
+        )}
+        
+        {recipeView && (
         <View style={{flex:1}}>
           <View style={{flexDirection: 'row', paddingHorizontal: '1%', justifyContent: 'space-between'}}>
             <Button onPress={showRecipeAdder} style={{...styles.showAdderButton}}><Text style={{fontSize: 20, fontWeight: 'bold', color: LGreen}}>Add Recipe</Text></Button>
-            <IconButton icon='book' iconColor={LGreen} onPress={toggleGroceryView}></IconButton>
+            <IconButton icon='shopping-basket' iconColor={LGreen} onPress={toggleGroceryView}></IconButton>
+            <IconButton icon='calendar' iconColor={LGreen} onPress={toggleMealPlanView}></IconButton>
           </View>
           <ScrollView>
         <List.Section style={{backgroundColor: DGreen}}>
@@ -236,6 +254,16 @@ export default function GroceryAndDiet() {
         </List.Section>
         </ScrollView>
         </View>
+        )}
+
+        {mealPlanView && (
+         <View>
+          <View style={{flexDirection: 'row', paddingHorizontal: '1%', justifyContent: 'space-between'}}>
+            <IconButton icon='book' iconColor={LGreen} onPress={toggleRecipeView}></IconButton>
+            <IconButton icon='shopping-basket' iconColor={LGreen} onPress={toggleGroceryView}></IconButton>
+            
+          </View>
+         </View> 
         )}
 
 
@@ -339,7 +367,7 @@ const styles = StyleSheet.create({
   showAdderButton: {
     backgroundColor: DGreen,
     marginTop: 10,
-    minWidth: '90%'
+    minWidth: '70%'
   },
   itemContainer: {
     backgroundColor: BGColor,
