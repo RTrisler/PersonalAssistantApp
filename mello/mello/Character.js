@@ -7,6 +7,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Button, Surface } from 'react-native-paper';
 import { ImageBackground } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
+import BouncyCheckboxGroup from 'react-native-bouncy-checkbox-group';
 
 const BGColor = "#003847"
 const LGreen = "#2AA198"
@@ -16,12 +17,44 @@ const r1head = require('./assets/img/head/robot1headbitmap.png')
 const r1body = require('./assets/img/body/robot1bodybitmap.png')
 const r1wheels = require('./assets/img/wheels/robot1wheelsbitmap.png')
 
+const incrementingValues = [1,1,1,1];
+let Cash = 0;
+
+function chooseObjective(){
+  const objv1 = "Log into app " + incrementingValues[0] +" days";
+  const objv2 = "Create " + incrementingValues[1] +" new weekly tasks";
+  const objv3 = "Complete " + incrementingValues[2] +" weekly tasks";
+  const objv4 = "Complete " + incrementingValues[3] +" daily tasks";
+  const allObjectivesLists = [
+    {id:0, text:objv1, style:styles.unfinishedObjective, fillColor:'black',
+  unfillColor:"white",
+  innerIconStyle:{ borderColor: LGreen, borderWidth:5}, size:70, textStyle:{ color:"black"}},
+    {id:1, text:objv2, style:styles.unfinishedObjective, fillColor:'black',
+  unfillColor:"white",
+  innerIconStyle:{ borderColor: LGreen, borderWidth:5},size:70, textStyle:{ color:"black"}},
+    {id:2, text:objv3, style:styles.unfinishedObjective, fillColor:'black',
+  unfillColor:"white",
+  innerIconStyle:{ borderColor: LGreen, borderWidth:5},size:70, textStyle:{ color:"black"}},
+    {id:3, text:objv4, style:styles.unfinishedObjective, fillColor:'black',
+  unfillColor:"white",
+  innerIconStyle:{ borderColor: LGreen, borderWidth:5},size:70, textStyle:{ color:"black"}}]
+  
+  console.log("here")
+  return(allObjectivesLists)
+}
+
+const updateObjective = (selectedItem) =>{
+  incrementingValues[selectedItem.id] += 1;
+  Cash += (parseInt(selectedItem.id, 10)+1)*25;
+}
+
 export default function Character() {
 
   const [shouldShowObjectives, setShouldShowObjectives] = useState(false);
   const [shouldShowShop, setShouldShowShop] = useState(false);
   const [shouldShowEditBot, setShouldShowEditBot] = useState(false);
-
+  //const doneObjectives = [];
+  const chosenObjectives = chooseObjective();
   return (
     <LinearGradient
           // Background Linear Gradient
@@ -30,6 +63,9 @@ export default function Character() {
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
         >
+          <View>
+            <Text style={styles.cashContainer}>${Cash}</Text>
+          </View>
           <View style={styles.charactercontainer}>
             <ImageBackground source={r1head} style={styles.head}></ImageBackground>
             <ImageBackground source={r1body} style={styles.body}></ImageBackground>  
@@ -50,7 +86,12 @@ export default function Character() {
             {shouldShowObjectives ?
               (
                 <Surface style={styles.objectives}>
-                  <Text>Objectives</Text>
+
+                  <BouncyCheckboxGroup
+                    data={chosenObjectives}
+                    style={{ flexDirection:"column" }}
+                    onChange={(selectedItem) => {updateObjective(selectedItem)}}
+                  />
                 </Surface>
               ) : null}
               {shouldShowShop ?
@@ -75,6 +116,12 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     rowGap: '20px',
+  },
+  cashContainer:{
+    fontSize: "400%",
+    backgroundColor: DGreen,
+    borderRadius: 10,
+    padding: "5px"
   },
   charactercontainer: {
     display: 'flex',
@@ -132,13 +179,22 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     flexWrap: 'wrap',
     width: '100%',
-    height: '400px',
+    height: '450px',
     backgroundColor: DGreen,
     borderRadius: '10px',
     marginBottom:'100px',
     marginLeft: '50px',
     paddingTop: '5px',
     justifyContent: 'space-between',
+  },
+  unfinishedObjective: {
+    margin:"10px",
+    flexDirection:"row",
+    backgroundColor:"grey",
+    borderRadius:5,
+    color:"black",
+    padding:10,
+
   },
   shop: {
     display: 'flex',
