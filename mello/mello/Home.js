@@ -13,6 +13,7 @@ import Settings from './Settings';
 import Character from './Character';
 import GroceryAndDiet from './GroceryAndDiet'
 import TimeManagement from './TimeManagement';
+import MealPrep from './mealprep.jsx';
 
 
 const BGColor = "#004052"
@@ -31,6 +32,7 @@ function TheTabs(){
       <TabNav.Screen name='Home' component={Character} options={{ tabBarIcon:(tabInfo) => (<MaterialCommunityIcons name="home-account" size={24} color="black" />)}}/>
       <TabNav.Screen name="Schedule" component={TimeManagement} options={{ tabBarIcon:(tabInfo) => (<AntDesign name="book" size={24} color="black" />)}}/>
       <TabNav.Screen name="Groceries and Diet" component={GroceryAndDiet} options={{ tabBarIcon:(tabInfo) => (<MaterialCommunityIcons name="food-variant" size={24} color="black" />)}}/>
+      <TabNav.Screen name="Meal Prep" component={MealPrep} options={{ tabBarIcon:(tabInfo) => (<MaterialCommunityIcons name="food-variant" size={24} color="black" />)}}/>
       <TabNav.Screen name='Settings' component={Settings} options={{ tabBarIcon:(tabInfo) => (<Fontisto name="player-settings" size={24} color="black" />)}}/>
     </TabNav.Navigator>
   );
