@@ -119,16 +119,50 @@ export default function GroceryAndDiet() {
   const [newRecipeName, setNewRecipeName] = useState("");
   const [recipes, setRecipes] = useState([]);
   const handleAddRecipe = () => {
-    setRecipes([...recipes, {name: newRecipeName}]);
+    if(newRecipeName == '') { return; }
+    const recName = newRecipeName;
+    const recIng = recipeIngredients;
+    const recStep = recipeSteps;
+    setNewRecipeName('');
+    setRecipeIngredients([]);
+    setRecipeSteps([]);
+    setRecipes([...recipes, {name: recName, ingredients: recIng, steps: recStep}]);
+    hideRecipeAdder();
   };
 
+  const [recipeIngredients, setRecipeIngredients] = useState([]);
+
+  const [newIngredient, setNewIngredient] = useState("");
+  const handleAddIngredient = () => {
+    const ingred = newIngredient;
+    setNewIngredient('');
+    setRecipeIngredients([...recipeIngredients, ingred]);
+  }
+
+  const [recipeSteps, setRecipeSteps] = useState([]);
+  const [newStep, setNewStep] = useState("");
+  const handleAddStep = () => {
+    const step = newStep;
+    setNewStep('');
+    setRecipeSteps([...recipeSteps, step]);
+  }
+  const handleDeleteRecipe = (index) => {
+    setRecipes(recipes.filter((item, i) => i !== index));
+  };
+  const handleDeleteRecipeIngredients = (index) => {
+    setRecipeIngredients(recipeIngredients.filter((item, i) => i !== index))
+  }
+  const handleDeleteRecipeSteps = (index) => {
+    setRecipeSteps(recipes.filter((item, i) => i !== index))
+  }
 
   return (
     <SafeAreaView style={styles.container}>
+      
       {groceryView ? (
       <View style={{flex:1}}>
         <View style={{flexDirection: 'row', paddingHorizontal: '1%', justifyContent: 'space-between'}}>
-          <Button onPress={showItemAdder} style={{...styles.showAdderButton}}><Text style={{fontSize: 20, fontWeight: 'bold', color: LGreen}}>Add Grocery Item</Text></Button>
+          <Button onPress={showItemAdder} style={styles.showAdderButton}><Text style={{fontSize: 20, fontWeight: 'bold', color: LGreen}}>Add Grocery Item</Text></Button>
           <IconButton icon='book' iconColor={LGreen} onPress={toggleGroceryView}></IconButton>
         </View>
         <ScrollView>
@@ -152,7 +186,7 @@ export default function GroceryAndDiet() {
                 >
                 </IconButton>
               </View>
-              {(item.ID != -1) && <List.Accordion style={{minWidth: '100%', backgroundColor: DGreen, maxHeight: '3%'}}>
+              {(item.ID != -1) && <List.Accordion style={{maxHeight: '3%'}}>
                 <Text style={styles.itemDetails}>{item.foodData}</Text>
               </List.Accordion>}
             </Surface>
@@ -171,23 +205,47 @@ export default function GroceryAndDiet() {
           <ScrollView>
         <List.Section style={{backgroundColor: BGColor}}>
           {recipes.map((item, index) => (
-            <Surface key={item.name} style={styles.itemContainer}>
+            <Surface>
+            <Surface key={item.name} style={{...styles.itemContainer, flexDirection: 'row', justifyContent: 'space-between', alignContent: 'center'}}>
               <View style={styles.itemDetailsContainer}>
                 <View style ={{justifyContent: 'space-between', flexDirection: 'row'}}>
                   <Text style={styles.itemText}>{item.name}</Text>
-                  <Text style={styles.categoryText}>{item.name}</Text>
                 </View>
-                <Text style={styles.itemDetails}>{item.name}</Text>
-              </View>
-              <View style={{backgroundColor: DGreen, minWidth: '10%', justifyContent: 'center', alignItems: 'center'}}>
-                <Text style={{color: LGreen, fontSize: 25, fontWeight: 'bold'}}>{item.name}</Text>
               </View>
               <IconButton
-                onPress={() => handleDeleteItem(index)}
+                onPress={() => handleDeleteRecipe(index)}
                 icon="delete"
                 iconColor={LGreen}
               >
               </IconButton>
+            </Surface>
+            <List.Accordion title='Ingredients' style={{backgroundColor: BGColor}} titleStyle={{color: LGreen}}>
+              {item.ingredients.map((itemRec, index) => (
+                <Surface key={itemRec} style={{...styles.itemContainer, flexDirection:'row', justifyContent:'space-between'}}>
+                  <Text style={{...styles.itemText, paddingLeft: 10}}>{itemRec}</Text>
+                  <Text style={styles.itemText}>{itemRec}</Text>
+                  <IconButton
+                    onPress={() => handleDeleteRecipeIngredients(index)}
+                    icon="delete"
+                    iconColor={LGreen}
+                  >
+                  </IconButton>
+                </Surface>
+              ))}
+            </List.Accordion>
+            <List.Accordion title='Steps' style={{backgroundColor: BGColor}} titleStyle={{color: LGreen}}>
+              {item.steps.map((itemStep, index) => (
+                <Surface key={itemStep} style={{...styles.itemContainer, flexDirection:'row', justifyContent:'space-between'}}>
+                  <Text style={{...styles.itemText, paddingLeft: 10}}>{itemStep}</Text>
+                  <IconButton
+                    onPress={() => handleDeleteRecipeSteps(index)}
+                    icon="delete"
+                    iconColor={LGreen}
+                  >
+                  </IconButton>
+                </Surface>
+              ))}
+            </List.Accordion>
             </Surface>
           ))}
         </List.Section>
@@ -200,8 +258,8 @@ export default function GroceryAndDiet() {
         <Modal visible={itemAdderVisible} onDismiss={hideItemAdder}>
           <Card style={styles.itemAdder}>
             <View style={{flexDirection: 'row'}}>
-              <TextInput placeholder='Item name' onChangeText={setNewItemName} textColor="#2AA198" value={newItemName} style={{minWidth: '75%', backgroundColor: BGColor}}/>
-              <TextInput placeholder='Qty.' onChangeText={setNewItemQty} textColor="#2AA198" value={newItemQty} style={{minWidth: '25%', backgroundColor: DGreen}} keyboardType='numeric'/>
+              <TextInput placeholder='Item name' activeUnderlineColor = "#2AA198" onChangeText={setNewItemName} textColor="#2AA198" value={newItemName} style={{minWidth: '75%', backgroundColor: DGreen}}/>
+              <TextInput placeholder='Qty.' activeUnderlineColor = "#2AA198" onChangeText={setNewItemQty} textColor="#2AA198" value={newItemQty} style={{minWidth: '25%', backgroundColor: DGreen}} keyboardType='numeric'/>
             </View>
             <SelectList setSelected={setCategory} data={categories} save="key" inputStyles={{color: LGreen}} dropdownTextStyles={{color: LGreen}}/>
             <View style={{flexDirection:'row', justifyContent:'space-between', paddingVertical: 10, paddingHorizontal: 5}}>
@@ -218,7 +276,50 @@ export default function GroceryAndDiet() {
 
         <Modal visible={recipeAdderVisible} onDismiss={hideRecipeAdder}>
           <Card style={styles.itemAdder}>
-            <TextInput placeholder='Recipe name' onChangeText={setNewRecipeName} textColor="#2AA198" value={newRecipeName} style={{minWidth: '80%'}}/>
+            <TextInput placeholder='Recipe name' activeUnderlineColor = "#2AA198" onChangeText={setNewRecipeName} textColor="#2AA198" value={newRecipeName} style={{minWidth: '80%', backgroundColor: DGreen, borderRadius: 0}}/>
+            <View style={{flexDirection:'row', justifyContent: 'space-between', alignContent: 'center'}}>
+              <TextInput placeholder='Ingredient' activeUnderlineColor = "#2AA198" onChangeText={setNewIngredient} textColor="#2AA198" value={newIngredient} style={{minWidth: '80%', backgroundColor: DGreen, borderRadius: 0}}/>
+              <Button onPress={handleAddIngredient} buttonColor={DGreen} textColor={LGreen} style={{borderRadius: 0, minWidth: '20%', flex: 1, justifyContent: 'center', alignContent: 'center'}}>
+                Add
+              </Button>
+            </View>
+            <View style={{flexDirection:'row', justifyContent: 'space-between', alignContent: 'center'}}>
+              <TextInput placeholder='Step' activeUnderlineColor = "#2AA198" onChangeText={setNewStep} textColor="#2AA198" value={newStep} style={{minWidth: '80%', backgroundColor: DGreen, borderRadius: 0}}/>
+              <Button onPress={handleAddStep} buttonColor={DGreen} textColor={LGreen} style={{borderRadius: 0, minWidth: '20%', flex: 1, justifyContent: 'center', alignContent: 'center'}}>
+                Add
+              </Button>
+            </View>
+            <View style={{maxHeight: '60%'}}>
+            <ScrollView>
+            <List.Accordion title='Ingredients' style={{backgroundColor: BGColor}} titleStyle={{color: LGreen}}>
+              {recipeIngredients.map((item, index) => (
+                <Surface key={item} style={{...styles.itemContainer, flexDirection:'row', justifyContent:'space-between'}}>
+                  <Text style={{...styles.itemText, paddingLeft: 10}}>{item}</Text>
+                  <Text style={styles.itemText}>{item}</Text>
+                  <IconButton
+                    onPress={() => handleDeleteRecipeIngredients(index)}
+                    icon="delete"
+                    iconColor={LGreen}
+                  >
+                  </IconButton>
+                </Surface>
+              ))}
+            </List.Accordion>
+            <List.Accordion title='Steps' style={{backgroundColor: BGColor}} titleStyle={{color: LGreen}}>
+              {recipeSteps.map((item, index) => (
+                <Surface key={item} style={{...styles.itemContainer, flexDirection:'row', justifyContent:'space-between'}}>
+                  <Text style={{...styles.itemText, paddingLeft: 10}}>{item}</Text>
+                  <IconButton
+                    onPress={() => handleDeleteRecipeSteps(index)}
+                    icon="delete"
+                    iconColor={LGreen}
+                  >
+                  </IconButton>
+                </Surface>
+              ))}
+            </List.Accordion>
+            </ScrollView>
+            </View>
             <View style={{flexDirection:'row', justifyContent:'space-between', paddingVertical: 10, paddingHorizontal: 5}}>
             <Button onPress={handleAddRecipe} buttonColor={DGreen} textColor={LGreen}>
               <Text style = {{fontSize: 20, fontWeight: 'bold', color: LGreen}}> Save </Text>
@@ -252,11 +353,12 @@ const styles = StyleSheet.create({
   showAdderButton: {
     backgroundColor: DGreen,
     marginTop: 10,
-    minWidth: '80%'
+    minWidth: '90%'
   },
   itemContainer: {
     backgroundColor: BGColor,
     alignItems: 'center',
+    fontWeight: 'bold'
   },
   itemDetailsContainer: {
     paddingLeft: 10,
