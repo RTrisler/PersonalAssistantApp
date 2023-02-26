@@ -133,6 +133,7 @@ export default function GroceryAndDiet() {
   const [recipeIngredients, setRecipeIngredients] = useState([]);
 
   const [newIngredient, setNewIngredient] = useState("");
+  const [newIngredientQty, setNewIngredientQty] = useState(1);
   const handleAddIngredient = () => {
     const ingred = newIngredient;
     setNewIngredient('');
@@ -179,12 +180,6 @@ export default function GroceryAndDiet() {
                 <View style={{backgroundColor: DGreen, minWidth: '10%', justifyContent: 'center', alignItems: 'center'}}>
                   <Text style={{color: LGreen, fontSize: 25, fontWeight: 'bold'}}>{item.Qty}</Text>
                 </View>
-                <IconButton
-                  onPress={() => handleDeleteItem(index)}
-                  icon="delete"
-                  iconColor={LGreen}
-                >
-                </IconButton>
               </View>
               {(item.ID != -1) && <List.Accordion style={{maxHeight: '3%'}}>
                 <Text style={styles.itemDetails}>{item.foodData}</Text>
@@ -220,29 +215,17 @@ export default function GroceryAndDiet() {
               </IconButton>
             </Surface>
             <List.Accordion title='Ingredients' style={{backgroundColor: BGColor}} titleStyle={{color: LGreen}}>
-              {item.ingredients.map((itemRec, index) => (
+              {item.ingredients.map((itemRec, iIndex) => (
                 <Surface key={itemRec} style={{...styles.itemContainer, flexDirection:'row', justifyContent:'space-between'}}>
                   <Text style={{...styles.itemText, paddingLeft: 10}}>{itemRec}</Text>
-                  <Text style={styles.itemText}>{itemRec}</Text>
-                  <IconButton
-                    onPress={() => handleDeleteRecipeIngredients(index)}
-                    icon="delete"
-                    iconColor={LGreen}
-                  >
-                  </IconButton>
+                  <Text style={styles.itemText}>{itemRec.Qty}</Text>
                 </Surface>
               ))}
             </List.Accordion>
             <List.Accordion title='Steps' style={{backgroundColor: BGColor}} titleStyle={{color: LGreen}}>
-              {item.steps.map((itemStep, index) => (
+              {item.steps.map((itemStep, sIndex) => (
                 <Surface key={itemStep} style={{...styles.itemContainer, flexDirection:'row', justifyContent:'space-between'}}>
                   <Text style={{...styles.itemText, paddingLeft: 10}}>{itemStep}</Text>
-                  <IconButton
-                    onPress={() => handleDeleteRecipeSteps(index)}
-                    icon="delete"
-                    iconColor={LGreen}
-                  >
-                  </IconButton>
                 </Surface>
               ))}
             </List.Accordion>
@@ -278,7 +261,8 @@ export default function GroceryAndDiet() {
           <Card style={styles.itemAdder}>
             <TextInput placeholder='Recipe name' activeUnderlineColor = "#2AA198" onChangeText={setNewRecipeName} textColor="#2AA198" value={newRecipeName} style={{minWidth: '80%', backgroundColor: DGreen, borderRadius: 0}}/>
             <View style={{flexDirection:'row', justifyContent: 'space-between', alignContent: 'center'}}>
-              <TextInput placeholder='Ingredient' activeUnderlineColor = "#2AA198" onChangeText={setNewIngredient} textColor="#2AA198" value={newIngredient} style={{minWidth: '80%', backgroundColor: DGreen, borderRadius: 0}}/>
+              <TextInput placeholder='Ingredient' activeUnderlineColor = "#2AA198" onChangeText={setNewIngredient} textColor="#2AA198" value={newIngredient} style={{minWidth: '60%', backgroundColor: DGreen, borderRadius: 0}}/>
+              <TextInput placeholder='Qty.' activeUnderlineColor = "#2AA198" onChangeText={setNewIngredientQty} textColor="#2AA198" value={newIngredientQty} style={{minWidth: '20%', backgroundColor: DGreen, borderRadius: 0}}/>
               <Button onPress={handleAddIngredient} buttonColor={DGreen} textColor={LGreen} style={{borderRadius: 0, minWidth: '20%', flex: 1, justifyContent: 'center', alignContent: 'center'}}>
                 Add
               </Button>
@@ -295,7 +279,7 @@ export default function GroceryAndDiet() {
               {recipeIngredients.map((item, index) => (
                 <Surface key={item} style={{...styles.itemContainer, flexDirection:'row', justifyContent:'space-between'}}>
                   <Text style={{...styles.itemText, paddingLeft: 10}}>{item}</Text>
-                  <Text style={styles.itemText}>{item}</Text>
+                  <Text style={styles.itemText}>{item.Qty}</Text>
                   <IconButton
                     onPress={() => handleDeleteRecipeIngredients(index)}
                     icon="delete"
