@@ -193,9 +193,42 @@ export default function GroceryAndDiet() {
   const [newRecipeName, setNewRecipeName] = useState("");
   const [recipes, setRecipes] = useState([]);
   const handleAddRecipe = () => {
-    setRecipes([...recipes, {name: newRecipeName}]);
+    if(newRecipeName == '') { return; }
+    const recName = newRecipeName;
+    const recIng = recipeIngredients;
+    const recStep = recipeSteps;
+    setNewRecipeName('');
+    setRecipeIngredients([]);
+    setRecipeSteps([]);
+    setRecipes([...recipes, {name: recName, ingredients: recIng, steps: recStep}]);
+    hideRecipeAdder();
   };
 
+  const [recipeIngredients, setRecipeIngredients] = useState([]);
+
+  const [newIngredient, setNewIngredient] = useState("");
+  const handleAddIngredient = () => {
+    const ingred = newIngredient;
+    setNewIngredient('');
+    setRecipeIngredients([...recipeIngredients, ingred]);
+  }
+
+  const [recipeSteps, setRecipeSteps] = useState([]);
+  const [newStep, setNewStep] = useState("");
+  const handleAddStep = () => {
+    const step = newStep;
+    setNewStep('');
+    setRecipeSteps([...recipeSteps, step]);
+  }
+  const handleDeleteRecipe = (index) => {
+    setRecipes(recipes.filter((item, i) => i !== index));
+  };
+  const handleDeleteRecipeIngredients = (index) => {
+    setRecipeIngredients(recipeIngredients.filter((item, i) => i !== index))
+  }
+  const handleDeleteRecipeSteps = (index) => {
+    setRecipeSteps(recipes.filter((item, i) => i !== index))
+  }
 
   return (
     <SafeAreaView style={styles.container}>
