@@ -106,7 +106,6 @@ export default function GroceryAndDiet() {
   const [groceryView, setGroceryView] = useState(true);
   const [recipeView, setRecipeView] = useState(false);
   const [mealPlanView, setMealPlanView] = useState(false);
-
   const toggleGroceryView = () => {
     setMealPlanView(false);
     setRecipeView(false);
@@ -176,63 +175,6 @@ export default function GroceryAndDiet() {
     setRecipeSteps(recipes.filter((item, i) => i !== index))
   }
 
-  const [groceryView, setGroceryView] = useState(true);
-
-  const toggleGroceryView = () => {
-    setGroceryView(!groceryView);
-  };
-
-
-  const [recipeAdderVisible, setRecipeAdderVisible] = useState(false);
-  const hideRecipeAdder = () => {
-    setRecipeAdderVisible(false);
-  };
-  const showRecipeAdder = () => {
-    setRecipeAdderVisible(true);
-  };
-  const [newRecipeName, setNewRecipeName] = useState("");
-  const [recipes, setRecipes] = useState([]);
-  const handleAddRecipe = () => {
-    if(newRecipeName == '') { return; }
-    const recName = newRecipeName;
-    const recIng = recipeIngredients;
-    const recStep = recipeSteps;
-    setNewRecipeName('');
-    setRecipeIngredients([]);
-    setRecipeSteps([]);
-    setRecipes([...recipes, {name: recName, ingredients: recIng, steps: recStep}]);
-    hideRecipeAdder();
-  };
-
-  const [recipeIngredients, setRecipeIngredients] = useState([]);
-
-  const [newIngredient, setNewIngredient] = useState("");
-  const [newIngredientQty, setNewIngredientQty] = useState(1);
-  const handleAddIngredient = () => {
-    const ingred = newIngredient;
-    const qty = newIngredientQty
-    setNewIngredient('');
-    setNewIngredientQty(0);
-    setRecipeIngredients([...recipeIngredients, {name: ingred, Qty: newIngredientQty}]);
-  }
-
-  const [recipeSteps, setRecipeSteps] = useState([]);
-  const [newStep, setNewStep] = useState("");
-  const handleAddStep = () => {
-    const step = newStep;
-    setNewStep('');
-    setRecipeSteps([...recipeSteps, step]);
-  }
-  const handleDeleteRecipe = (index) => {
-    setRecipes(recipes.filter((item, i) => i !== index));
-  };
-  const handleDeleteRecipeIngredients = (index) => {
-    setRecipeIngredients(recipeIngredients.filter((item, i) => i !== index))
-  }
-  const handleDeleteRecipeSteps = (index) => {
-    setRecipeSteps(recipes.filter((item, i) => i !== index))
-  }
-
   return (
     <SafeAreaView style={styles.container}>
       
@@ -240,6 +182,8 @@ export default function GroceryAndDiet() {
       <View style={{flex:1}}>
         <View style={{flexDirection: 'row', paddingHorizontal: '1%', justifyContent: 'space-between'}}>
           <Button onPress={showItemAdder} style={styles.showAdderButton}><Text style={{fontSize: 20, fontWeight: 'bold', color: LGreen}}>Add Grocery Item</Text></Button>
+          <IconButton icon='book' iconColor={LGreen} onPress={toggleRecipeView}></IconButton>
+          <IconButton icon='calendar' iconColor={LGreen} onPress={toggleMealPlanView}></IconButton>
           <IconButton icon='book' iconColor={LGreen} onPress={toggleRecipeView}></IconButton>
           <IconButton icon='calendar' iconColor={LGreen} onPress={toggleMealPlanView}></IconButton>
         </View>
