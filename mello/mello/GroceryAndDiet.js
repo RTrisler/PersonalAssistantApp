@@ -5,7 +5,6 @@ import axios from 'axios';
 import { SelectList } from 'react-native-dropdown-select-list';
 import Toast from 'react-native-toast-message';
 import { ScrollView } from 'react-native-gesture-handler';
-import { ScrollView } from 'react-native-gesture-handler';
 
 const BGColor = "#003847"
 const LGreen = "#2AA198"
@@ -106,6 +105,7 @@ export default function GroceryAndDiet() {
   const [groceryView, setGroceryView] = useState(true);
   const [recipeView, setRecipeView] = useState(false);
   const [mealPlanView, setMealPlanView] = useState(false);
+
   const toggleGroceryView = () => {
     setMealPlanView(false);
     setRecipeView(false);
@@ -182,8 +182,6 @@ export default function GroceryAndDiet() {
       <View style={{flex:1}}>
         <View style={{flexDirection: 'row', paddingHorizontal: '1%', justifyContent: 'space-between'}}>
           <Button onPress={showItemAdder} style={styles.showAdderButton}><Text style={{fontSize: 20, fontWeight: 'bold', color: LGreen}}>Add Grocery Item</Text></Button>
-          <IconButton icon='book' iconColor={LGreen} onPress={toggleRecipeView}></IconButton>
-          <IconButton icon='calendar' iconColor={LGreen} onPress={toggleMealPlanView}></IconButton>
           <IconButton icon='book' iconColor={LGreen} onPress={toggleRecipeView}></IconButton>
           <IconButton icon='calendar' iconColor={LGreen} onPress={toggleMealPlanView}></IconButton>
         </View>
