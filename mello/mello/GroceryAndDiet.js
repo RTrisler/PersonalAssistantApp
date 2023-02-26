@@ -207,6 +207,7 @@ export default function GroceryAndDiet() {
   const [recipeIngredients, setRecipeIngredients] = useState([]);
 
   const [newIngredient, setNewIngredient] = useState("");
+  const [newIngredientQty, setNewIngredientQty] = useState(1);
   const handleAddIngredient = () => {
     const ingred = newIngredient;
     setNewIngredient('');
