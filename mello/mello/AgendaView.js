@@ -43,6 +43,7 @@ const getFormattedTime = (date) => {
   const fCDateStr = fCDateHour + ':' + fCDateMinute;
   return fCDateStr;
 };
+
 export default function AgendaView() {
 
   const [items, setItems] = useState({
@@ -122,7 +123,6 @@ export default function AgendaView() {
   }
 
   //making an event
-
   //vars for making an event date
   const [startDate, setStartDate] = useState(new Date());
   const [startTime, setStartTime] = useState(new Date());
@@ -134,6 +134,7 @@ export default function AgendaView() {
   const [startDatePicker, setStartDatePicker] = useState(false);
   const [startTimePicker, setStartTimePicker] = useState(false);
   const [endTimePicker, setEndTimePicker] = useState(false);
+
   //making the event maker modal show up or not
   const toggleEventMaker = () => {
     setEventMakerVisible(!isEventMakerVisible);
@@ -240,6 +241,7 @@ export default function AgendaView() {
           }}
           theme={styles.calendarTheme}
         />
+        
       <Modal visible={isEventMakerVisible} onDismiss={toggleEventMaker}>
             <Card style={styles.eventMaker}>
               <TextInput placeholder='Name' onChangeText={setNameText} textColor="#2AA198"/>
