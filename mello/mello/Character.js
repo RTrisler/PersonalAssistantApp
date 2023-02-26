@@ -8,6 +8,7 @@ import { Button, Surface } from 'react-native-paper';
 import { ImageBackground } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
 import BouncyCheckboxGroup from 'react-native-bouncy-checkbox-group';
+import LinearProgress from '@mui/material/LinearProgress';
 
 const BGColor = "#003847"
 const LGreen = "#2AA198"
@@ -53,6 +54,8 @@ export default function Character() {
   const [shouldShowObjectives, setShouldShowObjectives] = useState(false);
   const [shouldShowShop, setShouldShowShop] = useState(false);
   const [shouldShowEditBot, setShouldShowEditBot] = useState(false);
+  const [progress, setProgress] = React.useState(0);
+  const [level, setLevel] = React.useState(0);
   //const doneObjectives = [];
   const chosenObjectives = chooseObjective();
   return (
@@ -70,6 +73,25 @@ export default function Character() {
             <ImageBackground source={r1head} style={styles.head}></ImageBackground>
             <ImageBackground source={r1body} style={styles.body}></ImageBackground>  
             <ImageBackground source={r1wheels} style={styles.wheels}></ImageBackground>
+            <div className='div'>
+          
+          <LinearProgress variant="determinate" value={progress} color='success' 
+          sx={{
+            width: 300,
+          }}/>
+
+          <button 
+            onClick={()=>{ 
+              setProgress((oldProgress) => {
+                  if (oldProgress === 100){
+                    setLevel(level+1)
+                    return 0; 
+                  }
+                  setProgress(oldProgress+10)                
+              });
+          }}>add</button> <text>Level: {level}</text>
+        
+        </div>
           </View>
           <View style={styles.iconcontainer}>
             <Button style={styles.iconbackground}  onPress={() => {setShouldShowObjectives(!shouldShowObjectives); setShouldShowShop(false); setShouldShowEditBot(false)}}>
