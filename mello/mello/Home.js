@@ -14,7 +14,6 @@ import Character from './Character';
 import GroceryAndDiet from './GroceryAndDiet'
 import TimeManagement from './TimeManagement';
 import TodoAppScreen from './ToDoAppScreen';
-import { border } from '@mui/system';
 
 
 const BGColor = "#004052"
@@ -27,15 +26,7 @@ function TheTabs(){
          tabBarInactiveTintColor: '#fcf7ff', 
          tabBarActiveBackgroundColor: '#92828d',
          tabBarInactiveBackgroundColor:'#022b3a',
-         headerShown: true,
-         headerStyle: {
-          backgroundColor: BGColor,
-          border: 'none'
-         },
-         headerTitle: 'Mello',
-         headerTitleStyle: {
-          alignSelf: 'left',
-         },
+         headerShown: false,
          showIcon: true
          }}>
       <TabNav.Screen name='Home' component={Character} options={{ tabBarIcon:(tabInfo) => (<MaterialCommunityIcons name="home-account" size={24} color="black" />)}}/>

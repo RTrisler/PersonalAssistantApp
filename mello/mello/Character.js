@@ -40,7 +40,6 @@ function chooseObjective(){
   unfillColor:"white",
   innerIconStyle:{ borderColor: LGreen, borderWidth:5},size:70, textStyle:{ color:"black"}}]
   
-  console.log("here")
   return(allObjectivesLists)
 }
 
@@ -112,7 +111,13 @@ export default function Character() {
                   <BouncyCheckboxGroup
                     data={chosenObjectives}
                     style={{ flexDirection:"column" }}
-                    onChange={(selectedItem) => {updateObjective(selectedItem)}}
+                    onChange={(selectedItem) => {updateObjective(selectedItem); setProgress(() => {
+                      if (progress === 100){
+                        setLevel(level+1)
+                        return 0; 
+                      }
+                      setProgress(20 + progress)                
+                  } );}}
                   />
                 </Surface>
               ) : null}
