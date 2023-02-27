@@ -82,10 +82,10 @@ export default function GroceryAndDiet() {
   const [newItemQty, setNewItemQty] = useState(1);
   //the actual adding part
   const handleAddItem = async () => {
-    if(newItemName == '' || !isNaN(+newIngredientQty)) {
+    if(newItemName == '' || isNaN(+newIngredientQty)) {
       Toast.show({
         type: 'error',
-        text1: 'Item needs a name'
+        text1: 'Item needs a name or quantity'
       })
       return;
     }
@@ -239,7 +239,13 @@ export default function GroceryAndDiet() {
   const [newIngredient, setNewIngredient] = useState("");
   const [newIngredientQty, setNewIngredientQty] = useState(1);
   const handleAddIngredient = () => {
-    if(newIngredient == '' || !isNaN(+newIngredientQty)) {return;}
+    if(newIngredient == '' || isNaN(+newIngredientQty)) {
+      Toast.show({
+        type: 'error',
+        text1: 'Ingredient needs a name or quantity'
+      })
+      return;
+    }
     const ingred = newIngredient;
     const qty = newIngredientQty
     setNewIngredient('');
