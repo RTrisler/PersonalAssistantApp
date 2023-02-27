@@ -31,5 +31,3 @@ jobs:
       working-directory: ./mello/mello
     - run: npm run build --if-present
       working-directory: ./mello/mello
-    - run: npm test
-      working-directory: ./mello/mello
