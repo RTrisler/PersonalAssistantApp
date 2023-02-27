@@ -14,19 +14,40 @@ import Character from './Character';
 import GroceryAndDiet from './GroceryAndDiet'
 import TimeManagement from './TimeManagement';
 import TodoAppScreen from './ToDoAppScreen';
-
+import { useFonts } from 'expo-font';
+import { Button } from 'react-native-paper';
 
 const BGColor = "#004052"
 
 const TabNav = createBottomTabNavigator();
 function TheTabs(){
+  const [fontsLoaded] = useFonts({
+    'BebasNeue-Regular': require('./assets/fonts/BebasNeue-Regular.ttf'),
+  });
   return(
     <TabNav.Navigator screenOptions={{
          tabBarActiveTintColor: '#467599',
          tabBarInactiveTintColor: '#fcf7ff', 
          tabBarActiveBackgroundColor: '#92828d',
          tabBarInactiveBackgroundColor:'#022b3a',
-         headerShown: false,
+         headerShown: true,
+         headerRight: () => (
+          <Button
+            onPress={() => alert("Pressed")}
+            style={{ backgroundColor: 'green', borderRadius: '75px' }}
+          />
+         ),
+         headerStyle: {
+          backgroundColor: BGColor,
+          border: 'none'
+         },
+         headerTitle: 'Mello',
+         headerTitleStyle: {
+          alignSelf: 'left',
+          fontSize: '36px',
+          fontFamily: 'BebasNeue-Regular',
+          color: 'white'
+         },
          showIcon: true
          }}>
       <TabNav.Screen name='Home' component={Character} options={{ tabBarIcon:(tabInfo) => (<MaterialCommunityIcons name="home-account" size={24} color="black" />)}}/>
