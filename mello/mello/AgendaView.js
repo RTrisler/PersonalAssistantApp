@@ -47,13 +47,13 @@ const getFormattedTime = (date) => {
 export default function AgendaView() {
 
   const [items, setItems] = useState({
-    '2023-02-18': [
+    '2023-02-27': [
       {name: 'nametest', timeDueStart: '12:30', timeDueEnd: '13:30', note: 'note test'},
       {name: 'csc 330', timeDueStart: '11:00', timeDueEnd: '12:15', note: 'go to class nerd'},
       {name: 'csc 470', timeDueStart: '11:00', timeDueEnd: '12:15', note: 'go to class nerd'},
       {name: 'csc 405', timeDueStart: '2:00', timeDueEnd: '3:15', note: 'go to class nerd'}
     ],
-    '2023-02-19': [
+    '2023-02-28': [
       {name: 'do thing', timeDueStart: '2:00', timeDueEnd: '3:15', note: 'note about thing'}
     ]
   });
