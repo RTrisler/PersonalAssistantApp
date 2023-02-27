@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View,  StyleSheet,SafeAreaView, Platform } from 'react-native';
-import { TextInput, List, Checkbox, Divider, Surface, Text, Button, IconButton, Modal, Card } from 'react-native-paper';
+import { TextInput, List, Checkbox, Divider, Surface, Text, Button, IconButton, Modal, Card, HelperText } from 'react-native-paper';
 import axios from 'axios';
 import { SelectList } from 'react-native-dropdown-select-list';
 import Toast from 'react-native-toast-message';
@@ -82,7 +82,7 @@ export default function GroceryAndDiet() {
   const [newItemQty, setNewItemQty] = useState(1);
   //the actual adding part
   const handleAddItem = async () => {
-    if(newItemName == '') {
+    if(newItemName == '' || !isNaN(+newIngredientQty)) {
       Toast.show({
         type: 'error',
         text1: 'Item needs a name'
@@ -239,7 +239,7 @@ export default function GroceryAndDiet() {
   const [newIngredient, setNewIngredient] = useState("");
   const [newIngredientQty, setNewIngredientQty] = useState(1);
   const handleAddIngredient = () => {
-    if(newIngredient == '') {return;}
+    if(newIngredient == '' || !isNaN(+newIngredientQty)) {return;}
     const ingred = newIngredient;
     const qty = newIngredientQty
     setNewIngredient('');
@@ -437,7 +437,6 @@ export default function GroceryAndDiet() {
           {event.calories && <div className="md-meal-planner-event-desc">Calories {event.calories} kcal</div>}
       </div>
   }, []);
-
 
   return (
     <SafeAreaView style={styles.container}>
