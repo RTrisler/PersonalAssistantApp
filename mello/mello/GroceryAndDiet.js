@@ -124,7 +124,7 @@ export default function GroceryAndDiet() {
         const protV = protein ? (protein.amount + protein.unitName) : "0g";
         const fatV = fat ? (fat.amount + fat.unitName) : "0g";
         const cholV = cholesterol ? (cholesterol.amount + cholesterol.unitName) : "0g";
-        let fDataStr = "Cal " + calV + "\t" + "Carbs " + carbV + "\t" + "Protein " + protV  + "\n" + "Fat " + fatV + "\t" + "Cholesterol " + cholV;
+        let fDataStr = "Cal " + calV + "\t" + "Carbs " + carbV + "\t" + "Protein " + protV  + "\t" + "Fat " + fatV + "\t" + "Cholesterol " + cholV;
         setList([...oldList, { name: itemToAdd, ID: fData[0],  foodData: fDataStr, itemCategory: cat == -1 ? "" : categories[cat], Qty: itemQty }]);
     }
     
@@ -162,7 +162,7 @@ export default function GroceryAndDiet() {
         const protV = protein ? (protein.amount + protein.unitName) : "0g";
         const fatV = fat ? (fat.amount + fat.unitName) : "0g";
         const cholV = cholesterol ? (cholesterol.amount + cholesterol.unitName) : "0g";
-        let fDataStr = "Cal " + calV + "\t" + "Carbs " + carbV + "\t" + "Protein " + protV  + "\n" + "Fat " + fatV + "\t" + "Cholesterol " + cholV;
+        let fDataStr = "Cal " + calV + "\t" + "Carbs " + carbV + "\t" + "Protein " + protV  + "\t" + "Fat " + fatV + "\t" + "Cholesterol " + cholV;
         setList([...oldList, { name: itemToAdd, ID: fData[0],  foodData: fDataStr, itemCategory: cat == -1 ? "" : categories[cat], Qty: itemQty }]);
     }
     
@@ -462,7 +462,7 @@ export default function GroceryAndDiet() {
                 <View style={{...styles.itemDetailsContainer, justifyContent: 'center'}}>
                   <View style ={{justifyContent: 'space-between', flexDirection: 'row'}}>
                     <Text style={styles.categoryText}>{item.name}</Text>
-                    <Text style={styles.categoryText}>{item.itemCategory.value}</Text>
+                    <Text style={{...styles.categoryText, paddingRight: '3%'}}>{item.itemCategory.value}</Text>
                   </View>
                 </View>
                 <View style={{backgroundColor: DGreen, maxWidth: '15%', minWidth: '5%', justifyContent: 'center', alignItems: 'center'}}>
@@ -474,7 +474,7 @@ export default function GroceryAndDiet() {
                 iconColor={LGreen}
               ></IconButton>
               </View>
-              {(item.ID != -1) && <List.Accordion style={{maxHeight: '3%'}}>
+              {(item.ID != -1) && <List.Accordion style={{backgroundColor: DGreen}} title="Nutrional Info" titleStyle={{color: LGreen}}>
                 <Text style={styles.itemDetails}>{item.foodData}</Text>
               </List.Accordion>}
             </Surface>
@@ -715,7 +715,7 @@ const styles = StyleSheet.create({
   },
   itemDetails: {
     paddingLeft: 10,
-    fontSize: 15,
+    fontSize: 20,
     color: LGreen
   },
   deleteButton: {
