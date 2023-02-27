@@ -130,6 +130,44 @@ export default function GroceryAndDiet() {
     
 
   };
+
+  const handleAddItemFromRecipe = async (itemToAdd, itemQty) => {
+    const oldList = list;
+    const cat = category || -1;
+    console.log(cat);
+    //add to list quickly
+    setList([...oldList, { name: itemToAdd, ID: -1,  foodData: "" , itemCategory: cat == -1 ? "" : categories[cat], Qty: itemQty}]);
+    hideItemAdder();
+    //if not a food then no point in getting data from database
+    if(category == '' || cat > 7) return;
+    const fData = await fetchData(itemToAdd.replace(/[^a-zA-Z ]/g, ''));
+    //
+    if(fData[0] != -1) {
+        let fDataMap = fData[1].map(nutrient => {
+            return {
+                id: nutrient.nutrient.id,
+                amount: nutrient.amount,
+                name: nutrient.nutrient.name,
+                number: nutrient.nutrient.number,
+                unitName: nutrient.nutrient.unitName
+            }
+        });
+        const calories = fDataMap.filter((nutrient) => nutrient.id == 1008)[0];
+        const carbs = fDataMap.filter((nutrient) => nutrient.id == 1005)[0];
+        const protein = fDataMap.filter((nutrient) => nutrient.id == 1003)[0];
+        const cholesterol = fDataMap.filter((nutrient) => nutrient.id == 1253)[0];
+        const fat = fDataMap.filter((nutrient) => nutrient.id == 1004)[0];
+        const calV = calories ? (calories.amount + calories.unitName) : "0kcal";
+        const carbV = carbs ? (carbs.amount + carbs.unitName) : "0g";
+        const protV = protein ? (protein.amount + protein.unitName) : "0g";
+        const fatV = fat ? (fat.amount + fat.unitName) : "0g";
+        const cholV = cholesterol ? (cholesterol.amount + cholesterol.unitName) : "0g";
+        let fDataStr = "Cal " + calV + "\t" + "Carbs " + carbV + "\t" + "Protein " + protV  + "\n" + "Fat " + fatV + "\t" + "Cholesterol " + cholV;
+        setList([...oldList, { name: itemToAdd, ID: fData[0],  foodData: fDataStr, itemCategory: cat == -1 ? "" : categories[cat], Qty: itemQty }]);
+    }
+    
+
+  };
  
   const handleDeleteItem = (index) => {
     setList(list.filter((item, i) => i !== index));
@@ -201,16 +239,18 @@ export default function GroceryAndDiet() {
   const [newIngredient, setNewIngredient] = useState("");
   const [newIngredientQty, setNewIngredientQty] = useState(1);
   const handleAddIngredient = () => {
+    if(newIngredient == '') {return;}
     const ingred = newIngredient;
     const qty = newIngredientQty
     setNewIngredient('');
-    setNewIngredientQty(0);
+    setNewIngredientQty(1);
     setRecipeIngredients([...recipeIngredients, {name: ingred, Qty: newIngredientQty}]);
   }
 
   const [recipeSteps, setRecipeSteps] = useState([]);
   const [newStep, setNewStep] = useState("");
   const handleAddStep = () => {
+    if(newStep == '') {return;}
     const step = newStep;
     setNewStep('');
     setRecipeSteps([...recipeSteps, step]);
@@ -412,17 +452,22 @@ export default function GroceryAndDiet() {
         <ScrollView>
         <List.Section style={{backgroundColor: BGColor}}>
           {list.map((item, index) => (
-            <Surface key={item.name} style={styles.itemContainer}>
+            <Surface key={item.name} style={{backgroundColor: BGColor, justifyContent: 'space-between'}}>
               <View style={{flexDirection: 'row'}}>
-                <View style={styles.itemDetailsContainer}>
+                <View style={{...styles.itemDetailsContainer, justifyContent: 'center'}}>
                   <View style ={{justifyContent: 'space-between', flexDirection: 'row'}}>
-                    <Text style={styles.itemText}>{item.name}</Text>
+                    <Text style={styles.categoryText}>{item.name}</Text>
                     <Text style={styles.categoryText}>{item.itemCategory.value}</Text>
                   </View>
                 </View>
-                <View style={{backgroundColor: DGreen, minWidth: '10%', justifyContent: 'center', alignItems: 'center'}}>
+                <View style={{backgroundColor: DGreen, maxWidth: '15%', minWidth: '5%', justifyContent: 'center', alignItems: 'center'}}>
                   <Text style={{color: LGreen, fontSize: 25, fontWeight: 'bold'}}>{item.Qty}</Text>
                 </View>
+                <IconButton
+                onPress={() => handleDeleteItem(index)}
+                icon="delete"
+                iconColor={LGreen}
+              ></IconButton>
               </View>
               {(item.ID != -1) && <List.Accordion style={{maxHeight: '3%'}}>
                 <Text style={styles.itemDetails}>{item.foodData}</Text>
@@ -459,10 +504,20 @@ export default function GroceryAndDiet() {
               </IconButton>
             </Surface>
             <List.Accordion title='Ingredients' style={{backgroundColor: DGreen}} titleStyle={{color: LGreen}}>
-              {item.ingredients.map((itemRec, iIndex) => (
-                <Surface key={itemRec} style={{...styles.itemContainer, flexDirection:'row', justifyContent:'space-between'}}>
-                  <Text style={{...styles.itemText, paddingLeft: 10}}>{itemRec.name}</Text>
-                  <Text style={{...styles.itemText, paddingRight: 10}}>{itemRec.Qty}</Text>
+              {item.ingredients.map((itemIng, iIndex) => (
+                <Surface key={itemIng} style={{...styles.itemContainer, flexDirection:'row', justifyContent:'space-between'}}>
+                  <Text style={{...styles.itemText, paddingLeft: 10}}>{itemIng.name}</Text>
+                  <Text style={{...styles.itemText, paddingRight: 10}}>{itemIng.Qty}</Text>
+                  <View style={{flexDirection:'row'}}>
+                    <IconButton
+                      onPress={ async () => {
+                        handleAddItemFromRecipe(itemIng.name, itemIng.Qty);
+                      }}
+                      icon="plus"
+                      iconColor={LGreen}
+                    >
+                    </IconButton>
+                  </View>
                 </Surface>
               ))}
             </List.Accordion>
