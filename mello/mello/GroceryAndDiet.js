@@ -620,7 +620,6 @@ export default function GroceryAndDiet() {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: Platform.OS === 'ios' ? '12%' : '10%',
     flex: 1,
     backgroundColor: BGColor,
   },
