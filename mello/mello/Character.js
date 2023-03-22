@@ -19,6 +19,8 @@ const r1body = require('./assets/img/body/robot1bodybitmap.png')
 const r1wheels = require('./assets/img/wheels/robot1wheelsbitmap.png')
 
 const incrementingValues = [1,1,1,1];
+const valuesNeeded = [0,0,0,0];
+
 let Cash = 0;
 
 function chooseObjective(){
@@ -44,8 +46,8 @@ function chooseObjective(){
 }
 
 const updateObjective = (selectedItem) =>{
-  incrementingValues[selectedItem.id] += 1;
-  Cash += (parseInt(selectedItem.id, 10)+1)*25;
+    valuesNeeded[selectedItem.id] -= incrementingValues[selectedItem.id]
+    Cash += (parseInt(selectedItem.id, 10)+1)*25;
 }
 
 export default function Character() {
@@ -111,13 +113,17 @@ export default function Character() {
                   <BouncyCheckboxGroup
                     data={chosenObjectives}
                     style={{ flexDirection:"column" }}
-                    onChange={(selectedItem) => {updateObjective(selectedItem); setProgress(() => {
-                      if (progress === 100){
-                        setLevel(level+1)
-                        return 0; 
-                      }
-                      setProgress(20 + progress)                
-                  } );}}
+                    onChange={(selectedItem) => {
+                      if (valuesNeeded[selectedItem.id] >= incrementingValues[selectedItem.id]) {
+                        updateObjective(selectedItem); 
+                        setProgress(() => {
+                        setProgress(20 + progress)        
+                          if (progress === 100){
+                            setLevel(level+1)
+                            return 0; 
+                          }        
+                        }
+                       );}}}
                   />
                 </Surface>
               ) : null}
