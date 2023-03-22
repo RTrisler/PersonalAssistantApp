@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import 'react-native-gesture-handler';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -9,6 +9,8 @@ import { ImageBackground } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
 import BouncyCheckboxGroup from 'react-native-bouncy-checkbox-group';
 import LinearProgress from '@mui/material/LinearProgress';
+import { useNavigation } from '@react-navigation/native'
+import { auth } from "./firebase"
 
 const BGColor = "#003847"
 const LGreen = "#2AA198"
@@ -57,6 +59,18 @@ export default function Character() {
   const [level, setLevel] = React.useState(0);
   //const doneObjectives = [];
   const chosenObjectives = chooseObjective();
+
+  const navigation = useNavigation()
+
+  const handleSignOut = () => {
+    auth
+    .signOut()
+    .then(() => {
+        navigation.replace("Login")
+    })
+    .catch(error => alert(error.message))
+  }
+
   return (
     <LinearGradient
           // Background Linear Gradient
@@ -68,6 +82,13 @@ export default function Character() {
           <View>
             <Text style={styles.cashContainer}>${Cash}</Text>
           </View>
+          <TouchableOpacity
+              onPress={handleSignOut}
+              style={styles.button}
+          >
+            <Text style={styles.buttonText}>Sign Out</Text>
+          </TouchableOpacity>
+          
           <View style={styles.charactercontainer}>
             <ImageBackground source={r1head} style={styles.head}></ImageBackground>
             <ImageBackground source={r1body} style={styles.body}></ImageBackground>  
@@ -248,5 +269,19 @@ const styles = StyleSheet.create({
     marginLeft: '50px',
     paddingTop: '5px',
     justifyContent: 'space-between',
+  },
+  button: {
+    backgroundColor: '#0782F9',
+    width: '20%',
+    height: '50px',
+    padding: 15,
+    borderRadius: 10,
+    alignSelf: 'right',
+    marginTop: 40,
+  },
+  buttonText: {
+      color: 'white',
+      fontWeight: '700',
+      fontSize: 16,
   },
 });

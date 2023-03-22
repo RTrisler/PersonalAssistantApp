@@ -143,7 +143,7 @@ export default function AgendaView() {
 
   const resetEventMakerVar = () => {
     setStartDate(new Date());
-    setstartTime(new Date());
+    setStartTime(new Date());
     setEndTime(new Date());
     setNameText('empty');
     setNameText('empty');
