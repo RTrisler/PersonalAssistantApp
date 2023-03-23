@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
 import 'react-native-gesture-handler';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Button, Surface } from 'react-native-paper';
@@ -11,6 +9,7 @@ import BouncyCheckboxGroup from 'react-native-bouncy-checkbox-group';
 import LinearProgress from '@mui/material/LinearProgress';
 import { useNavigation } from '@react-navigation/native'
 import { auth } from "./firebase"
+import { Checkbox, FormGroup, FormControlLabel  } from '@material-ui/core';
 
 const BGColor = "#003847"
 const LGreen = "#2AA198"
@@ -57,8 +56,9 @@ export default function Character() {
   const [shouldShowEditBot, setShouldShowEditBot] = useState(false);
   const [progress, setProgress] = React.useState(0);
   const [level, setLevel] = React.useState(0);
-  //const doneObjectives = [];
   const chosenObjectives = chooseObjective();
+  const [obj1, setObj1] = React.useState(false);
+  const [obj2, setObj2] = React.useState(true);
 
   const navigation = useNavigation()
 
@@ -70,6 +70,31 @@ export default function Character() {
     })
     .catch(error => alert(error.message))
   }
+
+  const check = () =>
+  {
+    if (obj2 == true){
+      setObj2(false)
+    }
+    else{
+      setObj2(true)
+    }
+  }
+
+  const levelUp = () => 
+  {
+    setProgress((oldProgress) => 
+    {
+      if (oldProgress === 100)
+      {
+        setLevel(level+1)
+        return 0; 
+      }
+      setProgress(oldProgress+10)                
+    });
+  }
+
+
 
   return (
     <LinearGradient
@@ -93,23 +118,14 @@ export default function Character() {
             <ImageBackground source={r1head} style={styles.head}></ImageBackground>
             <ImageBackground source={r1body} style={styles.body}></ImageBackground>  
             <ImageBackground source={r1wheels} style={styles.wheels}></ImageBackground>
-            <div className='div'>
+        <div className='div'>
           
           <LinearProgress variant="determinate" value={progress} color='success' 
           sx={{
             width: 300,
           }}/>
 
-          <button 
-            onClick={()=>{ 
-              setProgress((oldProgress) => {
-                  if (oldProgress === 100){
-                    setLevel(level+1)
-                    return 0; 
-                  }
-                  setProgress(oldProgress+10)                
-              });
-          }}>add</button> <text>Level: {level}</text>
+          <button onClick={levelUp}>add</button> <text>Level: {level}</text>
         
         </div>
           </View>
@@ -128,18 +144,23 @@ export default function Character() {
             {shouldShowObjectives ?
               (
                 <Surface style={styles.objectives}>
-
-                  <BouncyCheckboxGroup
-                    data={chosenObjectives}
-                    style={{ flexDirection:"column" }}
-                    onChange={(selectedItem) => {updateObjective(selectedItem); setProgress(() => {
-                      if (progress === 100){
-                        setLevel(level+1)
-                        return 0; 
-                      }
-                      setProgress(20 + progress)                
-                  } );}}
-                  />
+                  <FormGroup>
+                    <FormControlLabel
+                      control={<Checkbox/>}
+                      label="Secondary"
+                      labelPlacement="end"
+                      checked={obj1}
+                      onChange={levelUp}
+                    />
+                    <FormControlLabel
+                      control={<Checkbox/>}
+                      label="two"
+                      labelPlacement="end"
+                      checked={obj2}
+                      onChange={levelUp}
+                    />
+                </FormGroup>  
+                <button onClick={check}>add</button>
                 </Surface>
               ) : null}
               {shouldShowShop ?
