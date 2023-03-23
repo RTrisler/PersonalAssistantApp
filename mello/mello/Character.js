@@ -49,6 +49,8 @@ const updateObjective = (selectedItem) =>{
   Cash += (parseInt(selectedItem.id, 10)+1)*25;
 }
 
+
+
 export default function Character() {
 
   const [shouldShowObjectives, setShouldShowObjectives] = useState(false);
@@ -78,6 +80,7 @@ export default function Character() {
     }
     else{
       setObj2(true)
+      levelUp()
     }
   }
 
@@ -147,17 +150,17 @@ export default function Character() {
                   <FormGroup>
                     <FormControlLabel
                       control={<Checkbox/>}
-                      label="Secondary"
+                      label="Set a ToDo Task"
                       labelPlacement="end"
                       checked={obj1}
-                      onChange={levelUp}
+                      //onChange={levelUp}
                     />
                     <FormControlLabel
                       control={<Checkbox/>}
-                      label="two"
+                      label="Add to your grociery list!"
                       labelPlacement="end"
                       checked={obj2}
-                      onChange={levelUp}
+                      //onChange={levelUp}
                     />
                 </FormGroup>  
                 <button onClick={check}>add</button>
