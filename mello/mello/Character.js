@@ -4,12 +4,11 @@ import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import 'react-native-gesture-handler';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Button, Surface } from 'react-native-paper';
+import { Button, IconButton, Surface } from 'react-native-paper';
 import { ImageBackground } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
-import BouncyCheckboxGroup from 'react-native-bouncy-checkbox-group';
 import LinearProgress from '@mui/material/LinearProgress';
-
+import { PulseAnimation } from 'react-native-animated-pulse';
 const BGColor = "#003847"
 const LGreen = "#2AA198"
 const DGreen = "#002B36"
@@ -19,10 +18,8 @@ const r1body = require('./assets/img/body/robot1bodybitmap.png')
 const r1wheels = require('./assets/img/wheels/robot1wheelsbitmap.png')
 
 const incrementingValues = [1,1,1,1];
-const valuesNeeded = [0,0,0,0];
-
+const valuesNeeded = [1,1,1,1];
 let Cash = 0;
-
 function chooseObjective(){
   const objv1 = "Log into app " + incrementingValues[0] +" days";
   const objv2 = "Create " + incrementingValues[1] +" new weekly tasks";
@@ -46,8 +43,9 @@ function chooseObjective(){
 }
 
 const updateObjective = (selectedItem) =>{
-    valuesNeeded[selectedItem.id] -= incrementingValues[selectedItem.id]
-    Cash += (parseInt(selectedItem.id, 10)+1)*25;
+  incrementingValues[selectedItem.id]++;
+  valuesNeeded[selectedItem.id] = 0;
+  Cash += (parseInt(selectedItem.id, 10)+1)*25;
 }
 
 export default function Character() {
@@ -67,32 +65,13 @@ export default function Character() {
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
         >
-          <View>
+          <View style={{width: '10%'}}>
             <Text style={styles.cashContainer}>${Cash}</Text>
           </View>
           <View style={styles.charactercontainer}>
             <ImageBackground source={r1head} style={styles.head}></ImageBackground>
             <ImageBackground source={r1body} style={styles.body}></ImageBackground>  
             <ImageBackground source={r1wheels} style={styles.wheels}></ImageBackground>
-            <div className='div'>
-          
-          <LinearProgress variant="determinate" value={progress} color='success' 
-          sx={{
-            width: 300,
-          }}/>
-
-          <button 
-            onClick={()=>{ 
-              setProgress((oldProgress) => {
-                  if (oldProgress === 100){
-                    setLevel(level+1)
-                    return 0; 
-                  }
-                  setProgress(oldProgress+10)                
-              });
-          }}>add</button> <text>Level: {level}</text>
-        
-        </div>
           </View>
           <View style={styles.iconcontainer}>
             <Button style={styles.iconbackground}  onPress={() => {setShouldShowObjectives(!shouldShowObjectives); setShouldShowShop(false); setShouldShowEditBot(false)}}>
@@ -108,23 +87,36 @@ export default function Character() {
           <View style={styles.popupcontainer}>
             {shouldShowObjectives ?
               (
-                <Surface style={styles.objectives}>
-
-                  <BouncyCheckboxGroup
-                    data={chosenObjectives}
-                    style={{ flexDirection:"column" }}
-                    onChange={(selectedItem) => {
-                      if (valuesNeeded[selectedItem.id] >= incrementingValues[selectedItem.id]) {
-                        updateObjective(selectedItem); 
-                        setProgress(() => {
-                        setProgress(20 + progress)        
-                          if (progress === 100){
-                            setLevel(level+1)
-                            return 0; 
-                          }        
-                        }
-                       );}}}
-                  />
+                <Surface style={{...styles.objectives, justifyContent: 'space-between'}}>
+                    {chosenObjectives.map((objective, objectiveId) => (
+                      <Surface key={objectiveId} style={{backgroundColor: DGreen, borderRadius: 20}}>
+                        <View style={{flexDirection: 'row'}}>
+                        
+                            <IconButton 
+                              icon={valuesNeeded[objective.id] >= incrementingValues[objective.id] ? 'check-circle' : 'alpha-x-circle'} 
+                              iconColor={valuesNeeded[objective.id] >= incrementingValues[objective.id] ? LGreen : BGColor} 
+                              size={75} 
+                              onPress={() => {
+                                if (valuesNeeded[objective.id] >= incrementingValues[objective.id]) {
+                                updateObjective(objective);
+                                setProgress(() => {
+                                  setProgress(20 + progress)        
+                                    if (progress === 100){
+                                      setLevel(level+1)
+                                      return 0; 
+                                    }        
+                                  }
+                                );
+                              }
+                            }}
+                            >
+                           </IconButton>
+                          <View style={{justifyContent: 'center'}}>
+                            <Text style={{color: LGreen, fontSize: 20, alignContent: 'center', justifyContent: 'center', textAlignVertical: 'center', textAlign: 'center'}}>{objective.text}</Text>
+                          </View>
+                        </View>
+                      </Surface>
+                    ))};
                 </Surface>
               ) : null}
               {shouldShowShop ?
@@ -213,12 +205,11 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     width: '100%',
     height: '450px',
-    backgroundColor: DGreen,
+    backgroundColor: BGColor,
     borderRadius: '10px',
     marginBottom:'100px',
     marginLeft: '50px',
     paddingTop: '5px',
-    justifyContent: 'space-between',
   },
   unfinishedObjective: {
     margin:"10px",
