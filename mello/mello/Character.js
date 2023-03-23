@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import 'react-native-gesture-handler';
-import { LinearGradient } from 'expo-linear-gradient';
 import { Button, Surface } from 'react-native-paper';
 import { ImageBackground } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -62,17 +61,6 @@ export default function Character() {
   const [obj1, setObj1] = React.useState(false);
   const [obj2, setObj2] = React.useState(true);
 
-  const navigation = useNavigation()
-
-  const handleSignOut = () => {
-    auth
-    .signOut()
-    .then(() => {
-        navigation.replace("Login")
-    })
-    .catch(error => alert(error.message))
-  }
-
   const check = () =>
   {
     if (obj2 == true){
@@ -100,23 +88,10 @@ export default function Character() {
 
 
   return (
-    <LinearGradient
-          // Background Linear Gradient
-          colors={[ BGColor, 'white']}
-          style={styles.container}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-        >
+    <View>
           <View>
             <Text style={styles.cashContainer}>${Cash}</Text>
           </View>
-          <TouchableOpacity
-              onPress={handleSignOut}
-              style={styles.button}
-          >
-            <Text style={styles.buttonText}>Sign Out</Text>
-          </TouchableOpacity>
-          
           <View style={styles.charactercontainer}>
             <ImageBackground source={r1head} style={styles.head}></ImageBackground>
             <ImageBackground source={r1body} style={styles.body}></ImageBackground>  
@@ -179,7 +154,7 @@ export default function Character() {
                 </Surface>
               ) : null}
           </View>
-    </LinearGradient>
+    </View>
   );
 }
 
@@ -293,19 +268,5 @@ const styles = StyleSheet.create({
     marginLeft: '50px',
     paddingTop: '5px',
     justifyContent: 'space-between',
-  },
-  button: {
-    backgroundColor: '#0782F9',
-    width: '20%',
-    height: '50px',
-    padding: 15,
-    borderRadius: 10,
-    alignSelf: 'right',
-    marginTop: 40,
-  },
-  buttonText: {
-      color: 'white',
-      fontWeight: '700',
-      fontSize: 16,
   },
 });
