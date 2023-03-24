@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import 'react-native-gesture-handler';
-import { LinearGradient } from 'expo-linear-gradient';
 import { Button, Surface } from 'react-native-paper';
 import { ImageBackground } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -9,7 +8,7 @@ import BouncyCheckboxGroup from 'react-native-bouncy-checkbox-group';
 import LinearProgress from '@mui/material/LinearProgress';
 import { useNavigation } from '@react-navigation/native'
 import { auth } from "./firebase"
-import { Checkbox, FormGroup, FormControlLabel  } from '@material-ui/core';
+import { Checkbox, FormGroup, FormControlLabel, Box  } from '@material-ui/core';
 
 const BGColor = "#003847"
 const LGreen = "#2AA198"
@@ -62,17 +61,6 @@ export default function Character() {
   const [obj1, setObj1] = React.useState(false);
   const [obj2, setObj2] = React.useState(true);
 
-  const navigation = useNavigation()
-
-  const handleSignOut = () => {
-    auth
-    .signOut()
-    .then(() => {
-        navigation.replace("Login")
-    })
-    .catch(error => alert(error.message))
-  }
-
   const check = () =>
   {
     if (obj2 == true){
@@ -100,27 +88,14 @@ export default function Character() {
 
 
   return (
-    <LinearGradient
-          // Background Linear Gradient
-          colors={[ BGColor, 'white']}
-          style={styles.container}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-        >
-          <View>
-            <Text style={styles.cashContainer}>${Cash}</Text>
-          </View>
-          <TouchableOpacity
-              onPress={handleSignOut}
-              style={styles.button}
-          >
-            <Text style={styles.buttonText}>Sign Out</Text>
-          </TouchableOpacity>
-          
-          <View style={styles.charactercontainer}>
-            <ImageBackground source={r1head} style={styles.head}></ImageBackground>
-            <ImageBackground source={r1body} style={styles.body}></ImageBackground>  
-            <ImageBackground source={r1wheels} style={styles.wheels}></ImageBackground>
+    <View style={styles.container}>
+      <View>
+        <Text style={styles.cashContainer}>${Cash}</Text>
+      </View>
+      <View style={styles.charactercontainer}>
+        <ImageBackground source={r1head} style={styles.head}></ImageBackground>
+        <ImageBackground source={r1body} style={styles.body}></ImageBackground>  
+        <ImageBackground source={r1wheels} style={styles.wheels}></ImageBackground>
         <div className='div'>
           
           <LinearProgress variant="determinate" value={progress} color='success' 
@@ -131,55 +106,57 @@ export default function Character() {
           <button onClick={levelUp}>add</button> <text>Level: {level}</text>
         
         </div>
-          </View>
-          <View style={styles.iconcontainer}>
-            <Button style={styles.iconbackground}  onPress={() => {setShouldShowObjectives(!shouldShowObjectives); setShouldShowShop(false); setShouldShowEditBot(false)}}>
-              <FontAwesome5 name="clipboard-list" size={50} color="white" />
-            </Button>
-            <Button style={styles.iconbackground}  onPress={() => {setShouldShowShop(!shouldShowShop); setShouldShowObjectives(false); setShouldShowEditBot(false)}}>
-              <FontAwesome5 name="shopping-cart" size={50} color="white" />
-            </Button>
-            <Button style={styles.iconbackground} onPress={() => {setShouldShowEditBot(!shouldShowEditBot); setShouldShowShop(false); setShouldShowObjectives(false)}}>
-              <FontAwesome5 name="robot" size={50} color="white" style={styles.icon} />
-            </Button>
-          </View>
-          <View style={styles.popupcontainer}>
-            {shouldShowObjectives ?
-              (
-                <Surface style={styles.objectives}>
-                  <FormGroup>
-                    <FormControlLabel
-                      control={<Checkbox/>}
-                      label="Set a ToDo Task"
-                      labelPlacement="end"
-                      checked={obj1}
-                      //onChange={levelUp}
-                    />
-                    <FormControlLabel
-                      control={<Checkbox/>}
-                      label="Add to your grociery list!"
-                      labelPlacement="end"
-                      checked={obj2}
-                      //onChange={levelUp}
-                    />
-                </FormGroup>  
-                <button onClick={check}>add</button>
-                </Surface>
-              ) : null}
-              {shouldShowShop ?
-              (
-                <Surface style={styles.shop}>
-                  <Text>Shop</Text>
-                </Surface>
-              ) : null}
-              {shouldShowEditBot ?
-              (
-                <Surface style={styles.editbot}>
-                  <Text>Edit Appearance</Text>
-                </Surface>
-              ) : null}
-          </View>
-    </LinearGradient>
+      </View>
+      <View style={styles.rightCharacterContainer}>
+        <View style={styles.iconcontainer}>
+          <Button style={styles.iconbackground}  onPress={() => {setShouldShowObjectives(!shouldShowObjectives); setShouldShowShop(false); setShouldShowEditBot(false)}}>
+            <FontAwesome5 name="clipboard-list" size={25} color="white" />
+          </Button>
+          <Button style={styles.iconbackground}  onPress={() => {setShouldShowShop(!shouldShowShop); setShouldShowObjectives(false); setShouldShowEditBot(false)}}>
+            <FontAwesome5 name="shopping-cart" size={50} color="white" />
+          </Button>
+          <Button style={styles.iconbackground} onPress={() => {setShouldShowEditBot(!shouldShowEditBot); setShouldShowShop(false); setShouldShowObjectives(false)}}>
+            <FontAwesome5 name="robot" size={50} color="white" style={styles.icon} />
+          </Button>
+        </View>
+        <View style={styles.popupcontainer}>
+          {shouldShowObjectives ?
+            (
+              <Surface style={styles.objectives}>
+                <FormGroup>
+                  <FormControlLabel
+                    control={<Checkbox/>}
+                    label="Set a ToDo Task"
+                    labelPlacement="end"
+                    checked={obj1}
+                    //onChange={levelUp}
+                  />
+                  <FormControlLabel
+                    control={<Checkbox/>}
+                    label="Add to your grociery list!"
+                    labelPlacement="end"
+                    checked={obj2}
+                    //onChange={levelUp}
+                  />
+              </FormGroup>  
+              <button onClick={check}>add</button>
+              </Surface>
+            ) : null}
+            {shouldShowShop ?
+            (
+              <Surface style={styles.shop}>
+                <Text>Shop</Text>
+              </Surface>
+            ) : null}
+            {shouldShowEditBot ?
+            (
+              <Surface style={styles.editbot}>
+                <Text>Edit Appearance</Text>
+              </Surface>
+            ) : null}
+        </View>
+      </View>
+    </View>
   );
 }
 
@@ -190,58 +167,59 @@ const styles = StyleSheet.create({
     rowGap: '20px',
   },
   cashContainer:{
-    fontSize: "400%",
+    fontSize: "200%",
     backgroundColor: DGreen,
     borderRadius: 10,
     padding: "5px"
   },
   charactercontainer: {
     display: 'flex',
-    width: '480px',
+    width: '280px',
     flexDirection: 'column',
     alignSelf: 'center',
   },
+  rightCharacterContainer: {
+    width: "45%",
+    height: "100%",
+  },
   head: {
-    width: '430px',
+    width: '330px',
     height: '608px',
     marginBottom: '-608px',
   },
   body: {
-    width: '430px',
+    width: '330px',
     height: '608px',
     zIndex: 1
   },
   wheels: {
-    width: '430px',
+    width: '330px',
     height: '608px',
     marginTop: '-608px',
     zIndex: 0
   },
   iconcontainer: {
     display: 'flex',
-    flexDirection: 'column',
-    flexWrap: 'wrap',
-    width: '110px',
-    rowGap: '50px',
-    marginBottom:'100px',
+    flexDirection: 'row',
+    width: '50px',
     alignSelf: 'center',
   },
   iconbackground: {
     display: 'flex',
-    width: '100px',
-    height: '100px',
+    width: '75px',
+    height: '50px',
     backgroundColor: DGreen,
     justifyContent: 'center',
   },
   icon: {
-    flex: 5,
+    flex: 1,
     alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',
   },
   popupcontainer: {
     display: 'flex',
-    width: '480px',
+    width: '30%',
     height: '100%',
     alignItems: 'center',
     justifyContent: 'center',
@@ -293,19 +271,5 @@ const styles = StyleSheet.create({
     marginLeft: '50px',
     paddingTop: '5px',
     justifyContent: 'space-between',
-  },
-  button: {
-    backgroundColor: '#0782F9',
-    width: '20%',
-    height: '50px',
-    padding: 15,
-    borderRadius: 10,
-    alignSelf: 'right',
-    marginTop: 40,
-  },
-  buttonText: {
-      color: 'white',
-      fontWeight: '700',
-      fontSize: 16,
   },
 });
