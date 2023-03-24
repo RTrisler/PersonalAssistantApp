@@ -103,19 +103,21 @@ export default function Dashboard() {
             <Character></Character>
           </Surface>
           <View style={styles.wrapper}>
-            <Text style={styles.todoTodayText}>Events for Today</Text>
-            <BlurView intensity={100} style={{...styles.todoContainer, marginLeft: '2.5%'}}>
+            <Text style={{...styles.todoTodayText, marginTop:'5px',}}>Events for Today</Text>
+            <BlurView intensity={100} style={{...styles.todoContainer, marginLeft: '2.5%', height: '90%'}}>
             <Divider style={styles.divider} />
               {
                 todoData.map((item, index) => {
                   return(
                     <View key={index} >
                       <View style={styles.todoTextContainer}>
-                      {index < 1 ? <Text style={styles.todoText}>{item.name}</Text> : <Text>{''}</Text>}
-                        <View style={{flexDirection: 'row'}}>
-                          <Text style={styles.todoText}>{item.startTime}</Text>
-                          <Text style={styles.todoText}>{item.endTime}</Text>
+                      {index < 1 ? <Text style={styles.todoText}>{item.name} {"\n"}
+                        <View style={{flexDirection: 'column', whitespace: "pre-line"}}>
+                          <Text style={styles.todoText}>Start: {item.startTime}</Text>
+                          <Text style={styles.todoText}>End: {item.endTime}</Text>
                         </View>
+                      </Text>
+                      : <Text>{''}</Text>}
                       </View>
                     </View>
                   )
@@ -206,7 +208,7 @@ const styles = StyleSheet.create({
   },
   todoText: {
     fontFamily: "Monospace",
-    fontSize: 20,
+    fontSize: 25,
     alignSelf: "flex-start",
     width: "100%",
   },
