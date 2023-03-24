@@ -7,6 +7,8 @@ import { Checkbox, FormGroup, FormControlLabel, Box  } from '@material-ui/core';
 import { Divider, Card, Button, Modal, TextInput, Surface } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-web';
 import { useFonts } from 'expo-font';
+import { getDatabase, ref, onValue, set } from 'firebase/database';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
 const BGColor = "#003847";
@@ -16,6 +18,14 @@ export default function Dashboard() {
   const [fontsLoaded] = useFonts({
     'Elnath': require('/assets/fonts/ELNATH.ttf'),
   });
+
+  function storeHighScore(userId, score) {
+    const db = getDatabase();
+    const reference = ref(db, 'users/' + userId);
+    set(reference, {
+      highscore: score,
+    });
+  }
 
   return (
     <LinearGradient
@@ -40,7 +50,14 @@ export default function Dashboard() {
             </View>
           </View>
           <Surface style={styles.second}></Surface>
-          <Surface style={styles.third}></Surface>
+          <Surface style={styles.third}>
+            <TouchableOpacity
+              title='Send Data'
+              onPress={storeHighScore("user2", 500)}
+              style={styles.button}
+            > Send Data
+            </TouchableOpacity>
+          </Surface>
           <Surface style={styles.fourth}>
             <Character></Character>
           </Surface>
@@ -101,6 +118,11 @@ const styles = StyleSheet.create({
     width: "45%",
     backgroundColor: BGColor,
     borderRadius: "10px",
+  },
+  button: {
+    height: "100px",
+    width: "100px",
+    backgroundColor: 'red',
   },
   third: {
     height: "35%",
