@@ -4,20 +4,13 @@ import { Divider, Surface } from 'react-native-paper';
 import TodoCard from './TodoCard';
 import InlineInputAndButton from './InlineInputAndButton';
 import { getDatabase, ref, onValue, set } from 'firebase/database';
+import { db } from "./firebase";
 
 const BGColor = "#003847"
 const LGreen = "#2AA198"
 const DGreen = "#002B36"
 
 const TodoAppScreen = () => {
-
-    function storeToDo(userId, todotext) {
-        const db = getDatabase();
-        const reference = ref(db, 'users/' + userId);
-        set(reference, {
-          todo: todotext,
-        });
-      }
 
     const initialTodo = [{ value: "Edit text here" }];
     const [todos, setTodos] = useState(initialTodo);
@@ -61,6 +54,13 @@ const TodoAppScreen = () => {
 
     }
 
+    function storeToDo(userId, todotext) {
+        const db = getDatabase();
+        const reference = ref(db, 'users/' + userId);
+        set(reference, {
+          todo: todotext,
+        });
+      }
 
     return (
         <>
