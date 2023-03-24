@@ -36,6 +36,26 @@ export default function Dashboard() {
       setTodoData(newPosts);
   });
 }, [])
+
+
+  const getFormattedTime = (date) => {
+  let fCDateHour = date.getHours()+ '';
+  if(fCDateHour.length <2) {
+    fCDateHour = '0' + fCDateHour;
+  }
+  let fCDateMinute = date.getMinutes() + '';
+  if(fCDateMinute.length <2) {
+    fCDateMinute = '0' + fCDateMinute;
+  }
+  const fCDateStr = fCDateHour + ':' + fCDateMinute;
+  return fCDateStr;
+  };
+
+  const returnTimes = (startTime, endTime) => {
+    const times = getFormattedTime(new Date(startTime)) + '-' + getFormattedTime(new Date(endTime))
+    if (!isNaN(+times[0])) return times;
+    else return '';
+  }
   return (
     <LinearGradient
         // Background Linear Gradient
@@ -84,6 +104,25 @@ export default function Dashboard() {
           </Surface>
           <View style={styles.wrapper}>
             <Text style={styles.todoTodayText}>Events for Today</Text>
+            <BlurView intensity={100} style={{...styles.todoContainer, marginLeft: '2.5%'}}>
+            <Divider style={styles.divider} />
+              {
+                todoData.map((item, index) => {
+                  return(
+                    <View key={index} >
+                      <View style={styles.todoTextContainer}>
+                      {index < 1 ? <Text style={styles.todoText}>{item.name}</Text> : <Text>{''}</Text>}
+                        <View style={{flexDirection: 'row'}}>
+                          <Text style={styles.todoText}>{item.startTime}</Text>
+                          <Text style={styles.todoText}>{item.endTime}</Text>
+                        </View>
+                      </View>
+                    </View>
+                  )
+                })
+              }
+              <Divider style={styles.divider}></Divider>
+            </BlurView>
           </View>
         </SafeAreaView>
     </LinearGradient>

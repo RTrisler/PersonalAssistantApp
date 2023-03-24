@@ -21,7 +21,7 @@ const r1head = require('./assets/img/head/robot1headbitmap.png')
 const r1body = require('./assets/img/body/robot1bodybitmap.png')
 const r1wheels = require('./assets/img/wheels/robot1wheelsbitmap.png')
 
-const incrementingValues = [1,1,1,1];
+const incrementingValues = [1,3,3,3];
 const valuesNeeded = [1,0,0,0];
 const icons = ['login','calendar-week','food','clock-outline']
 let Cash = 0;

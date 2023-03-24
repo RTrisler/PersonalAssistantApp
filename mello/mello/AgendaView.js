@@ -48,13 +48,13 @@ const getFormattedTime = (date) => {
 export default function AgendaView() {
 
   const [items, setItems] = useState({
-    '2023-02-27': [
+    '2023-03-24': [
       {name: 'nametest', timeDueStart: '12:30', timeDueEnd: '13:30', note: 'note test'},
       {name: 'csc 330', timeDueStart: '11:00', timeDueEnd: '12:15', note: 'go to class nerd'},
       {name: 'csc 470', timeDueStart: '11:00', timeDueEnd: '12:15', note: 'go to class nerd'},
       {name: 'csc 405', timeDueStart: '2:00', timeDueEnd: '3:15', note: 'go to class nerd'}
     ],
-    '2023-02-28': [
+    '2023-03-25': [
       {name: 'do thing', timeDueStart: '2:00', timeDueEnd: '3:15', note: 'note about thing'}
     ]
   });
@@ -80,7 +80,7 @@ export default function AgendaView() {
     }, 70);
   };
   
-  function storeEvent(userId, dateString, day, month, year, startTimeStr, endTimeStr, timeDifference) {
+  function storeEvent(userId, dateString, day, month, year, startTimeStr, endTimeStr, timeDifference, nameText) {
     const db = getDatabase();
     const reference = ref(db, 'users/' + userId);
     set(reference, {
@@ -90,7 +90,8 @@ export default function AgendaView() {
       year: year,
       startTime: startTimeStr,
       endTime: endTimeStr,
-      timeDifference: timeDifference
+      timeDifference: timeDifference,
+      name: nameText
     });
   }
 
@@ -222,7 +223,14 @@ export default function AgendaView() {
     toggleEventMaker();
     const endTimeStr = endTime.toTimeString().slice(0,9);
     const timeDifference = endTime.getTime()-startDate.getTime();
-    storeEvent("userID", getFormattedDate(startDate), startDate.getDate(), startDate.getMonth(), startDate.valueOf() - (startDate.valueOf() % 100000), startDate.getTime(),startDate.valueOf() - (startDate.valueOf() % 100000), startDate.valueOf() - (startDate.valueOf() % 100000));
+    storeEvent("userID", getFormattedDate(startDate)
+                , startDate.getDate()
+                , startDate.getMonth()
+                , startDate.getFullYear()
+                , getFormattedTime(startTime)
+                ,getFormattedTime(endTime)
+                , startDate.valueOf() - (startDate.valueOf() % 100000)
+                , nameText);
   }
 
   const toggleStartDatePicker = () => {
