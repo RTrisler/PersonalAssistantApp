@@ -19,13 +19,6 @@ export default function Dashboard() {
     'Elnath': require('/assets/fonts/ELNATH.ttf'),
   });
 
-  function storeHighScore(userId, score) {
-    const db = getDatabase();
-    const reference = ref(db, 'users/' + userId);
-    set(reference, {
-      highscore: score,
-    });
-  }
 
   return (
     <LinearGradient
