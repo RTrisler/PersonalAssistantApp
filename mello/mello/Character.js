@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import 'react-native-gesture-handler';
-import { Button, Surface } from 'react-native-paper';
+import { Button, Surface, IconButton } from 'react-native-paper';
 import { ImageBackground } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
 import BouncyCheckboxGroup from 'react-native-bouncy-checkbox-group';
@@ -22,13 +22,15 @@ const r1body = require('./assets/img/body/robot1bodybitmap.png')
 const r1wheels = require('./assets/img/wheels/robot1wheelsbitmap.png')
 
 const incrementingValues = [1,1,1,1];
+const valuesNeeded = [1,0,0,0];
+const icons = ['login','calendar-week','food','clock-outline']
 let Cash = 0;
 
 function chooseObjective(){
   const objv1 = "Log into app " + incrementingValues[0] +" days";
   const objv2 = "Create " + incrementingValues[1] +" new weekly tasks";
-  const objv3 = "Complete " + incrementingValues[2] +" weekly tasks";
-  const objv4 = "Complete " + incrementingValues[3] +" daily tasks";
+  const objv3 = "Set " + incrementingValues[2] +" meal plans";
+  const objv4 = "Create " + incrementingValues[3] +" daily tasks";
   const allObjectivesLists = [
     {id:0, text:objv1, style:styles.unfinishedObjective, fillColor:'black',
   unfillColor:"white",
@@ -47,7 +49,8 @@ function chooseObjective(){
 }
 
 const updateObjective = (selectedItem) =>{
-  incrementingValues[selectedItem.id] += 1;
+  valuesNeeded[selectedItem.id] = 0;
+  incrementingValues[selectedItem.id]++;
   Cash += (parseInt(selectedItem.id, 10)+1)*25;
 }
 
@@ -125,30 +128,37 @@ export default function Character() {
         <View style={styles.popupcontainer}>
           {shouldShowObjectives ?
             (
-              <Surface style={styles.objectives}>
-                <FormGroup>
-                  <FormControlLabel
-                    control={<Checkbox color= "primary" icon = {<ContentPasteIcon/>} checkedIcon={<AssignmentIcon/>}/>}
-                    label="Set a ToDo Task"
-                    labelPlacement="end"
-                    style ={{
-                      color: DGreen,
-                    }}
-                    //checked={obj1}
-                  />
-
-                  <FormControlLabel
-                    control={<Checkbox color= "primary" icon = {<SetMealIcon/>} checkedIcon={<SetMealIcon/>}/>}
-                    label="Add to your grociery list!"
-                    labelPlacement="end"
-                    checked={obj2}
-                    style ={{
-                      color: DGreen,
-                    }}
-                  />
-              </FormGroup>  
-              <button onClick={check}>add</button>
-              </Surface>
+              <Surface style={{...styles.objectives, justifyContent: 'space-between'}}>
+              {chosenObjectives.map((objective, objectiveId) => (
+                <Surface key={objectiveId} style={{backgroundColor: DGreen, borderRadius: 20}}>
+                  <View style={{flexDirection: 'row'}}>
+                  
+                      <IconButton 
+                        icon={icons[objective.id]} 
+                        iconColor={valuesNeeded[objective.id] >= incrementingValues[objective.id] ? LGreen : BGColor} 
+                        size={75} 
+                        onPress={() => {
+                          if (valuesNeeded[objective.id] >= incrementingValues[objective.id]) {
+                          updateObjective(objective);
+                          setProgress(() => {
+                            setProgress(20 + progress)        
+                              if (progress === 100){
+                                setLevel(level+1)
+                                return 0; 
+                              }        
+                            }
+                          );
+                        }
+                      }}
+                      >
+                     </IconButton>
+                    <View style={{justifyContent: 'center'}}>
+                      <Text style={{color: LGreen, fontSize: 20, alignContent: 'center', justifyContent: 'center', textAlignVertical: 'center', textAlign: 'center'}}>{objective.text}</Text>
+                    </View>
+                  </View>
+                </Surface>
+              ))};
+          </Surface>
             ) : null}
             {shouldShowShop ?
             (
@@ -227,7 +237,7 @@ const styles = StyleSheet.create({
   },
   popupcontainer: {
     display: 'flex',
-    width: '60%',
+    width: '100%',
     height: '75%',
     alignItems: 'center',
     justifyContent: 'center',
