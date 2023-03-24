@@ -27,7 +27,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
         cache-dependency-path: mello/mello
-    - run: npm ci
+    - run: npm ci --force
       working-directory: ./mello/mello
     - run: npm run build --if-present
       working-directory: ./mello/mello

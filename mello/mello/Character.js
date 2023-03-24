@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import 'react-native-gesture-handler';
-import { Button, Surface } from 'react-native-paper';
+import { Button, Surface, IconButton } from 'react-native-paper';
 import { ImageBackground } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
 import BouncyCheckboxGroup from 'react-native-bouncy-checkbox-group';
@@ -9,6 +9,9 @@ import LinearProgress from '@mui/material/LinearProgress';
 import { useNavigation } from '@react-navigation/native'
 import { auth } from "./firebase"
 import { Checkbox, FormGroup, FormControlLabel, Box  } from '@material-ui/core';
+import ContentPasteIcon from '@mui/icons-material/ContentPaste';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import SetMealIcon from '@mui/icons-material/SetMeal';
 
 const BGColor = "#003847"
 const LGreen = "#2AA198"
@@ -19,13 +22,15 @@ const r1body = require('./assets/img/body/robot1bodybitmap.png')
 const r1wheels = require('./assets/img/wheels/robot1wheelsbitmap.png')
 
 const incrementingValues = [1,1,1,1];
+const valuesNeeded = [1,0,0,0];
+const icons = ['login','calendar-week','food','clock-outline']
 let Cash = 0;
 
 function chooseObjective(){
   const objv1 = "Log into app " + incrementingValues[0] +" days";
   const objv2 = "Create " + incrementingValues[1] +" new weekly tasks";
-  const objv3 = "Complete " + incrementingValues[2] +" weekly tasks";
-  const objv4 = "Complete " + incrementingValues[3] +" daily tasks";
+  const objv3 = "Set " + incrementingValues[2] +" meal plans";
+  const objv4 = "Create " + incrementingValues[3] +" daily tasks";
   const allObjectivesLists = [
     {id:0, text:objv1, style:styles.unfinishedObjective, fillColor:'black',
   unfillColor:"white",
@@ -44,7 +49,8 @@ function chooseObjective(){
 }
 
 const updateObjective = (selectedItem) =>{
-  incrementingValues[selectedItem.id] += 1;
+  valuesNeeded[selectedItem.id] = 0;
+  incrementingValues[selectedItem.id]++;
   Cash += (parseInt(selectedItem.id, 10)+1)*25;
 }
 
@@ -100,9 +106,11 @@ export default function Character() {
           
           <LinearProgress variant="determinate" value={progress} color='success' 
           sx={{
-            width: 200,
+            width: 300,
           }}/>
+
           <button onClick={levelUp}>add</button> <text>Level: {level}</text>
+        
         </div>
       </View>
       <View style={styles.rightCharacterContainer}>
@@ -111,34 +119,46 @@ export default function Character() {
             <FontAwesome5 name="clipboard-list" size={25} color="white" />
           </Button>
           <Button style={styles.iconbackground}  onPress={() => {setShouldShowShop(!shouldShowShop); setShouldShowObjectives(false); setShouldShowEditBot(false)}}>
-            <FontAwesome5 name="shopping-cart" size={25} color="white" />
+            <FontAwesome5 name="shopping-cart" size={50} color="white" />
           </Button>
           <Button style={styles.iconbackground} onPress={() => {setShouldShowEditBot(!shouldShowEditBot); setShouldShowShop(false); setShouldShowObjectives(false)}}>
-            <FontAwesome5 name="robot" size={25} color="white" style={styles.icon} />
+            <FontAwesome5 name="robot" size={50} color="white" style={styles.icon} />
           </Button>
         </View>
         <View style={styles.popupcontainer}>
           {shouldShowObjectives ?
             (
-              <Surface style={styles.objectives}>
-                <FormGroup>
-                  <FormControlLabel
-                    control={<Checkbox/>}
-                    label="Set a ToDo Task"
-                    labelPlacement="end"
-                    checked={obj1}
-                    //onChange={levelUp}
-                  />
-                  <FormControlLabel
-                    control={<Checkbox/>}
-                    label="Add to your grociery list!"
-                    labelPlacement="end"
-                    checked={obj2}
-                    //onChange={levelUp}
-                  />
-              </FormGroup>  
-              <button onClick={check}>add</button>
-              </Surface>
+              <Surface style={{...styles.objectives, justifyContent: 'space-between'}}>
+              {chosenObjectives.map((objective, objectiveId) => (
+                <Surface key={objectiveId} style={{backgroundColor: DGreen, borderRadius: 20}}>
+                  <View style={{flexDirection: 'row'}}>
+                  
+                      <IconButton 
+                        icon={icons[objective.id]} 
+                        iconColor={valuesNeeded[objective.id] >= incrementingValues[objective.id] ? LGreen : BGColor} 
+                        size={75} 
+                        onPress={() => {
+                          if (valuesNeeded[objective.id] >= incrementingValues[objective.id]) {
+                          updateObjective(objective);
+                          setProgress(() => {
+                            setProgress(20 + progress)        
+                              if (progress === 100){
+                                setLevel(level+1)
+                                return 0; 
+                              }        
+                            }
+                          );
+                        }
+                      }}
+                      >
+                     </IconButton>
+                    <View style={{justifyContent: 'center'}}>
+                      <Text style={{color: LGreen, fontSize: 20, alignContent: 'center', justifyContent: 'center', textAlignVertical: 'center', textAlign: 'center'}}>{objective.text}</Text>
+                    </View>
+                  </View>
+                </Surface>
+              ))};
+          </Surface>
             ) : null}
             {shouldShowShop ?
             (
@@ -172,7 +192,7 @@ const styles = StyleSheet.create({
   },
   charactercontainer: {
     display: 'flex',
-    width: '45%',
+    width: '280px',
     flexDirection: 'column',
     alignSelf: 'center',
   },
@@ -181,31 +201,26 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   head: {
-    width: '215px',
-    height: '304px',
-    marginBottom: '-304px',
+    width: '330px',
+    height: '608px',
+    marginBottom: '-608px',
   },
   body: {
-    width: '215px',
-    height: '304px',
+    width: '330px',
+    height: '608px',
     zIndex: 1
   },
   wheels: {
-    width: '215px',
-    height: '304px',
-    marginTop: '-304px',
+    width: '330px',
+    height: '608px',
+    marginTop: '-608px',
     zIndex: 0
   },
   iconcontainer: {
     display: 'flex',
     flexDirection: 'row',
-    width: '100%',
-    height: '15%',
+    width: '50px',
     alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: "space-between",
-    backgroundColor: DGreen,
-    marginTop: '10px'
   },
   iconbackground: {
     display: 'flex',
@@ -213,19 +228,17 @@ const styles = StyleSheet.create({
     height: '50px',
     backgroundColor: DGreen,
     justifyContent: 'center',
-    overflow: 'visible'
   },
   icon: {
     flex: 1,
     alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',
-    overflow: 'visible'
   },
   popupcontainer: {
     display: 'flex',
     width: '100%',
-    height: '80%',
+    height: '75%',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -234,8 +247,11 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     flexWrap: 'wrap',
     width: '100%',
-    height: '100%',
-    backgroundColor: DGreen,
+    height: '450px',
+    backgroundColor: LGreen,
+    borderRadius: '10px',
+    marginBottom:'100px',
+    marginLeft: '50px',
     paddingTop: '5px',
     justifyContent: 'space-between',
   },
@@ -243,7 +259,7 @@ const styles = StyleSheet.create({
     margin:"10px",
     flexDirection:"row",
     backgroundColor:"grey",
-
+    borderRadius:5,
     color:"black",
     padding:10,
 
@@ -253,9 +269,12 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     flexWrap: 'wrap',
     width: '100%',
-    height: '100%',
+    height: '400px',
     backgroundColor: DGreen,
-    marginVertical: '100px',
+    borderRadius: '10px',
+    marginBottom:'100px',
+    marginLeft: '50px',
+    paddingTop: '5px',
     justifyContent: 'space-between',
   },
   editbot: {
@@ -263,9 +282,12 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     flexWrap: 'wrap',
     width: '100%',
-    height: '100%',
+    height: '400px',
     backgroundColor: DGreen,
-    
+    borderRadius: '10px',
+    marginBottom:'100px',
+    marginLeft: '50px',
+    paddingTop: '5px',
     justifyContent: 'space-between',
   },
 });
