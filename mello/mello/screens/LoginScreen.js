@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native'
 import { BlurView } from 'expo-blur';
 import { ImageBackground } from 'react-native-web';
 import { useFonts } from 'expo-font';
+import { Checkbox, FormGroup, FormControlLabel, Box  } from '@material-ui/core';
 
 const wave = require('/assets/img/wave/wave.png')
 const r1head = require('/assets/img/head/robot1headbitmap.png')

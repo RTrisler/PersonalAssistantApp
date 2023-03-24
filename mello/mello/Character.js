@@ -119,10 +119,10 @@ export default function Character() {
             <FontAwesome5 name="clipboard-list" size={25} color="white" />
           </Button>
           <Button style={styles.iconbackground}  onPress={() => {setShouldShowShop(!shouldShowShop); setShouldShowObjectives(false); setShouldShowEditBot(false)}}>
-            <FontAwesome5 name="shopping-cart" size={50} color="white" />
+            <FontAwesome5 name="shopping-cart" size={25} color="white" />
           </Button>
           <Button style={styles.iconbackground} onPress={() => {setShouldShowEditBot(!shouldShowEditBot); setShouldShowShop(false); setShouldShowObjectives(false)}}>
-            <FontAwesome5 name="robot" size={50} color="white" style={styles.icon} />
+            <FontAwesome5 name="robot" size={25} color="white" style={styles.icon} />
           </Button>
         </View>
         <View style={styles.popupcontainer}>
@@ -136,7 +136,7 @@ export default function Character() {
                       <IconButton 
                         icon={icons[objective.id]} 
                         iconColor={valuesNeeded[objective.id] >= incrementingValues[objective.id] ? LGreen : BGColor} 
-                        size={75} 
+                        size={30} 
                         onPress={() => {
                           if (valuesNeeded[objective.id] >= incrementingValues[objective.id]) {
                           updateObjective(objective);
@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
   },
   charactercontainer: {
     display: 'flex',
-    width: '280px',
+    width: '45%',
     flexDirection: 'column',
     alignSelf: 'center',
   },
@@ -201,26 +201,30 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   head: {
-    width: '330px',
-    height: '608px',
-    marginBottom: '-608px',
+    width: '215px',
+    height: '304px',
+    marginBottom: '-304px',
   },
   body: {
-    width: '330px',
-    height: '608px',
+    width: '215px',
+    height: '304px',
     zIndex: 1
   },
   wheels: {
-    width: '330px',
-    height: '608px',
-    marginTop: '-608px',
+    width: '215px',
+    height: '304px',
+    marginTop: '-304px',
     zIndex: 0
   },
   iconcontainer: {
     display: 'flex',
     flexDirection: 'row',
-    width: '50px',
+    width: '100%',
     alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: DGreen,
+    marginTop: '10px'
   },
   iconbackground: {
     display: 'flex',
@@ -238,7 +242,7 @@ const styles = StyleSheet.create({
   popupcontainer: {
     display: 'flex',
     width: '100%',
-    height: '75%',
+    height: '80%',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -247,19 +251,14 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     flexWrap: 'wrap',
     width: '100%',
-    height: '450px',
+    height: '100%',
     backgroundColor: LGreen,
-    borderRadius: '10px',
-    marginBottom:'100px',
-    marginLeft: '50px',
-    paddingTop: '5px',
     justifyContent: 'space-between',
   },
   unfinishedObjective: {
     margin:"10px",
     flexDirection:"row",
     backgroundColor:"grey",
-    borderRadius:5,
     color:"black",
     padding:10,
 
@@ -269,12 +268,8 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     flexWrap: 'wrap',
     width: '100%',
-    height: '400px',
+    height: '100%',
     backgroundColor: DGreen,
-    borderRadius: '10px',
-    marginBottom:'100px',
-    marginLeft: '50px',
-    paddingTop: '5px',
     justifyContent: 'space-between',
   },
   editbot: {
@@ -282,12 +277,8 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     flexWrap: 'wrap',
     width: '100%',
-    height: '400px',
+    height: '100%',
     backgroundColor: DGreen,
-    borderRadius: '10px',
-    marginBottom:'100px',
-    marginLeft: '50px',
-    paddingTop: '5px',
     justifyContent: 'space-between',
   },
 });

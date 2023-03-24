@@ -1,6 +1,7 @@
 // Import the functions you need from the SDKs you need
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
+import { getDatabase } from 'firebase/database';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -9,6 +10,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyD1pkVpcslw_2sBbdE2O3yZ-M-yrn1vjUA",
   authDomain: "mello-379002.firebaseapp.com",
   projectId: "mello-379002",
+  databaseURL: "https://mello-379002-default-rtdb.firebaseio.com",
   storageBucket: "mello-379002.appspot.com",
   messagingSenderId: "370188749221",
   appId: "1:370188749221:web:dee623c3e9b836aae3004c",
@@ -24,5 +26,6 @@ if (firebase.apps.length === 0){
 }
 
 const auth = firebase.auth()
+const db = getDatabase();
 
-export { auth };
+export { auth, db };

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, ScrollView } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react'
 import Character from './Character'
@@ -7,6 +7,11 @@ import { Checkbox, FormGroup, FormControlLabel, Box  } from '@material-ui/core';
 import { Divider, Card, Button, Modal, TextInput, Surface } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-web';
 import { useFonts } from 'expo-font';
+import { getDatabase, ref, onValue, set } from 'firebase/database';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useEffect, useState } from 'react';
+import {db} from './firebase'
+import { BlurView } from 'expo-blur';
 
 
 const BGColor = "#003847";
@@ -17,6 +22,20 @@ export default function Dashboard() {
     'Elnath': require('/assets/fonts/ELNATH.ttf'),
   });
 
+  const [todoData, setTodoData] = useState([])
+
+  useEffect (() => {
+    const starCountRef = ref(db, 'users/');
+    onValue(starCountRef, (snapshot) => {
+      const data = snapshot.val();
+      const newPosts = Object.keys(data).map(key => ({
+        id: key,
+        ...data[key]
+      }));
+      console.log(newPosts);
+      setTodoData(newPosts);
+  });
+}, [])
   return (
     <LinearGradient
         // Background Linear Gradient
@@ -39,12 +58,33 @@ export default function Dashboard() {
               </View>
             </View>
           </View>
-          <Surface style={styles.second}></Surface>
-          <Surface style={styles.third}></Surface>
+          <Surface style={styles.second}>
+            <Text style={styles.todoTodayText}>Meal Plan for Today</Text>
+          </Surface>
+          <Surface style={styles.third}>
+            <Text style={styles.todoTodayText}>ToDo List for Today</Text>
+            <BlurView intensity={100} style={styles.todoContainer}>
+            <Divider style={styles.divider} />
+              {
+                todoData.map((item, index) => {
+                  return(
+                    <View key={index} >
+                      <View style={styles.todoTextContainer}>
+                        <Text style={styles.todoText}>{item.todo}</Text>
+                      </View>
+                    </View>
+                  )
+                })
+              }
+              <Divider style={styles.divider}></Divider>
+            </BlurView>
+          </Surface>
           <Surface style={styles.fourth}>
             <Character></Character>
           </Surface>
-          <View style={styles.wrapper}></View>
+          <View style={styles.wrapper}>
+            <Text style={styles.todoTodayText}>Events for Today</Text>
+          </View>
         </SafeAreaView>
     </LinearGradient>
   );
@@ -102,11 +142,47 @@ const styles = StyleSheet.create({
     backgroundColor: BGColor,
     borderRadius: "10px",
   },
+  button: {
+    height: "100px",
+    width: "100px",
+    backgroundColor: 'red',
+  },
   third: {
     height: "35%",
     width: "45%",
     backgroundColor: BGColor,
     borderRadius: "10px",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  todoTodayText: {
+    fontFamily: "Monospace",
+    fontSize: 25,
+    color: "white",
+    alignSelf: "center",
+  },
+  todoTextContainer: {
+    width: "100%",
+    height: "100%",
+  },
+  todoText: {
+    fontFamily: "Monospace",
+    fontSize: 20,
+    alignSelf: "flex-start",
+    width: "100%",
+  },
+  scrollView: {
+    width: '95%',
+    height: '85%',
+},
+  todoContainer: {
+    width: "95%",
+    height: "80%",
+    borderColor: '#fff',
+    borderWidth: 2,
+    borderRadius: 10,
+    padding: 10,
+    marginVertical: "5px"
   },
   fourth: {
     height: "50%",
@@ -117,10 +193,13 @@ const styles = StyleSheet.create({
   wrapper: {
     height: "50%",
     width: "36%",
-    backgroundColor: "white",
+    backgroundColor: BGColor,
     justifyContent: "space-between",
     alignItems: "space-between",
     borderRadius: "10px",
   },
+  divider: {
+    width: "100%",
+  }
  
 })

@@ -7,6 +7,7 @@ import { DatePickerModal, TimePickerModal } from 'react-native-paper-dates';
 //import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
 import Toast from 'react-native-toast-message';
+import { getDatabase, ref, onValue, set } from 'firebase/database';
 
 // 2AA198, #003847, 002B36
 const BGColor = "#003847"
@@ -79,6 +80,20 @@ export default function AgendaView() {
     }, 70);
   };
   
+  function storeEvent(userId, dateString, day, month, year, startTimeStr, endTimeStr, timeDifference) {
+    const db = getDatabase();
+    const reference = ref(db, 'users/' + userId);
+    set(reference, {
+      date: dateString,
+      day: day,
+      month: month,
+      year: year,
+      startTime: startTimeStr,
+      endTime: endTimeStr,
+      timeDifference: timeDifference
+    });
+  }
+
   //how each item on the agenda is rendered
   const renderItem = (item) => {
     return (
@@ -202,12 +217,12 @@ export default function AgendaView() {
                "day": startDate.getDate(), 
                "month": startDate.getMonth(),
                "timestamp": startDate.valueOf() - (startDate.valueOf() % 100000),
-               "year": startDate.getFullYear()
+               "year": startDate.valueOf() - (startDate.valueOf() % 100000),
               })
     toggleEventMaker();
     const endTimeStr = endTime.toTimeString().slice(0,9);
     const timeDifference = endTime.getTime()-startDate.getTime();
-    schedulePushNotification(nameText,endTimeStr,timeDifference);
+    storeEvent("userID", getFormattedDate(startDate), startDate.getDate(), startDate.getMonth(), startDate.valueOf() - (startDate.valueOf() % 100000), startDate.getTime(),startDate.valueOf() - (startDate.valueOf() % 100000), startDate.valueOf() - (startDate.valueOf() % 100000));
   }
 
   const toggleStartDatePicker = () => {

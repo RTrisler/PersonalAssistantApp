@@ -3,6 +3,8 @@ import { Text, StyleSheet, ScrollView } from 'react-native';
 import { Divider, Surface } from 'react-native-paper';
 import TodoCard from './TodoCard';
 import InlineInputAndButton from './InlineInputAndButton';
+import { getDatabase, ref, onValue, set } from 'firebase/database';
+import { db } from "./firebase";
 
 const BGColor = "#003847"
 const LGreen = "#2AA198"
@@ -21,7 +23,9 @@ const TodoAppScreen = () => {
     const handleAddButton = (text) => {
 
         setTodos([...todos, { value: text }]);
+        storeToDo("userId", text);
         setText("");
+
 
     }
 
@@ -50,6 +54,13 @@ const TodoAppScreen = () => {
 
     }
 
+    function storeToDo(userId, todotext) {
+        const db = getDatabase();
+        const reference = ref(db, 'users/' + userId);
+        set(reference, {
+          todo: todotext,
+        });
+      }
 
     return (
         <>
