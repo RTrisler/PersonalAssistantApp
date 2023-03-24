@@ -9,6 +9,9 @@ import LinearProgress from '@mui/material/LinearProgress';
 import { useNavigation } from '@react-navigation/native'
 import { auth } from "./firebase"
 import { Checkbox, FormGroup, FormControlLabel, Box  } from '@material-ui/core';
+import ContentPasteIcon from '@mui/icons-material/ContentPaste';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import SetMealIcon from '@mui/icons-material/SetMeal';
 
 const BGColor = "#003847"
 const LGreen = "#2AA198"
@@ -125,18 +128,23 @@ export default function Character() {
               <Surface style={styles.objectives}>
                 <FormGroup>
                   <FormControlLabel
-                    control={<Checkbox/>}
+                    control={<Checkbox color= "primary" icon = {<ContentPasteIcon/>} checkedIcon={<AssignmentIcon/>}/>}
                     label="Set a ToDo Task"
                     labelPlacement="end"
-                    checked={obj1}
-                    //onChange={levelUp}
+                    style ={{
+                      color: DGreen,
+                    }}
+                    //checked={obj1}
                   />
+
                   <FormControlLabel
-                    control={<Checkbox/>}
+                    control={<Checkbox color= "primary" icon = {<SetMealIcon/>} checkedIcon={<SetMealIcon/>}/>}
                     label="Add to your grociery list!"
                     labelPlacement="end"
                     checked={obj2}
-                    //onChange={levelUp}
+                    style ={{
+                      color: DGreen,
+                    }}
                   />
               </FormGroup>  
               <button onClick={check}>add</button>
@@ -219,8 +227,8 @@ const styles = StyleSheet.create({
   },
   popupcontainer: {
     display: 'flex',
-    width: '30%',
-    height: '100%',
+    width: '60%',
+    height: '75%',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -230,7 +238,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     width: '100%',
     height: '450px',
-    backgroundColor: DGreen,
+    backgroundColor: LGreen,
     borderRadius: '10px',
     marginBottom:'100px',
     marginLeft: '50px',
