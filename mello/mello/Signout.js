@@ -2,8 +2,13 @@ import { StyleSheet, TouchableOpacity, Text, View } from 'react-native'
 import React from 'react'
 import { auth } from "./firebase"
 import { useNavigation } from '@react-navigation/native'
+import { useFonts } from 'expo-font';
 
 export default function SignoutButton() {
+
+    const [fontsLoaded] = useFonts({
+        'Elnath': require('/assets/fonts/ELNATH.ttf'),
+      });
 
     const navigation = useNavigation()
 
@@ -29,17 +34,16 @@ export default function SignoutButton() {
 
 const styles = StyleSheet.create({
     button: {
-        backgroundColor: '#0782F9',
-        width: '20%',
+        flex: 1,
+        width: '60%',
         height: '50px',
-        padding: 15,
         borderRadius: 10,
         alignSelf: 'right',
-        marginTop: 40,
         },
     buttonText: {
         color: 'white',
-        fontWeight: '700',
-        fontSize: 16,
+        fontFamily: 'Elnath',
+        fontSize: 20,
+        alignSelf: 'flex-start'
     },
 })
