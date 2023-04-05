@@ -1,11 +1,12 @@
 import { KeyboardAvoidingView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, Image,  Dimensions } from 'react-native'
 import React, { useState, useEffect } from 'react'
-import { auth } from "../firebase"
+import { auth, db } from "../firebase"
 import { useNavigation } from '@react-navigation/native'
 import { BlurView } from 'expo-blur';
 import { ImageBackground } from 'react-native-web';
 import { useFonts } from 'expo-font';
 import { Checkbox, FormGroup, FormControlLabel, Box  } from '@material-ui/core';
+import { getDatabase, ref, onValue, set, push, child } from 'firebase/database';
 
 const wave = require('/assets/img/wave/wave.png')
 const r1head = require('/assets/img/head/robot1headbitmap.png')
@@ -19,13 +20,17 @@ const LoginScreen = () => {
     });
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [username, setUsername] = useState('')
 
     const navigation = useNavigation()
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
         if (user) {
-            navigation.replace("Home")
+            const uid = user.uid;
+            navigation.navigate("Home", {
+                paramKey: username
+            })
         }
     })
     // unsubscribe from listener
@@ -38,6 +43,11 @@ const LoginScreen = () => {
         .then(userCredentials => {
             const user = userCredentials.user;
             console.log('Registered with: ',user.email)
+            set(ref(db, 'users/' + username), {
+                username: username,
+                email: email,
+
+            })
         })
         .catch(error => alert(error.message))
     }
@@ -70,6 +80,12 @@ const LoginScreen = () => {
                         <Text style={styles.title}>Mello</Text>
                     </View>
                     <View>
+                        <TextInput
+                            placeholder="Username"
+                            value={username}
+                            onChangeText={text => setUsername(text)}
+                            style={styles.input}
+                        />
                         <TextInput
                             placeholder="Email"
                             value={email}
