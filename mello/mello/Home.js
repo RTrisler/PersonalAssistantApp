@@ -20,7 +20,9 @@ import Dashboard from './Dashboard';
 const BGColor = "#004052"
 const TabNav = createBottomTabNavigator();
 
-export default function Home() {
+export default function Home({navigation, route}) {
+  const {name} = route.params;
+  console.log(name);
   return (
     <TabNav.Navigator  screenOptions={{
       tabBarActiveTintColor: '#467599',
@@ -30,7 +32,7 @@ export default function Home() {
       headerShown: false,
       showIcon: true,
       }}>
-    <TabNav.Screen name='Home' component={Dashboard} options={{ tabBarIcon:(tabInfo) => (<MaterialCommunityIcons name="home-account" size={24} color="black" />)}}/>
+    <TabNav.Screen name='Home' component={() => <Dashboard name={route.params.name}/>} options={{ tabBarIcon:(tabInfo) => (<MaterialCommunityIcons name="home-account" size={24} color="black" />)}}/>
     <TabNav.Screen name="Schedule" component={TimeManagement} options={{ tabBarIcon:(tabInfo) => (<AntDesign name="book" size={24} color="black" />)}}/>
     <TabNav.Screen name="Groceries and Diet" component={GroceryAndDiet} options={{ tabBarIcon:(tabInfo) => (<MaterialCommunityIcons name="food-variant" size={24} color="black" />)}}/>
     <TabNav.Screen name='Settings' component={Settings} options={{ tabBarIcon:(tabInfo) => (<Fontisto name="player-settings" size={24} color="black" />)}}/>

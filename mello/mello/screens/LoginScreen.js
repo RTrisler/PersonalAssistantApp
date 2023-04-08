@@ -14,7 +14,11 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 const BGColor = "#003847";
 
-const LoginScreen = () => {
+export default function LoginScreen({navigation}) {
+
+    const UserName = 'NAME FROM LOGIN';
+
+
     const [fontsLoaded] = useFonts({
         'Elnath': require('/assets/fonts/ELNATH.ttf'),
     });
@@ -22,20 +26,16 @@ const LoginScreen = () => {
     const [password, setPassword] = useState('')
     const [username, setUsername] = useState('')
 
-    const navigation = useNavigation()
-
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(user => {
-        if (user) {
-            const uid = user.uid;
-            navigation.navigate("Home", {
-                paramKey: username
-            })
-        }
-    })
-    // unsubscribe from listener
-    return unsubscribe
-  }, [])
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged(user => {
+            if (user) {
+                const uid = user.uid;
+                navigation.navigate("Home", {name : uid});
+            }
+        })
+        // unsubscribe from listener
+        return unsubscribe
+    }, [])
 
     const handleSignUp = () => {
         auth
@@ -43,7 +43,8 @@ const LoginScreen = () => {
         .then(userCredentials => {
             const user = userCredentials.user;
             console.log('Registered with: ',user.email)
-            set(ref(db, 'users/' + username), {
+            const uid = user.uid;
+            set(ref(db, 'users/' + uid), {
                 username: username,
                 email: email,
 
@@ -120,8 +121,6 @@ const LoginScreen = () => {
     </View>
   )
 }
-
-export default LoginScreen
 
 const styles = StyleSheet.create({
     container: {

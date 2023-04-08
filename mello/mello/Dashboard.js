@@ -16,7 +16,9 @@ import { BlurView } from 'expo-blur';
 
 const BGColor = "#003847";
 
-export default function Dashboard() {
+export default function Dashboard({route,navigation,name}) {
+
+  console.log("***",name)
 
   const [fontsLoaded] = useFonts({
     'Elnath': require('/assets/fonts/ELNATH.ttf'),
@@ -74,7 +76,7 @@ export default function Dashboard() {
                 <Text style={styles.titleText}>Mello</Text>
               </View>
               <View style={styles.textContainer}>
-                <Text style={styles.profileText}>Profile</Text>
+                <Text style={styles.profileText}>{name}</Text>
               </View>
             </View>
           </View>
