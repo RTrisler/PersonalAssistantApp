@@ -22,3 +22,7 @@ body {
    .App {
     overflow-y: scroll;
    }
+
+   .div{
+    color: #bfcfbf;
+   }

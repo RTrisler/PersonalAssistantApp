@@ -102,11 +102,12 @@ export default function Character() {
         <ImageBackground source={r1head} style={styles.head}></ImageBackground>
         <ImageBackground source={r1body} style={styles.body}></ImageBackground>  
         <ImageBackground source={r1wheels} style={styles.wheels}></ImageBackground>
+        
         <div className='div'>
-          
           <LinearProgress variant="determinate" value={progress} color='success' 
           sx={{
             width: 300,
+            height: 20,
           }}/>
 
           <button onClick={levelUp}>add</button> <text>Level: {level}</text>
