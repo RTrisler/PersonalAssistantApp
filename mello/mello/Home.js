@@ -15,7 +15,7 @@ import GroceryAndDiet from './GroceryAndDiet'
 import TimeManagement from './TimeManagement';
 import TodoAppScreen from './ToDoAppScreen';
 import Dashboard from './Dashboard';
-import Test from './Test';
+
 
 
 const BGColor = "#004052"
