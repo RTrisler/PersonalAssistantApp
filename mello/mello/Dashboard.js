@@ -13,10 +13,36 @@ import { useEffect, useState } from 'react';
 import {db} from './firebase'
 import { BlurView } from 'expo-blur';
 
+import data from "./data.json";
+import ToDoList from "./ToDoList";
+import ToDoForm from './ToDoForm';
+import './index.css';
 
 const BGColor = "#003847";
 
 export default function Dashboard() {
+
+  const [ toDoList, setToDoList ] = useState(data);
+
+  const handleToggle = (id) => {
+    let mapped = toDoList.map(task => {
+      return task.id === Number(id) ? { ...task, complete: !task.complete } : { ...task};
+    });
+    setToDoList(mapped);
+  }
+
+  const handleFilter = () => {
+    let filtered = toDoList.filter(task => {
+      return !task.complete;
+    });
+    setToDoList(filtered);
+  }
+
+  const addTask = (userInput ) => {
+    let copy = [...toDoList];
+    copy = [...copy, { id: toDoList.length + 1, task: userInput, complete: false }];
+    setToDoList(copy);
+  }
 
   const [fontsLoaded] = useFonts({
     'Elnath': require('/assets/fonts/ELNATH.ttf'),
@@ -86,15 +112,10 @@ export default function Dashboard() {
             <BlurView intensity={100} style={styles.todoContainer}>
             <Divider style={styles.divider} />
               {
-                todoData.map((item, index) => {
-                  return(
-                    <View key={index} >
-                      <View style={styles.todoTextContainer}>
-                        <Text style={styles.todoText}>{item.todo}</Text>
-                      </View>
-                    </View>
-                  )
-                })
+                <div className="App">
+                  <ToDoList toDoList={toDoList} handleToggle={handleToggle} handleFilter={handleFilter}/>
+                  <ToDoForm addTask={addTask}/>
+                </div>
               }
               <Divider style={styles.divider}></Divider>
             </BlurView>
