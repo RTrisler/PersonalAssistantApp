@@ -446,42 +446,44 @@ export default function GroceryAndDiet() {
 
   return (
     <SafeAreaView style={styles.container}>
-      
       {groceryView && (
-      <View style={{flex:1}}>
-        <View style={{flexDirection: 'row', paddingHorizontal: '1%', justifyContent: 'space-between'}}>
-          <Button onPress={showItemAdder} style={styles.showAdderButton}><Text style={{fontSize: 20, fontWeight: 'bold', color: LGreen}}>Add Grocery Item</Text></Button>
-          <IconButton icon='book' iconColor={LGreen} onPress={toggleRecipeView}></IconButton>
-          <IconButton icon='calendar' iconColor={LGreen} onPress={toggleMealPlanView}></IconButton>
-        </View>
-        <ScrollView>
-        <List.Section style={{backgroundColor: BGColor}}>
-          {list.map((item, index) => (
-            <Surface key={item.name} style={{backgroundColor: BGColor, justifyContent: 'space-between'}}>
-              <View style={{flexDirection: 'row'}}>
-                <View style={{...styles.itemDetailsContainer, justifyContent: 'center'}}>
-                  <View style ={{justifyContent: 'space-between', flexDirection: 'row'}}>
-                    <Text style={styles.categoryText}>{item.name}</Text>
-                    <Text style={{...styles.categoryText, paddingRight: '3%'}}>{item.itemCategory.value}</Text>
+      
+      <View style={{flex:1, backgroundColor: 'green'}}>
+        <Surface>
+          <View style={{flexDirection: 'row', paddingHorizontal: '1%', justifyContent: 'space-between'}}>
+            <Button onPress={showItemAdder} style={styles.showAdderButton}><Text style={{fontSize: 20, fontWeight: 'bold', color: LGreen}}>Add Grocery Item</Text></Button>
+            <IconButton icon='book' iconColor={LGreen} onPress={toggleRecipeView}></IconButton>
+            <IconButton icon='calendar' iconColor={LGreen} onPress={toggleMealPlanView}></IconButton>
+          </View>
+          <ScrollView>
+            <List.Section style={{backgroundColor: BGColor}}>
+              {list.map((item, index) => (
+                <Surface key={item.name} style={{backgroundColor: BGColor, justifyContent: 'space-between'}}>
+                  <View style={{flexDirection: 'row'}}>
+                    <View style={{...styles.itemDetailsContainer, justifyContent: 'center'}}>
+                      <View style ={{justifyContent: 'space-between', flexDirection: 'row'}}>
+                        <Text style={styles.categoryText}>{item.name}</Text>
+                        <Text style={{...styles.categoryText, paddingRight: '3%'}}>{item.itemCategory.value}</Text>
+                      </View>
+                    </View>
+                    <View style={{backgroundColor: DGreen, maxWidth: '15%', minWidth: '5%', justifyContent: 'center', alignItems: 'center'}}>
+                      <Text style={{color: LGreen, fontSize: 25, fontWeight: 'bold'}}>{item.Qty}</Text>
+                    </View>
+                    <IconButton
+                    onPress={() => handleDeleteItem(index)}
+                    icon="delete"
+                    iconColor={LGreen}
+                  ></IconButton>
                   </View>
-                </View>
-                <View style={{backgroundColor: DGreen, maxWidth: '15%', minWidth: '5%', justifyContent: 'center', alignItems: 'center'}}>
-                  <Text style={{color: LGreen, fontSize: 25, fontWeight: 'bold'}}>{item.Qty}</Text>
-                </View>
-                <IconButton
-                onPress={() => handleDeleteItem(index)}
-                icon="delete"
-                iconColor={LGreen}
-              ></IconButton>
-              </View>
-              {(item.ID != -1) && <List.Accordion style={{backgroundColor: DGreen}} title="Nutrional Info" titleStyle={{color: LGreen}}>
-                <Text style={styles.itemDetails}>{item.foodData}</Text>
-              </List.Accordion>}
-            </Surface>
-          ))}
-        </List.Section>
-        </ScrollView>
-        </View>
+                  {(item.ID != -1) && <List.Accordion style={{backgroundColor: DGreen}} title="Nutrional Info" titleStyle={{color: LGreen}}>
+                    <Text style={styles.itemDetails}>{item.foodData}</Text>
+                  </List.Accordion>}
+                </Surface>
+              ))}
+            </List.Section>
+          </ScrollView>
+        </Surface>
+      </View>
         )}
         
         {recipeView && (
@@ -492,7 +494,7 @@ export default function GroceryAndDiet() {
             <IconButton icon='calendar' iconColor={LGreen} onPress={toggleMealPlanView}></IconButton>
           </View>
           <ScrollView>
-        <List.Section style={{backgroundColor: DGreen}}>
+        <List.Section style={{backgroundColor: 'red'}}>
           {recipes.map((item, index) => (
             <Surface>
             <Surface key={item.name} style={{...styles.itemContainer, flexDirection: 'row', justifyContent: 'space-between', alignContent: 'center'}}>
@@ -540,62 +542,7 @@ export default function GroceryAndDiet() {
         </View>
         )}
 
-        {mealPlanView && (
-         <View>
-          <View style={{flexDirection: 'row', paddingHorizontal: '1%', justifyContent: 'space-between'}}>
-            <View style={{minWidth: '70%'}}>
-              <div>
-                <Eventcalendar
-                    view={viewSettings}
-                    data={myMeals}
-                    resources={types}
-                    dragToCreate={false}
-                    dragToResize={false}
-                    dragToMove={true}
-                    clickToCreate={true}
-                    extendDefaultEvent={extendDefaultEvent}
-                    onEventClick={onEventClick}
-                    onEventCreated={onEventCreated}
-                    onEventDeleted={onEventDeleted}
-                    renderResource={renderMyResource}
-                    renderScheduleEventContent={myScheduleEvent}
-                    cssClass="md-meal-planner-calendar"
-                />
-                <Popup
-                    display="bottom"
-                    fullScreen={true}
-                    contentPadding={false}
-                    headerText={headerText}
-                    buttons={popupButtons}
-                    isOpen={isOpen}
-                    onClose={onClose}
-                    responsive={responsivePopup}
-                    cssClass="md-meal-planner-popup"
-                >
-                  <SegmentedGroup onChange={typeChange} value={type}>
-                    {types.map((type) => {
-                        return <SegmentedItem value={type.id} key={type.id}>{type.name}</SegmentedItem>
-                    })}
-                  </SegmentedGroup>
-                  <div className="mbsc-form-group">
-                    <Input label="Name" value={name} onChange={nameChange} />
-                    <Input label="Calories" value={calories} onChange={caloriesChange} />
-                    <Textarea label="Notes" value={notes} onChange={notesChange} />
-                  </div>
-                  {isEdit && <div className="mbsc-button-group">
-                    <Button className="mbsc-button-block" color="danger" variant="outline" onClick={onDeleteClick}>Delete meal</Button>
-                  </div>}
-                </Popup>
-              </div>
-            </View>
-            <IconButton icon='book' iconColor={LGreen} onPress={toggleRecipeView}></IconButton>
-            <IconButton icon='basket' iconColor={LGreen} onPress={toggleGroceryView}></IconButton>
-          </View>
-         </View> 
-        )}
 
-
-        
         <Modal visible={itemAdderVisible} onDismiss={hideItemAdder}>
           <Card style={styles.itemAdder}>
             <View style={{flexDirection: 'row'}}>
