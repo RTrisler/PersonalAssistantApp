@@ -15,6 +15,7 @@ import GroceryAndDiet from './GroceryAndDiet'
 import TimeManagement from './TimeManagement';
 import TodoAppScreen from './ToDoAppScreen';
 import Dashboard from './Dashboard';
+//import test from './test';
 
 
 const BGColor = "#004052"
@@ -34,6 +35,7 @@ export default function Home() {
     <TabNav.Screen name="Schedule" component={TimeManagement} options={{ tabBarIcon:(tabInfo) => (<AntDesign name="book" size={24} color="black" />)}}/>
     <TabNav.Screen name="Groceries and Diet" component={GroceryAndDiet} options={{ tabBarIcon:(tabInfo) => (<MaterialCommunityIcons name="food-variant" size={24} color="black" />)}}/>
     <TabNav.Screen name='Settings' component={Settings} options={{ tabBarIcon:(tabInfo) => (<Fontisto name="player-settings" size={24} color="black" />)}}/>
+    
   </TabNav.Navigator>
     
   );
