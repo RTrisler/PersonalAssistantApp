@@ -22,7 +22,7 @@ const BGColor = "#003847";
 
 export default function Dashboard() {
 
-  const [ toDoList, setToDoList ] = useState(data);
+  const [ toDoList, setToDoList ] = useState([]);
 
   const handleToggle = (id) => {
     let mapped = toDoList.map(task => {
