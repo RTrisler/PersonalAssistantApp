@@ -13,7 +13,6 @@ import { useEffect, useState } from 'react';
 import {db} from './firebase'
 import { BlurView } from 'expo-blur';
 
-import data from "./data.json";
 import ToDoList from "./ToDoList";
 import ToDoForm from './ToDoForm';
 import './index.css';
