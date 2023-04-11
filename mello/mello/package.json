@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@daypilot/daypilot-lite-react": "^3.13.0",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@expo/webpack-config": "^18.0.1",
