@@ -59,25 +59,6 @@ function Overview({ navigation }) {
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
         >
-          <Surface style={styles.dayContainer} elevation={5}>
-            <View style={styles.dayDisplay}>
-              <Text style={styles.dayText}>
-                 {daytext}
-              </Text>
-              <Text style={styles.dateText}>
-                 {monthday}
-              </Text>
-              <Text style={styles.monthText}>
-                 {monthtext}
-              </Text>
-              <Divider style={{ width: 1, height: '80%', position: 'absolute', right: '50%', bottom: '5%' }}></Divider>
-              <Text style={styles.timeText}> {currenttime} </Text>
-              <Text style={styles.cityText}> Ruston </Text>
-            </View>
-            <View style={styles.dayEvents}>
-              <TodoAppScreen></TodoAppScreen>
-            </View>
-          </Surface>
           <Surface style={styles.calendarContainer} elevation={5}>
             <AgendaView></AgendaView>
           </Surface>
@@ -101,7 +82,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
   },
   dayContainer: {
     display: 'flex',
@@ -165,11 +146,14 @@ const styles = StyleSheet.create({
     
   },
   calendarContainer: {
-    width: '50%',
+    flex: 1,
+    width: '90%',
     height: '90%',
     backgroundColor: 'black',
     borderRadius: '10px',
-    marginRight: '50px'
+    marginRight: '50px',
+    marginLeft: '50px',
+    alignSelf: 'center',
   }
     
 });
