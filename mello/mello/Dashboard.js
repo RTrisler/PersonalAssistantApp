@@ -108,7 +108,7 @@ export default function Dashboard() {
             <Text style={styles.todoTodayText}>Meal Plan for Today</Text>
           </Surface>
           <Surface style={styles.third}>
-            <Text style={styles.todoTodayText}>ToDo List</Text>
+            <Text style={styles.todoTodayText}>ToDo List for Today</Text>
             <BlurView intensity={100} style={styles.todoContainer}>
             <Divider style={styles.divider} />
               {
