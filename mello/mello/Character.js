@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import 'react-native-gesture-handler';
-import { Button, Surface, IconButton } from 'react-native-paper';
+import { Button, Surface, IconButton, ProgressBar } from 'react-native-paper';
 import { ImageBackground } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
 import BouncyCheckboxGroup from 'react-native-bouncy-checkbox-group';
@@ -24,7 +24,6 @@ const r1wheels = require('./assets/img/wheels/robot1wheelsbitmap.png')
 const incrementingValues = [1,3,3,3];
 const valuesNeeded = [1,0,0,0];
 const icons = ['login','calendar-week','food','clock-outline']
-let Cash = 0;
 
 function chooseObjective(){
   const objv1 = "Log into app " + incrementingValues[0] +" days";
@@ -51,7 +50,6 @@ function chooseObjective(){
 const updateObjective = (selectedItem) =>{
   valuesNeeded[selectedItem.id] = 0;
   incrementingValues[selectedItem.id]++;
-  Cash += (parseInt(selectedItem.id, 10)+1)*25;
 }
 
 
@@ -91,36 +89,24 @@ export default function Character() {
     });
   }
 
-
-
   return (
     <View style={styles.container}>
-      <View>
-        <Text style={styles.cashContainer}>${Cash}</Text>
-      </View>
       <View style={styles.charactercontainer}>
+        <View style={{justifyContent: 'center', alignItems: 'center'}}>
         <ImageBackground source={r1head} style={styles.head}></ImageBackground>
         <ImageBackground source={r1body} style={styles.body}></ImageBackground>  
         <ImageBackground source={r1wheels} style={styles.wheels}></ImageBackground>
+        </View>
+        <View className='div'>
+          <ProgressBar progress={progress/100} style={{borderRadius: 20, height: 20}} color={LGreen}/>
+          <Text style={{color: LGreen, fontSize: 20, fontWeight: 'bold'}}>Level {level}</Text>
         
-        <div className='div'>
-          <LinearProgress variant="determinate" value={progress} color='success' 
-          sx={{
-            width: 300,
-            height: 20,
-          }}/>
-
-          <button onClick={levelUp}>add</button> <text>Level: {level}</text>
-        
-        </div>
+        </View>
       </View>
       <View style={styles.rightCharacterContainer}>
         <View style={styles.iconcontainer}>
           <Button style={styles.iconbackground}  onPress={() => {setShouldShowObjectives(!shouldShowObjectives); setShouldShowShop(false); setShouldShowEditBot(false)}}>
             <FontAwesome5 name="clipboard-list" size={25} color="white" />
-          </Button>
-          <Button style={styles.iconbackground}  onPress={() => {setShouldShowShop(!shouldShowShop); setShouldShowObjectives(false); setShouldShowEditBot(false)}}>
-            <FontAwesome5 name="shopping-cart" size={25} color="white" />
           </Button>
           <Button style={styles.iconbackground} onPress={() => {setShouldShowEditBot(!shouldShowEditBot); setShouldShowShop(false); setShouldShowObjectives(false)}}>
             <FontAwesome5 name="robot" size={25} color="white" style={styles.icon} />
@@ -132,7 +118,7 @@ export default function Character() {
               <Surface style={{...styles.objectives, justifyContent: 'space-between'}}>
               {chosenObjectives.map((objective, objectiveId) => (
                 <Surface key={objectiveId} style={{backgroundColor: DGreen, borderRadius: 20}}>
-                  <View style={{flexDirection: 'row'}}>
+                  <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                   
                       <IconButton 
                         icon={icons[objective.id]} 
@@ -156,16 +142,28 @@ export default function Character() {
                     <View style={{justifyContent: 'center'}}>
                       <Text style={{color: LGreen, fontSize: 20, alignContent: 'center', justifyContent: 'center', textAlignVertical: 'center', textAlign: 'center'}}>{objective.text}</Text>
                     </View>
+                    <Button 
+                    style={{backgroundColor: (valuesNeeded[objective.id] >= incrementingValues[objective.id] ? LGreen : BGColor), justifyContent: 'center', borderTopLeftRadius: 0, borderBottomLeftRadius: 0, width: '20%'}}
+                    onPress={() => {
+                      if (valuesNeeded[objective.id] >= incrementingValues[objective.id]) {
+                      updateObjective(objective);
+                      setProgress(() => {
+                        setProgress(20 + progress)        
+                          if (progress === 100){
+                            setLevel(level+1)
+                            return 0; 
+                          }        
+                        }
+                      );
+                    }
+                  }}
+                    >
+                      <Text style={{color: (valuesNeeded[objective.id] >= incrementingValues[objective.id] ? BGColor : LGreen)}}> {valuesNeeded[objective.id] >= incrementingValues[objective.id] ? "Claim!" : "Locked"}</Text>
+                    </Button>
                   </View>
                 </Surface>
               ))};
           </Surface>
-            ) : null}
-            {shouldShowShop ?
-            (
-              <Surface style={styles.shop}>
-                <Text>Shop</Text>
-              </Surface>
             ) : null}
             {shouldShowEditBot ?
             (
@@ -223,7 +221,7 @@ const styles = StyleSheet.create({
     width: '100%',
     alignSelf: 'center',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     backgroundColor: DGreen,
     marginTop: '10px'
   },
