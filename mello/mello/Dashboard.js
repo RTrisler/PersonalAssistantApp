@@ -13,7 +13,6 @@ import { useEffect, useState } from 'react';
 import {db} from './firebase'
 import { BlurView } from 'expo-blur';
 
-import data from "./data.json";
 import ToDoList from "./ToDoList";
 import ToDoForm from './ToDoForm';
 import './index.css';
@@ -108,7 +107,7 @@ export default function Dashboard() {
             <Text style={styles.todoTodayText}>Meal Plan for Today</Text>
           </Surface>
           <Surface style={styles.third}>
-            <Text style={styles.todoTodayText}>ToDo List</Text>
+            <Text style={styles.todoTodayText}>ToDo List for Today</Text>
             <BlurView intensity={100} style={styles.todoContainer}>
             <Divider style={styles.divider} />
               {

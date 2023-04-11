@@ -15,6 +15,8 @@ import GroceryAndDiet from './GroceryAndDiet'
 import TimeManagement from './TimeManagement';
 import TodoAppScreen from './ToDoAppScreen';
 import Dashboard from './Dashboard';
+import MealPlan from './MealPlan';
+import GroceryAndDietDashboard from './GroceryAndDietDashboard'; 
 
 
 
