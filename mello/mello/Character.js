@@ -20,6 +20,7 @@ const DGreen = "#002B36"
 const r1head = require('./assets/img/head/robot1headbitmap.png')
 const r1body = require('./assets/img/body/robot1bodybitmap.png')
 const r1wheels = require('./assets/img/wheels/robot1wheelsbitmap.png')
+const robo = require('./assets/img/robot/robot2.png')
 
 const incrementingValues = [1,3,3,3];
 const valuesNeeded = [1,0,0,0];
@@ -99,9 +100,8 @@ export default function Character() {
         <Text style={styles.cashContainer}>${Cash}</Text>
       </View>
       <View style={styles.charactercontainer}>
-        <ImageBackground source={r1head} style={styles.head}></ImageBackground>
-        <ImageBackground source={r1body} style={styles.body}></ImageBackground>  
-        <ImageBackground source={r1wheels} style={styles.wheels}></ImageBackground>
+          
+        <ImageBackground source={robo} style={styles.wheels}></ImageBackground>
         
         <div className='div'>
           <LinearProgress variant="determinate" value={progress} color='success' 
@@ -213,8 +213,8 @@ const styles = StyleSheet.create({
   },
   wheels: {
     width: '215px',
-    height: '304px',
-    marginTop: '-304px',
+    height: '204px',
+    marginTop: '-104px',
     zIndex: 0
   },
   iconcontainer: {
