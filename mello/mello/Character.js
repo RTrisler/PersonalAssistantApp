@@ -115,7 +115,7 @@ export default function Character() {
         <View style={styles.popupcontainer}>
           {shouldShowObjectives ?
             (
-              <Surface style={{...styles.objectives, justifyContent: 'space-between'}}>
+              <Surface style={{...styles.objectives, justifyContent: 'space-around', paddingHorizontal: '1%'}}>
               {chosenObjectives.map((objective, objectiveId) => (
                 <Surface key={objectiveId} style={{backgroundColor: DGreen, borderRadius: 20}}>
                   <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -158,7 +158,7 @@ export default function Character() {
                     }
                   }}
                     >
-                      <Text style={{color: (valuesNeeded[objective.id] >= incrementingValues[objective.id] ? BGColor : LGreen)}}> {valuesNeeded[objective.id] >= incrementingValues[objective.id] ? "Claim!" : "Locked"}</Text>
+                      <Text style={{color: (valuesNeeded[objective.id] >= incrementingValues[objective.id] ? BGColor : LGreen), fontWeight:'bold'}}> {valuesNeeded[objective.id] >= incrementingValues[objective.id] ? "Claim!" : "Locked"}</Text>
                     </Button>
                   </View>
                 </Surface>
@@ -182,6 +182,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     rowGap: '20px',
+    justifyContent: 'space-around'
   },
   cashContainer:{
     fontSize: "200%",
@@ -252,7 +253,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     backgroundColor: LGreen,
-    justifyContent: 'space-between',
   },
   unfinishedObjective: {
     margin:"10px",
