@@ -58,8 +58,6 @@
     "react-native-svg": "^13.8.0",
     "react-native-toast-message": "^2.1.5",
     "react-native-web": "^0.18.12",
-    "react-navigation": "^4.4.4",
-    "react-router-dom": "^6.10.0",
     "react-scripts": "^5.0.1"
   },
   "devDependencies": {

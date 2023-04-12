@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View,button, ScrollView } from 'react-native'
+import { StyleSheet, Text, View, ScrollView } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react'
 import Character from './Character'
@@ -12,19 +12,14 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useEffect, useState } from 'react';
 import {db} from './firebase'
 import { BlurView } from 'expo-blur';
-import Calendar from './month'
+
 import ToDoList from "./ToDoList";
 import ToDoForm from './ToDoForm';
 import './index.css';
 
-
 const BGColor = "#003847";
 
-
-
 export default function Dashboard() {
-
-  
 
   const [ toDoList, setToDoList ] = useState([]);
 
@@ -110,7 +105,6 @@ export default function Dashboard() {
           </View>
           <Surface style={styles.second}>
             <Text style={styles.todoTodayText}>Meal Plan for Today</Text>
-            
           </Surface>
           <Surface style={styles.third}>
             <Text style={styles.todoTodayText}>ToDo List for Today</Text>
