@@ -7,7 +7,7 @@ import { DatePickerModal, TimePickerModal } from 'react-native-paper-dates';
 //import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
 import Toast from 'react-native-toast-message';
-import { getDatabase, ref, onValue, set } from 'firebase/database';
+import { getDatabase, ref, onValue, set, get } from 'firebase/database';
 
 // 2AA198, #003847, 002B36
 const BGColor = "#003847"
@@ -47,18 +47,46 @@ const getFormattedTime = (date) => {
 
 export default function AgendaView() {
 
+  //const [items, setItems] = useState({});
+  let itemsUpdated = false;
+  const db = getDatabase();
+
+  const eventsDBRef = ref(db, 'users/userID/events');
+
+
   const [items, setItems] = useState({
-    '2023-03-24': [
+    /*'2023-04-12': [
       {name: 'nametest', timeDueStart: '12:30', timeDueEnd: '13:30', note: 'note test'},
       {name: 'csc 330', timeDueStart: '11:00', timeDueEnd: '12:15', note: 'go to class nerd'},
       {name: 'csc 470', timeDueStart: '11:00', timeDueEnd: '12:15', note: 'go to class nerd'},
       {name: 'csc 405', timeDueStart: '2:00', timeDueEnd: '3:15', note: 'go to class nerd'}
     ],
-    '2023-03-25': [
+    '2023-04-13': [
       {name: 'do thing', timeDueStart: '2:00', timeDueEnd: '3:15', note: 'note about thing'}
-    ]
+    ]*/
+    
   });
 
+  useEffect(() => {
+    get(eventsDBRef).then((snapshot) => {
+      if(snapshot.exists()) {
+        setItems(snapshot.val())
+      }
+    });
+
+    onValue(eventsDBRef, (snapshot) => {
+      if(itemsUpdated) {
+        return;
+      }
+      itemsUpdated = true;
+      const data = snapshot.val();
+      setItems(data)
+      console.log(items);
+    });
+  }, []);
+  useEffect(() => {
+    storeEvent('userID', items);
+  }, [items]);
   //loading items from the item list to agenda
   const loadItems = async (date) => {
     setTimeout(() => {
@@ -76,23 +104,17 @@ export default function AgendaView() {
       Object.keys(items).forEach((key) => {
         newItems[key] = items[key];
       });
-      setItems(newItems);
-    }, 70);
+      setTimeout(() => {
+        setItems(newItems);
+      }, 500);
+    }, 120);
   };
   
-  function storeEvent(userId, dateString, day, month, year, startTimeStr, endTimeStr, timeDifference, nameText) {
+  function storeEvent(userId, inItems) {
     const db = getDatabase();
-    const reference = ref(db, 'users/' + userId);
-    set(reference, {
-      date: dateString,
-      day: day,
-      month: month,
-      year: year,
-      startTime: startTimeStr,
-      endTime: endTimeStr,
-      timeDifference: timeDifference,
-      name: nameText
-    });
+    const reference = ref(db, 'users/' + userId + '/events');
+    console.log(inItems);
+    set(reference, inItems);
   }
 
   //how each item on the agenda is rendered
@@ -199,21 +221,19 @@ export default function AgendaView() {
       })
       return;
     }
+    const startDateStr = getFormattedDate(startDate);
+    const eventItem = {name: nameText, 
+                       timeDueStart: getFormattedTime(startTime), 
+                       timeDueEnd: getFormattedTime(endTime), 
+                       note: noteText};
     setTimeout(() => {
-      console.log(startDate.getDate())
-      const startDateStr = getFormattedDate(startDate);
-      const eventItem = {name: nameText, 
-                         timeDueStart: getFormattedTime(startTime), 
-                         timeDueEnd: getFormattedTime(endTime), 
-                         note: noteText};
       if(!items[startDateStr]) {
         items[startDateStr] = [eventItem];
       }
       else{
         items[startDateStr].push(eventItem);
       }
-      console.log(items[startDateStr]);
-    }, 70);
+    }, 70)
     loadItems({"dateString": getFormattedDate(startDate), 
                "day": startDate.getDate(), 
                "month": startDate.getMonth(),
@@ -223,14 +243,6 @@ export default function AgendaView() {
     toggleEventMaker();
     const endTimeStr = endTime.toTimeString().slice(0,9);
     const timeDifference = endTime.getTime()-startDate.getTime();
-    storeEvent("userID", getFormattedDate(startDate)
-                , startDate.getDate()
-                , startDate.getMonth()
-                , startDate.getFullYear()
-                , getFormattedTime(startTime)
-                ,getFormattedTime(endTime)
-                , startDate.valueOf() - (startDate.valueOf() % 100000)
-                , nameText);
   }
 
   const toggleStartDatePicker = () => {
@@ -244,6 +256,10 @@ export default function AgendaView() {
   const toggleEndTimePicker = () => {
     setEndTimePicker(!endTimePicker);
   }
+  
+
+
+
   return (
     <View style = {styles.container}>
         <View style = {{flexDirection: 'row-reverse', justifyContent: 'space-around'}}>

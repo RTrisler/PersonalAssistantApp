@@ -50,7 +50,7 @@ export default function Dashboard() {
   const [todoData, setTodoData] = useState([])
 
   useEffect (() => {
-    const starCountRef = ref(db, 'users/');
+    const starCountRef = ref(db, 'users/userID/todo');
     onValue(starCountRef, (snapshot) => {
       const data = snapshot.val();
       const newPosts = Object.keys(data).map(key => ({
@@ -58,7 +58,7 @@ export default function Dashboard() {
         ...data[key]
       }));
       console.log(newPosts);
-      setTodoData(newPosts);
+      //setTodoData(newPosts);
   });
 }, [])
 
