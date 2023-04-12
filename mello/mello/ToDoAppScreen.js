@@ -3,18 +3,30 @@ import { Text, StyleSheet, ScrollView } from 'react-native';
 import { Divider, Surface } from 'react-native-paper';
 import TodoCard from './TodoCard';
 import InlineInputAndButton from './InlineInputAndButton';
-import { getDatabase, ref, onValue, set } from 'firebase/database';
+import { getDatabase, ref, onValue, set, get } from 'firebase/database';
 import { db } from "./firebase";
+import { useEffect } from 'react';
 
 const BGColor = "#003847"
 const LGreen = "#2AA198"
 const DGreen = "#002B36"
 
 const TodoAppScreen = () => {
-
-    const initialTodo = [{ value: "Edit text here" }];
-    const [todos, setTodos] = useState(initialTodo);
+    const [todos, setTodos] = useState([{ value: "Edit text here" }]);
     const [text, setText] = useState("");
+
+    const dbTodoRef = ref(db, 'users/userID/todos');
+    useEffect(() => {
+        get(dbTodoRef).then((snapshot) => {
+          if(snapshot.exists()) {
+            setTodos(snapshot.val());
+          }
+        });
+      }, []);
+    useEffect(() => {
+        storeToDo('userID', todos);
+    }, [todos]);
+    
 
     const handleChangeText = (text) => {
         setText(text);
@@ -23,7 +35,7 @@ const TodoAppScreen = () => {
     const handleAddButton = (text) => {
 
         setTodos([...todos, { value: text }]);
-        storeToDo("userId", text);
+        storeToDo("userID", text);
         setText("");
 
 
@@ -54,12 +66,10 @@ const TodoAppScreen = () => {
 
     }
 
-    function storeToDo(userId, todotext) {
+    function storeToDo(userId, todos) {
         const db = getDatabase();
-        const reference = ref(db, 'users/' + userId);
-        set(reference, {
-          todo: todotext,
-        });
+        const reference = ref(db, 'users/' + userId + '/todos');
+        set(reference, todos);
       }
 
     return (
