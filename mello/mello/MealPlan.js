@@ -41,7 +41,7 @@ function MealPlan() {
 
   function getRecipeData() {
     fetch(
-      `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredient}&number=1&ranking=2&ignorePantry=true&apiKey=4edd629e3fe94477b016ab3c541c35bd`
+      `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredient}&number=10&ranking=2&ignorePantry=true&apiKey=4edd629e3fe94477b016ab3c541c35bd`
     )
       .then(response => response.json())
       .then(data => {

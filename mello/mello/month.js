@@ -84,7 +84,7 @@ class Calendar extends Component {
             }}
           />
         </div>
-        <div style={styles.main}>
+        <div style={styles.main} className="Event">
           <DayPilotCalendar
           theme={"mellocal"}
             {...this.state}

@@ -6,14 +6,17 @@ Theme Designer Version: 2021.09.25.67272
 .mellocal_main 
 {
 	border: 1px solid #000000;
+	height: 100%;
 }
 .mellocal_main, .mellocal_main td 
 {
 	font-family: -apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
 	font-size: 13px;
+	
 }
 .mellocal_event { 
 	color: #d5dddf;
+
 }
 .mellocal_event_inner { 
 	position: absolute;

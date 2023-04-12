@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { View,  StyleSheet,SafeAreaView, Platform } from 'react-native';
-import { TextInput, List, Checkbox, Divider, Surface, Text, Button, IconButton, Modal, Card, HelperText } from 'react-native-paper';
+import { View,  StyleSheet,SafeAreaView, Platform,  TouchableOpacity} from 'react-native';
+import { TextInput, List, Checkbox, Divider, Surface, Button, Text, IconButton, Modal, Card, HelperText, } from 'react-native-paper';
 import axios from 'axios';
 import { SelectList } from 'react-native-dropdown-select-list';
 import Toast from 'react-native-toast-message';
@@ -9,6 +9,9 @@ import '@mobiscroll/react/dist/css/mobiscroll.min.css';
 import { Eventcalendar, snackbar, setOptions, Popup, Input, Textarea, formatDate, getJson, SegmentedGroup, SegmentedItem } from '@mobiscroll/react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native'
+import { FontAwesome5 } from '@expo/vector-icons';
+import { borderRadius, fontSize } from '@mui/system';
+
 
 const BGColor = "#003847"
 const LGreen = "#2AA198"
@@ -201,6 +204,8 @@ export default function GroceryAndDiet() {
   const [groceryView, setGroceryView] = useState(true);
   const [recipeView, setRecipeView] = useState(false);
   const [mealPlanView, setMealPlanView] = useState(false);
+  const [shouldShowNewRecipe, setShouldShowNewRecipe] = useState(false);
+  const [shouldShowSavedRecipes, setShouldShowSavedRecipes] = useState(false);
 
   const toggleGroceryView = () => {
     setMealPlanView(false);
@@ -468,11 +473,11 @@ export default function GroceryAndDiet() {
         {/* MEAL PLAN CONTAINER */}
         <Surface style={styles.mealContainer}>
         </Surface>
-        {/* GROCERY LIST CONTAINER */}
+        {/* Pantry LIST CONTAINER */}
         <View style={{width: '45%',}}>
-          <Surface style = {{flex:1, backgroundColor: BGColor, borderRadius: '10px',}}>
-            <View style={{flexDirection: 'row', paddingHorizontal: '1%', justifyContent: 'space-between'}}>
-              <Button onPress={showItemAdder} style={styles.showAdderButton}><Text style={{fontSize: 20, fontWeight: 'bold', color: LGreen}}>Add Grocery Item</Text></Button>
+          <Surface style = {{flex:1, backgroundColor: BGColor, borderRadius: '10px', overflow: 'hidden'}}>
+            <View style={styles.iconcontainer}>
+                <Text style={styles.pantryText}> Pantry </Text>
             </View>
             <ScrollView>
               <List.Section style={{backgroundColor: BGColor}}>
@@ -501,8 +506,11 @@ export default function GroceryAndDiet() {
                 ))}
               </List.Section>
             </ScrollView>
+            <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+              <TouchableOpacity onPress={showItemAdder} style={styles.showAdderButton}><Text style={{fontSize: 20, fontWeight: 'bold', color: 'white', alignSelf: 'center'}}>Add Pantry Item</Text></TouchableOpacity>
+            </View>
 
-            {/* GROCERY MODAL */}
+            {/* PANTRY MODAL */}
             <Modal style={styles.groceryModal} visible={itemAdderVisible} onDismiss={hideItemAdder}>
               <Card style={styles.itemAdder}>
                 <View style={{flexDirection: 'row'}}>
@@ -520,122 +528,144 @@ export default function GroceryAndDiet() {
                 </View>
               </Card>
             </Modal>
-
           </Surface>
         </View>
 
         {/* RECIPE LIST CONTAINER */}
         <View style={{width: '45%', height: '45%'}}>
-          <Surface style = {{flex:1, backgroundColor: BGColor, borderRadius: '10px', }}>
-            <View style={{flexDirection: 'row', paddingHorizontal: '1%', justifyContent: 'space-between'}}>
-              <Button onPress={showRecipeAdder} style={{...styles.showAdderButton}}><Text style={{fontSize: 20, fontWeight: 'bold', color: LGreen}}>Add Recipe</Text></Button>
-              <Button onPress={handleNavigate} style={{...styles.showAdderButton}}><Text style={{fontSize: 20, fontWeight: 'bold', color: LGreen}}>View More Recipes</Text></Button>
-            </View>
-            <ScrollView>
-              <List.Section style={{backgroundColor: 'red'}}>
-                {recipes.map((item, index) => (
-                  <Surface>
-                  <Surface key={item.name} style={{...styles.itemContainer, flexDirection: 'row', justifyContent: 'space-between', alignContent: 'center'}}>
-                    <View style={styles.itemDetailsContainer}>
-                      <View style ={{justifyContent: 'space-between', flexDirection: 'row'}}>
-                        <Text style={styles.itemText}>{item.name}</Text>
-                      </View>
-                    </View>
-                    <IconButton
-                      onPress={() => handleDeleteRecipe(index)}
-                      icon="delete"
-                      iconColor={LGreen}
-                    >
-                    </IconButton>
-                  </Surface>
-                  <List.Accordion title='Ingredients' style={{backgroundColor: DGreen}} titleStyle={{color: LGreen}}>
-                    {item.ingredients.map((itemIng, iIndex) => (
-                      <Surface key={itemIng} style={{...styles.itemContainer, flexDirection:'row', justifyContent:'space-between'}}>
-                        <Text style={{...styles.itemText, paddingLeft: 10}}>{itemIng.name}</Text>
-                        <Text style={{...styles.itemText, paddingRight: 10}}>{itemIng.Qty}</Text>
-                        <View style={{flexDirection:'row'}}>
-                          <IconButton
-                            onPress={ async () => {
-                              handleAddItemFromRecipe(itemIng.name, itemIng.Qty);
-                            }}
-                            icon="plus"
-                            iconColor={LGreen}
-                          >
-                          </IconButton>
-                        </View>
-                      </Surface>
-                    ))}
-                  </List.Accordion>
-                  <List.Accordion title='Steps' style={{backgroundColor: DGreen}} titleStyle={{color: LGreen}}>
-                    {item.steps.map((itemStep, sIndex) => (
-                      <Surface key={itemStep} style={{...styles.itemContainer, flexDirection:'row', justifyContent:'space-between'}}>
-                        <Text style={{...styles.itemText, paddingLeft: 10}}>{itemStep}</Text>
-                      </Surface>
-                    ))}
-                  </List.Accordion>
-                  </Surface>
-                ))}
-              </List.Section>
-            </ScrollView>
-
-            <Modal visible={recipeAdderVisible} onDismiss={hideRecipeAdder}>
-            <Card style={styles.itemAdder}>
-              <TextInput placeholder='Recipe name' activeUnderlineColor = "#2AA198" onChangeText={setNewRecipeName} textColor="#2AA198" value={newRecipeName} style={{minWidth: '80%', backgroundColor: 'white', borderRadius: 0}}/>
-              <View style={{flexDirection:'row', justifyContent: 'space-between', alignContent: 'center'}}>
-                <TextInput placeholder='Ingredient' activeUnderlineColor = "#2AA198" onChangeText={setNewIngredient} textColor="#2AA198" value={newIngredient} style={{width: '60%', backgroundColor: 'white', borderRadius: 0}}/>
-                <TextInput placeholder='Qty.' activeUnderlineColor = "#2AA198" onChangeText={setNewIngredientQty} textColor="#2AA198" value={newIngredientQty} style={{width: '20%', backgroundColor: 'white', borderRadius: 0}} keyboardType='numeric'/>
-                <Button onPress={handleAddIngredient} buttonColor={'white'} textColor={LGreen} style={{borderRadius: 0, border: '1px solid #2AA198', minWidth: '20%', flex: 1, justifyContent: 'center', alignContent: 'center'}}>
-                  Add
-                </Button>
+          <Surface style = {{flex:1, backgroundColor: BGColor, borderRadius: '10px', overflow: 'hidden'}}>
+            <View style={styles.iconcontainer}>
+                <TouchableOpacity style={styles.iconbackground}  onPress={() => {setShouldShowNewRecipe(!shouldShowNewRecipe); setShouldShowSavedRecipes(false); }}>
+                  <Text style={styles.recipeText}>New Recipe</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.iconbackground} onPress={() => {setShouldShowSavedRecipes(!shouldShowSavedRecipes); setShouldShowNewRecipe(false);}}>
+                  <Text style={styles.recipeText}>Saved Recipes</Text>
+                </TouchableOpacity>
               </View>
-              <View style={{flexDirection:'row', justifyContent: 'space-between', alignContent: 'center'}}>
-                <TextInput placeholder='Step' activeUnderlineColor = "#2AA198" onChangeText={setNewStep} textColor="#2AA198" value={newStep} style={{minWidth: '80%', backgroundColor: 'white', borderRadius: 0}}/>
-                <Button onPress={handleAddStep} buttonColor={'white'} textColor={LGreen} style={{borderRadius: 0, border: '1px solid #2AA198',  minWidth: '20%', flex: 1, justifyContent: 'center', alignContent: 'center'}}>
-                  Add
-                </Button>
-              </View>
-              <View style={{maxHeight: '60%'}}>
+              {shouldShowNewRecipe ? 
+                (
+                  <>
+                  
               <ScrollView>
-              <List.Accordion title='Ingredients' style={{backgroundColor: 'white'}} titleStyle={{color: LGreen}}>
-                {recipeIngredients.map((item, index) => (
-                  <Surface key={item} style={{...styles.itemContainer, flexDirection:'row', justifyContent:'space-between'}}>
-                    <Text style={{...styles.itemText, paddingLeft: 10}}>{item.name}</Text>
-                    <Text style={styles.itemText}>{item.Qty}</Text>
-                    <IconButton
-                      onPress={() => handleDeleteRecipeIngredients(index)}
-                      icon="delete"
-                      iconColor={LGreen}
-                    >
-                    </IconButton>
-                  </Surface>
-                ))}
-              </List.Accordion>
-              <List.Accordion title='Steps' style={{backgroundColor: 'white'}} titleStyle={{color: LGreen}}>
-                {recipeSteps.map((item, index) => (
-                  <Surface key={item} style={{...styles.itemContainer, flexDirection:'row', justifyContent:'space-between'}}>
-                    <Text style={{...styles.itemText, paddingLeft: 10}}>{item}</Text>
-                    <IconButton
-                      onPress={() => handleDeleteRecipeSteps(index)}
-                      icon="delete"
-                      iconColor={LGreen}
-                    >
-                    </IconButton>
-                  </Surface>
-                ))}
-              </List.Accordion>
+                <List.Section style={{backgroundColor: 'red'}}>
+                  {recipes.map((item, index) => (
+                    <Surface>
+                    <Surface key={item.name} style={{...styles.itemContainer, flexDirection: 'row', justifyContent: 'space-between', alignContent: 'center'}}>
+                      <View style={styles.itemDetailsContainer}>
+                        <View style ={{justifyContent: 'space-between', flexDirection: 'row'}}>
+                          <Text style={styles.itemText}>{item.name}</Text>
+                        </View>
+                      </View>
+                      <IconButton
+                        onPress={() => handleDeleteRecipe(index)}
+                        icon="delete"
+                        iconColor={LGreen}
+                      >
+                      </IconButton>
+                    </Surface>
+                    <List.Accordion title='Ingredients' style={{backgroundColor: DGreen}} titleStyle={{color: LGreen}}>
+                      {item.ingredients.map((itemIng, iIndex) => (
+                        <Surface key={itemIng} style={{...styles.itemContainer, flexDirection:'row', justifyContent:'space-between'}}>
+                          <Text style={{...styles.itemText, paddingLeft: 10}}>{itemIng.name}</Text>
+                          <Text style={{...styles.itemText, paddingRight: 10}}>{itemIng.Qty}</Text>
+                          <View style={{flexDirection:'row'}}>
+                            <IconButton
+                              onPress={ async () => {
+                                handleAddItemFromRecipe(itemIng.name, itemIng.Qty);
+                              }}
+                              icon="plus"
+                              iconColor={LGreen}
+                            >
+                            </IconButton>
+                          </View>
+                        </Surface>
+                      ))}
+                    </List.Accordion>
+                    <List.Accordion title='Steps' style={{backgroundColor: DGreen}} titleStyle={{color: LGreen}}>
+                      {item.steps.map((itemStep, sIndex) => (
+                        <Surface key={itemStep} style={{...styles.itemContainer, flexDirection:'row', justifyContent:'space-between'}}>
+                          <Text style={{...styles.itemText, paddingLeft: 10}}>{itemStep}</Text>
+                        </Surface>
+                      ))}
+                    </List.Accordion>
+                    </Surface>
+                  ))}
+                </List.Section>
               </ScrollView>
+              <View style={{flexDirection: 'row', paddingHorizontal: '1%', justifyContent: 'center'}}>
+                <Button onPress={showRecipeAdder} style={{...styles.showAdderButton}}><Text style={{fontSize: 20, fontWeight: 'bold', color: 'white'}}>Add Recipe</Text></Button>
               </View>
-              <View style={{flexDirection:'row', justifyContent:'space-between', paddingVertical: 10, paddingHorizontal: 5}}>
-              <Button onPress={handleAddRecipe} buttonColor={DGreen} textColor={LGreen}>
-                <Text style = {{fontSize: 20, fontWeight: 'bold', color: LGreen}}> Save </Text>
-              </Button>
-              <Button onPress={hideRecipeAdder} buttonColor={DGreen} textColor={LGreen}>
-                <Text style = {{fontSize: 20, fontWeight: 'bold', color: LGreen}}> Cancel </Text>
-              </Button>
-              </View>
-            </Card>
-          </Modal>
+              
 
+              <Modal visible={recipeAdderVisible} onDismiss={hideRecipeAdder}>
+              <Card style={styles.itemAdder}>
+                <TextInput placeholder='Recipe name' activeUnderlineColor = "#2AA198" onChangeText={setNewRecipeName} textColor="#2AA198" value={newRecipeName} style={{minWidth: '80%', backgroundColor: 'white', borderRadius: 0}}/>
+                <View style={{flexDirection:'row', justifyContent: 'space-between', alignContent: 'center'}}>
+                  <TextInput placeholder='Ingredient' activeUnderlineColor = "#2AA198" onChangeText={setNewIngredient} textColor="#2AA198" value={newIngredient} style={{width: '60%', backgroundColor: 'white', borderRadius: 0}}/>
+                  <TextInput placeholder='Qty.' activeUnderlineColor = "#2AA198" onChangeText={setNewIngredientQty} textColor="#2AA198" value={newIngredientQty} style={{width: '20%', backgroundColor: 'white', borderRadius: 0}} keyboardType='numeric'/>
+                  <Button onPress={handleAddIngredient} buttonColor={'white'} textColor={LGreen} style={{borderRadius: 0, border: '1px solid #2AA198', minWidth: '20%', flex: 1, justifyContent: 'center', alignContent: 'center'}}>
+                    Add
+                  </Button>
+                </View>
+                <View style={{flexDirection:'row', justifyContent: 'space-between', alignContent: 'center'}}>
+                  <TextInput placeholder='Step' activeUnderlineColor = "#2AA198" onChangeText={setNewStep} textColor="#2AA198" value={newStep} style={{minWidth: '80%', backgroundColor: 'white', borderRadius: 0}}/>
+                  <Button onPress={handleAddStep} buttonColor={'white'} textColor={LGreen} style={{borderRadius: 0, border: '1px solid #2AA198',  minWidth: '20%', flex: 1, justifyContent: 'center', alignContent: 'center'}}>
+                    Add
+                  </Button>
+                </View>
+                <View style={{maxHeight: '60%'}}>
+                <ScrollView>
+                <List.Accordion title='Ingredients' style={{backgroundColor: 'white'}} titleStyle={{color: LGreen}}>
+                  {recipeIngredients.map((item, index) => (
+                    <Surface key={item} style={{...styles.itemContainer, flexDirection:'row', justifyContent:'space-between'}}>
+                      <Text style={{...styles.itemText, paddingLeft: 10}}>{item.name}</Text>
+                      <Text style={styles.itemText}>{item.Qty}</Text>
+                      <IconButton
+                        onPress={() => handleDeleteRecipeIngredients(index)}
+                        icon="delete"
+                        iconColor={LGreen}
+                      >
+                      </IconButton>
+                    </Surface>
+                  ))}
+                </List.Accordion>
+                <List.Accordion title='Steps' style={{backgroundColor: 'white'}} titleStyle={{color: LGreen}}>
+                  {recipeSteps.map((item, index) => (
+                    <Surface key={item} style={{...styles.itemContainer, flexDirection:'row', justifyContent:'space-between'}}>
+                      <Text style={{...styles.itemText, paddingLeft: 10}}>{item}</Text>
+                      <IconButton
+                        onPress={() => handleDeleteRecipeSteps(index)}
+                        icon="delete"
+                        iconColor={LGreen}
+                      >
+                      </IconButton>
+                    </Surface>
+                  ))}
+                </List.Accordion>
+                </ScrollView>
+                </View>
+                <View style={{flexDirection:'row', justifyContent:'space-between', paddingVertical: 10, paddingHorizontal: 5}}>
+                <Button onPress={handleAddRecipe} buttonColor={DGreen} textColor={LGreen}>
+                  <Text style = {{fontSize: 20, fontWeight: 'bold', color: LGreen}}> Save </Text>
+                </Button>
+                <Button onPress={hideRecipeAdder} buttonColor={DGreen} textColor={LGreen}>
+                  <Text style = {{fontSize: 20, fontWeight: 'bold', color: LGreen}}> Cancel </Text>
+                </Button>
+                </View>
+              </Card>
+            </Modal>
+            </>
+                ) : null}
+
+            {shouldShowSavedRecipes ? (
+              <>
+                <ScrollView></ScrollView>
+                <View style={{flexDirection: 'row', paddingHorizontal: '1%', justifyContent: 'center'}}>
+                  <Button onPress={handleNavigate} style={{...styles.showAdderButton}}><Text style={{fontSize: 20, fontWeight: 'bold', color: 'white'}}>Find More Recipes</Text></Button>
+                </View>
+              </>
+            ):null}
+        
           </Surface>
         </View>
           <Toast />
@@ -678,11 +708,21 @@ const styles = StyleSheet.create({
   addButton: {
     backgroundColor: DGreen,
     marginTop: 10,
+    alignSelf: 'center',
   },
   showAdderButton: {
     backgroundColor: DGreen,
     marginTop: 10,
-    minWidth: '45%'
+    width: '110%',
+    alignSelf: 'center',
+    justifyContent: 'center',
+    border: '1px solid white',
+    borderRadius: '10px'
+  },
+  moreRecipesButton: {
+    backgroundColor: DGreen,
+    marginTop: 10,
+    width: '90%',
   },
   itemContainer: {
     backgroundColor: BGColor,
@@ -721,6 +761,40 @@ const styles = StyleSheet.create({
     /* offset-x | offset-y | blur-radius | color */
     boxShadow: '10px 5px 5px 2px rgba(0, 0, 0, 0.2);',
     
+  },
+  iconcontainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    backgroundColor: DGreen,
+    border: '1px solid white',
+    borderRadius: '10px'
+  },
+  iconbackground: {
+    display: 'flex',
+    width: '50%',
+    height: '50px',
+    backgroundColor: DGreen,
+    justifyContent: 'center',
+    border: '1px solid white',
+    borderRadius: '10px'
+  },
+  recipeText: {
+    color: 'white',
+    fontSize: 20,
+    alignSelf: 'center',
+
+  },
+  pantryText: {
+    color: 'white',
+    fontSize: 25,
+    alignSelf: 'center',
+    marginTop: '10px',
+    marginBottom: '10px',
+
   },
   
 });

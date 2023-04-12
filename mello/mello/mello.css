@@ -3,7 +3,7 @@ DayPilot Navigator Theme
 https://themes.daypilot.org/navigator/theme/skig57
 Theme Designer Version: 2021.09.25.67272
 */
-.mello_main { border-left: 1px solid #5174a6;border-right: 1px solid #5174a6;border-bottom: 1px solid #5174a6; font-family: -apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif; font-size: 12px; }
+.mello_main { height: 100%; border-left: 1px solid #5174a6;border-right: 1px solid #5174a6;border-bottom: 1px solid #5174a6; font-family: -apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif; font-size: 12px; }
 .mello_main *, .mello_main *:before, .mello_main *:after { box-sizing: border-box; }
 .mello_line { border-bottom: 1px solid #5174a6; }
 /* month header */ 
