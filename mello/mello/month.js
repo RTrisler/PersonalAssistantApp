@@ -3,7 +3,7 @@ import {DayPilot, DayPilotCalendar, DayPilotNavigator} from "@daypilot/daypilot-
 import "./mello.css";
 import './mellocal.css'
 import { LinearGradient } from 'expo-linear-gradient';
-import { getDatabase, ref, set } from 'firebase/database';
+import { getDatabase, ref, set, get } from 'firebase/database';
 
 const BGColor = "#004052"
 
@@ -41,6 +41,14 @@ class Calendar extends Component {
         });
         const db = getDatabase();
         const dbEventsRef = ref(db, 'users/userID/events');
+        const dbObjectivesRef = ref(db, 'users/userID/valuesNeeded');
+        get(dbObjectivesRef).then((snapshot) => {
+          if(snapshot.exists()) {
+            let valuesNeeded = snapshot.val();
+            valuesNeeded[1] += 1;
+            set(dbObjectivesRef, valuesNeeded);
+          }
+        });
         set(dbEventsRef, dp.events.list);
       },
       eventDeleteHandling: "Update",
@@ -67,8 +75,13 @@ class Calendar extends Component {
     
 
   render() {
-
-    
+    const db = getDatabase();
+    const dbEventsRef = ref(db, 'users/userID/events');
+    get(dbEventsRef).then((snapshot) => {
+      if(snapshot.exists()) {
+        this.calendar.list = snapshot.val();
+      }
+    });
     return (
 <LinearGradient
         // Background Linear Gradient
