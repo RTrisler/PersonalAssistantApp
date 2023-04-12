@@ -8,7 +8,6 @@ import { ScrollView } from 'react-native-gesture-handler';
 import '@mobiscroll/react/dist/css/mobiscroll.min.css';
 import { Eventcalendar, snackbar, setOptions, Popup, Input, Textarea, formatDate, getJson, SegmentedGroup, SegmentedItem } from '@mobiscroll/react';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useNavigation } from '@react-navigation/native'
 
 const BGColor = "#003847"
 const LGreen = "#2AA198"
@@ -63,9 +62,6 @@ const responsivePopup = {
 };
 
 export default function GroceryAndDiet() {
-
-  const navigation = useNavigation()
-
   //vars for adding items
   const [itemAdderVisible, setItemAdderVisible] = useState(false);
   const [category, setCategory] = useState('');
@@ -176,9 +172,6 @@ export default function GroceryAndDiet() {
  
   const handleDeleteItem = (index) => {
     setList(list.filter((item, i) => i !== index));
-  };
-  const handleNavigate = () => {
-    navigation.navigate('MoreRecipes')
   };
 
   const fetchData = async (food) => {
@@ -467,6 +460,14 @@ export default function GroceryAndDiet() {
       <SafeAreaView style={styles.container}>
         {/* MEAL PLAN CONTAINER */}
         <Surface style={styles.mealContainer}>
+          <Surface style={styles.mealCard}></Surface>
+          <Surface style={styles.mealCard}>Sunday</Surface>
+          <Surface style={styles.mealCard}>Monday</Surface>
+          <Surface style={styles.mealCard}>Tuesday</Surface>
+          <Surface style={styles.mealCard}>Wednesday</Surface>
+          <Surface style={styles.mealCard}>Thursday</Surface>
+          <Surface style={styles.mealCard}>Friday</Surface>
+          <Surface style={styles.mealCard}>Saturday</Surface>
         </Surface>
         {/* GROCERY LIST CONTAINER */}
         <View style={{width: '45%',}}>
@@ -529,7 +530,6 @@ export default function GroceryAndDiet() {
           <Surface style = {{flex:1, backgroundColor: BGColor, borderRadius: '10px', }}>
             <View style={{flexDirection: 'row', paddingHorizontal: '1%', justifyContent: 'space-between'}}>
               <Button onPress={showRecipeAdder} style={{...styles.showAdderButton}}><Text style={{fontSize: 20, fontWeight: 'bold', color: LGreen}}>Add Recipe</Text></Button>
-              <Button onPress={handleNavigate} style={{...styles.showAdderButton}}><Text style={{fontSize: 20, fontWeight: 'bold', color: LGreen}}>View More Recipes</Text></Button>
             </View>
             <ScrollView>
               <List.Section style={{backgroundColor: 'red'}}>
@@ -682,7 +682,7 @@ const styles = StyleSheet.create({
   showAdderButton: {
     backgroundColor: DGreen,
     marginTop: 10,
-    minWidth: '45%'
+    minWidth: '70%'
   },
   itemContainer: {
     backgroundColor: BGColor,
