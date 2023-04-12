@@ -71,17 +71,25 @@ class Calendar extends Component {
   }
 
   
-
-    
-
-  render() {
+  componentDidMount() {
     const db = getDatabase();
     const dbEventsRef = ref(db, 'users/userID/events');
     get(dbEventsRef).then((snapshot) => {
-      if(snapshot.exists()) {
-        this.calendar.list = snapshot.val();
+      console.log('HELLO');
+      if(snapshot.exists()){
+        console.log(snapshot.val())
+        this.calendar.update(snapshot.val());
       }
-    });
+      else{
+        console.log('HELLO');
+      }
+  });
+  }
+    
+
+  render() {
+    
+    
     return (
 <LinearGradient
         // Background Linear Gradient

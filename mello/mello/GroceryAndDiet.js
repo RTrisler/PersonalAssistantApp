@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View,  StyleSheet,SafeAreaView, Platform,  TouchableOpacity} from 'react-native';
 import { TextInput, List, Checkbox, Divider, Surface, Button, Text, IconButton, Modal, Card, HelperText, } from 'react-native-paper';
 import axios from 'axios';
@@ -12,6 +12,7 @@ import { useNavigation } from '@react-navigation/native'
 import { FontAwesome5 } from '@expo/vector-icons';
 import { borderRadius, fontSize } from '@mui/system';
 import { BlurView } from 'expo-blur';
+import { getDatabase, ref, get, set, onValue } from 'firebase/database';
 
 
 const BGColor = "#003847"
@@ -245,8 +246,66 @@ export default function GroceryAndDiet() {
     setRecipeIngredients([]);
     setRecipeSteps([]);
     setRecipes([...recipes, {name: recName, ingredients: recIng, steps: recStep}]);
+
+    const db = getDatabase();
+    const dbvaluesNeeded = ref(db, 'users/userID/valuesNeeded')
+    get(dbvaluesNeeded).then((snapshot) => {
+      if(snapshot.exists()) {
+        let valuesNeeded = snapshot.val();
+        valuesNeeded[2] += 1;
+        set(dbvaluesNeeded, valuesNeeded);
+      }
+    });
+
     hideRecipeAdder();
   };
+
+  const db = getDatabase();
+  const dbPantry = ref(db, 'users/userID/pantry')
+  const dbRecipes = ref(db, 'users/userID/recipes')
+
+  useEffect(() => {
+    get(dbPantry).then((snapshot) => {
+      if(snapshot.exists()) {
+        setList(snapshot.val());
+      }
+      else {
+        set(dbPantry, list);
+      }
+    }, []);
+    get(dbRecipes).then((snapshot) => {
+      if(snapshot.exists()) {
+        setRecipes(snapshot.val());
+      }
+      else {
+        set(dbRecipes, recipes);
+      }
+    }, []);
+  }, []);
+
+  useEffect(() => {
+    onValue(dbPantry, (snapshot) => {
+      if(snapshot.exists()) {
+        setList(snapshot.val());
+      }
+    });
+    
+    onValue(dbRecipes, (snapshot) => {
+      if(snapshot.exists()) {
+        setRecipes(snapshot.val());
+      }
+    });
+    
+  }, []);
+
+  useEffect(() => {
+    set(dbPantry, list);
+  }, [list]);
+
+  useEffect(() => {
+    set(dbRecipes, recipes);
+  }, [recipes]);
+
 
   const [recipeIngredients, setRecipeIngredients] = useState([]);
 

@@ -22,15 +22,21 @@ const r1head = require('./assets/img/head/robot1headbitmap.png')
 const r1body = require('./assets/img/body/robot1bodybitmap.png')
 const r1wheels = require('./assets/img/robot/robot2.png')
 
-let incrementingValues = [1,3,3,3];
-let valuesNeeded = [1,0,0,0];
+
+
+
+
+export default function Character() {
+
+const [incrementingValues,setIncrementingValues] = useState([1,3,3,3]);
+const [valuesNeeded, setValuesNeeded] = useState([1,0,0,0]);
 
 const icons = ['login','calendar-week','food','clock-outline']
 
 function chooseObjective(){
   const objv1 = "Log into app " + incrementingValues[0] +" days";
   const objv2 = "Create " + incrementingValues[1] +" events";
-  const objv3 = "Set " + incrementingValues[2] +" meal plans";
+  const objv3 = "Create " + incrementingValues[2] +" recipes";
   const objv4 = "Create " + incrementingValues[3] +" daily tasks";
   const allObjectivesLists = [
     {id:0, text:objv1, style:styles.unfinishedObjective, fillColor:'black',
@@ -50,18 +56,19 @@ function chooseObjective(){
 }
 
 const updateObjective = (selectedItem) =>{
-  valuesNeeded[selectedItem.id] = 0;
-  incrementingValues[selectedItem.id]++;
+  let nValuesNeeded = valuesNeeded;
+  nValuesNeeded[selectedItem.id] = 0;
+  let nIValues = incrementingValues
+  nIValues[selectedItem.id]++;
+
+  setIncrementingValues(nIValues);
+  setValuesNeeded(nValuesNeeded);
 const db = getDatabase();
 const dbvaluesNeededRef = ref(db,'users/userID/valuesNeeded');
 const dbIncrementingValues = ref(db,'users/userID/incrementingValues');
 set(dbIncrementingValues, incrementingValues);
 set(dbvaluesNeededRef, valuesNeeded);
 }
-
-
-
-export default function Character() {
 
 const db = getDatabase();
 const dbIncrementingValues = ref(db,'users/userID/incrementingValues');
@@ -70,7 +77,7 @@ const dbvaluesNeededRef = ref(db,'users/userID/valuesNeeded');
 useEffect(() => {
   get(dbIncrementingValues).then((snapshot) => {
     if(snapshot.exists()) {
-      incrementingValues = snapshot.val();
+      setIncrementingValues(snapshot.val());
     }
     else {
       set(dbIncrementingValues, incrementingValues);
@@ -78,7 +85,7 @@ useEffect(() => {
   }, []);
   get(dbvaluesNeededRef).then((snapshot) => {
     if(snapshot.exists()) {
-      valuesNeeded = snapshot.val();
+      setValuesNeeded(snapshot.val());
     }
     else {
       set(dbvaluesNeededRef, valuesNeeded);
@@ -89,13 +96,13 @@ useEffect(() => {
 useEffect(() => {
   onValue(dbIncrementingValues, (snapshot) => {
     if(snapshot.exists()) {
-      incrementingValues = snapshot.val();
+      setIncrementingValues(snapshot.val());
     }
   });
   
   onValue(dbvaluesNeededRef, (snapshot) => {
     if(snapshot.exists()) {
-      valuesNeeded = snapshot.val();
+      setValuesNeeded(snapshot.val());
     }
   });
   

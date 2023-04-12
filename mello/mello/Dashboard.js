@@ -7,10 +7,9 @@ import { Checkbox, FormGroup, FormControlLabel, Box  } from '@material-ui/core';
 import { Divider, Card, Button, Modal, TextInput, Surface } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-web';
 import { useFonts } from 'expo-font';
-import { getDatabase, ref, onValue, set } from 'firebase/database';
+import { getDatabase, ref, onValue, set, get } from 'firebase/database';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useEffect, useState } from 'react';
-import {db} from './firebase'
 import { BlurView } from 'expo-blur';
 import Calendar from './month'
 import ToDoList from "./ToDoList";
@@ -27,6 +26,39 @@ export default function Dashboard() {
   
 
   const [ toDoList, setToDoList ] = useState([]);
+
+  useEffect(() => {
+    get(dbToDo).then((snapshot) => {
+      if(snapshot.exists()) {
+        setToDoList(snapshot.val());
+      }
+      else {
+      }
+    }, []);
+  }, []);
+
+  useEffect(() => {
+    onValue(dbToDo, (snapshot) => {
+      if(snapshot.exists()) {
+        setToDoList(snapshot.val());
+      }
+    });
+  }, []);
+
+  const [initialized, setInitialized] = useState(false);
+  useEffect(() => {
+
+    if(!initialized) {
+      setInitialized(true);
+      console.log('initializing')
+      console.log(initialized)
+    }
+    else {
+      console.log('setting list')
+      console.log(initialized)
+      set(dbToDo, toDoList);
+    }
+  }, [toDoList]);
 
   const handleToggle = (id) => {
     let mapped = toDoList.map(task => {
@@ -46,6 +78,14 @@ export default function Dashboard() {
     let copy = [...toDoList];
     copy = [...copy, { id: toDoList.length + 1, task: userInput, complete: false }];
     setToDoList(copy);
+    const dbObjectivesRef = ref(db, 'users/userID/valuesNeeded');
+        get(dbObjectivesRef).then((snapshot) => {
+          if(snapshot.exists()) {
+            let valuesNeeded = snapshot.val();
+            valuesNeeded[3] += 1;
+            set(dbObjectivesRef, valuesNeeded);
+          }
+        });
   }
 
   const [fontsLoaded] = useFonts({
@@ -53,19 +93,11 @@ export default function Dashboard() {
   });
 
   const [todoData, setTodoData] = useState([])
+  
+  const db = getDatabase();
+  const dbToDo = ref(db, 'users/userID/todo');
 
-  useEffect (() => {
-    const starCountRef = ref(db, 'users/userID/todo');
-    onValue(starCountRef, (snapshot) => {
-      const data = snapshot.val();
-      const newPosts = Object.keys(data).map(key => ({
-        id: key,
-        ...data[key]
-      }));
-      console.log(newPosts);
-      //setTodoData(newPosts);
-  });
-}, [])
+  
 
 
   const getFormattedTime = (date) => {
