@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import 'react-native-gesture-handler';
 import { Button, Surface, IconButton, ProgressBar } from 'react-native-paper';
@@ -13,6 +13,7 @@ import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import SetMealIcon from '@mui/icons-material/SetMeal';
 import robot from './assets/img/robot/robot2.png'
+import { getDatabase, ref, set, get, onValue } from 'firebase/database';
 const BGColor = "#003847"
 const LGreen = "#2AA198"
 const DGreen = "#002B36"
@@ -21,14 +22,21 @@ const r1head = require('./assets/img/head/robot1headbitmap.png')
 const r1body = require('./assets/img/body/robot1bodybitmap.png')
 const r1wheels = require('./assets/img/robot/robot2.png')
 
-const incrementingValues = [1,3,3,3];
-const valuesNeeded = [1,0,0,0];
+
+
+
+
+export default function Character() {
+
+const [incrementingValues,setIncrementingValues] = useState([1,3,3,3]);
+const [valuesNeeded, setValuesNeeded] = useState([1,0,0,0]);
+
 const icons = ['login','calendar-week','food','clock-outline']
 
 function chooseObjective(){
   const objv1 = "Log into app " + incrementingValues[0] +" days";
-  const objv2 = "Create " + incrementingValues[1] +" new weekly tasks";
-  const objv3 = "Set " + incrementingValues[2] +" meal plans";
+  const objv2 = "Create " + incrementingValues[1] +" events";
+  const objv3 = "Create " + incrementingValues[2] +" recipes";
   const objv4 = "Create " + incrementingValues[3] +" daily tasks";
   const allObjectivesLists = [
     {id:0, text:objv1, style:styles.unfinishedObjective, fillColor:'black',
@@ -48,13 +56,87 @@ function chooseObjective(){
 }
 
 const updateObjective = (selectedItem) =>{
-  valuesNeeded[selectedItem.id] = 0;
-  incrementingValues[selectedItem.id]++;
+  let nValuesNeeded = valuesNeeded;
+  nValuesNeeded[selectedItem.id] = 0;
+  let nIValues = incrementingValues
+  nIValues[selectedItem.id]++;
+
+  setIncrementingValues(nIValues);
+  setValuesNeeded(nValuesNeeded);
+const db = getDatabase();
+const dbvaluesNeededRef = ref(db,'users/userID/valuesNeeded');
+const dbIncrementingValues = ref(db,'users/userID/incrementingValues');
+set(dbIncrementingValues, incrementingValues);
+set(dbvaluesNeededRef, valuesNeeded);
 }
 
+const db = getDatabase();
+const dbIncrementingValues = ref(db,'users/userID/incrementingValues');
+const dbvaluesNeededRef = ref(db,'users/userID/valuesNeeded');
+const dbXPRef = ref(db,'users/userID/xp');
+const dbLVLRef = ref(db,'users/userID/level');
+useEffect(() => {
+  get(dbIncrementingValues).then((snapshot) => {
+    if(snapshot.exists()) {
+      setIncrementingValues(snapshot.val());
+    }
+    else {
+      set(dbIncrementingValues, incrementingValues);
+    }
+  }, []);
+  get(dbvaluesNeededRef).then((snapshot) => {
+    if(snapshot.exists()) {
+      setValuesNeeded(snapshot.val());
+    }
+    else {
+      set(dbvaluesNeededRef, valuesNeeded);
+    }
+  }, []);
+  get(dbXPRef).then((snapshot) => {
+    if(snapshot.exists()) {
+      setProgress(snapshot.val());
+    }
+    else {
+      set(dbXPRef, progress);
+    }
+  }, []);
+  get(dbLVLRef).then((snapshot) => {
+    if(snapshot.exists()) {
+      setLevel(snapshot.val());
+    }
+    else {
+      set(dbLVLRef, level);
+    }
+  }, []);
+}, []);
 
+useEffect(() => {
+  onValue(dbIncrementingValues, (snapshot) => {
+    if(snapshot.exists()) {
+      setIncrementingValues(snapshot.val());
+    }
+  });
+  
+  onValue(dbvaluesNeededRef, (snapshot) => {
+    if(snapshot.exists()) {
+      setValuesNeeded(snapshot.val());
+    }
+  });
 
-export default function Character() {
+  onValue(dbXPRef, (snapshot) => {
+    if(snapshot.exists()) {
+      setProgress(snapshot.val());
+    }
+  });
+
+  onValue(dbLVLRef, (snapshot) => {
+    if(snapshot.exists()) {
+      setLevel(snapshot.val());
+    }
+  });
+  
+}, []);
+
 
   const [shouldShowObjectives, setShouldShowObjectives] = useState(false);
   const [shouldShowShop, setShouldShowShop] = useState(false);
@@ -64,17 +146,6 @@ export default function Character() {
   const chosenObjectives = chooseObjective();
   const [obj1, setObj1] = React.useState(false);
   const [obj2, setObj2] = React.useState(true);
-
-  const check = () =>
-  {
-    if (obj2 == true){
-      setObj2(false)
-    }
-    else{
-      setObj2(true)
-      levelUp()
-    }
-  }
 
   const levelUp = () => 
   {
@@ -126,8 +197,10 @@ export default function Character() {
                           if (valuesNeeded[objective.id] >= incrementingValues[objective.id]) {
                           updateObjective(objective);
                           setProgress(() => {
+                            set(dbXPRef, 20 + progress)
                             setProgress(20 + progress)        
                               if (progress === 100){
+                                set(dbLVLRef, level+1)
                                 setLevel(level+1)
                                 return 0; 
                               }        

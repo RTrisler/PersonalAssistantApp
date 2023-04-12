@@ -3,6 +3,7 @@ import {DayPilot, DayPilotCalendar, DayPilotNavigator} from "@daypilot/daypilot-
 import "./mello.css";
 import './mellocal.css'
 import { LinearGradient } from 'expo-linear-gradient';
+import { getDatabase, ref, set, get } from 'firebase/database';
 
 const BGColor = "#004052"
 
@@ -38,6 +39,17 @@ class Calendar extends Component {
           id: DayPilot.guid(),
           text: modal.result
         });
+        const db = getDatabase();
+        const dbEventsRef = ref(db, 'users/userID/events');
+        const dbObjectivesRef = ref(db, 'users/userID/valuesNeeded');
+        get(dbObjectivesRef).then((snapshot) => {
+          if(snapshot.exists()) {
+            let valuesNeeded = snapshot.val();
+            valuesNeeded[1] += 1;
+            set(dbObjectivesRef, valuesNeeded);
+          }
+        });
+        set(dbEventsRef, dp.events.list);
       },
       eventDeleteHandling: "Update",
       onEventClick: async args => {
@@ -47,6 +59,9 @@ class Calendar extends Component {
         const e = args.e;
         e.data.text = modal.result;
         dp.events.update(e);
+        const db = getDatabase();
+        const dbEventsRef = ref(db, 'users/userID/events');
+        set(dbEventsRef, dp.events.list);
       },
     };
   }
@@ -56,11 +71,24 @@ class Calendar extends Component {
   }
 
   
-
+  componentDidMount() {
+    const db = getDatabase();
+    const dbEventsRef = ref(db, 'users/userID/events');
+    get(dbEventsRef).then((snapshot) => {
+      console.log('HELLO');
+      if(snapshot.exists()){
+        console.log(snapshot.val())
+        this.calendar.update(snapshot.val());
+      }
+      else{
+        console.log('HELLO');
+      }
+  });
+  }
     
 
   render() {
-
+    
     
     return (
 <LinearGradient

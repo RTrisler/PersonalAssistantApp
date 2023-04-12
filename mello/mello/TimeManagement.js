@@ -38,17 +38,32 @@ function Overview({ navigation }) {
     setDayText(daytext);
     setMonthDay(monthday);
     setMonthText(monthtext);
-  }, []);
-
+  }, );
+  const getFormattedTime = () => {
+    const date = new Date()
+    let fCDateHour = date.getHours()+ '';
+    if(fCDateHour.length <2) {
+      fCDateHour = '0' + fCDateHour;
+    }
+    let fCDateMinute = date.getMinutes() + '';
+    if(fCDateMinute.length <2) {
+      fCDateMinute = '0' + fCDateMinute;
+    }
+    let fCDateSeconds = date.getSeconds() + '';
+    if(fCDateSeconds.length <2) {
+      fCDateSeconds = '0' + fCDateSeconds;
+    }
+    
+    const fCDateStr = fCDateHour + ':' + fCDateMinute + ':' + fCDateSeconds;
+    return fCDateStr;
+  };
   useEffect(() => {
-    let today = new Date();
-    let time = today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds();
     let secTimer = setInterval(() =>{
-      setCurrentTime(time)
+      setCurrentTime(getFormattedTime())
     }, 1000) 
   
     return () => clearInterval(secTimer);
-  }, []);
+  }, );
   
 
   return(
