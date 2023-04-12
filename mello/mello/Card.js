@@ -10,8 +10,7 @@ const DGreen = "#002B36"
 
 export default function Card() {
     return (
-        <View style={{ flex: 1, flexDirection: 'row', alignItems: "center", justifyContent: "center", backgroundColor: BGColor }}>
-            <View style={{ backgroundColor: "#eee", borderRadius: 10, overflow: "hidden" }}>
+            <View style={{ backgroundColor: "red", borderRadius: 10, overflow: "hidden", width: '400px', marginLeft: '10px', marginTop: '10px' }}>
             <View>
                 <Image
                     source={{uri:'https://engineering.fb.com/wp-content/uploads/2016/04/yearinreview.jpg'}}
@@ -39,7 +38,6 @@ export default function Card() {
                 </View>
             </View>
             </View>
-        </View>
     );
 };
 

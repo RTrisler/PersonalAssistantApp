@@ -7,6 +7,7 @@ const BGColor = "#003847";
 
 export default function Recipe({ meal }) {
   const [imageUrl, setImageUrl] = useState("")
+  const [recipeData, setRecipeData] = useState(null)
 
   useEffect(() => {
     fetch(
@@ -15,7 +16,8 @@ export default function Recipe({ meal }) {
       .then(response => response.json())
       .then(data => {
         setImageUrl(data.image)
-        console.log(data)
+        setRecipeData(data)
+        console.log(data.analyzedInstructions)
 
       })
       .catch(() => {
@@ -24,25 +26,32 @@ export default function Recipe({ meal }) {
   }, [meal.id])
 
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-            <View style={{ backgroundColor: "#eee", borderRadius: 10, overflow: "hidden" }}>
+    <View style={{ flex: 1, margin: '10px', }}>
+            <View style={{ backgroundColor: "#eee", borderRadius: 10, overflow: "hidden", width: '600px' }}>
             <View>
                 <Image
                     source={{uri:imageUrl}}
                     style={{
-                        height: 200,
-                        width: 250
+                        height: 400,
+                        width: '600px'
                     }}
                 />
             </View>
-            <View style={{ padding: 10, width: 250 }}>
+            <View style={{ padding: 10, width: '600px', height: '250px' }}>
                 <Text>{meal.title}</Text>
                 <Text style={{ color: "#777", paddingTop: 5 }}>
                 Ingredients
                 </Text>
+                {recipeData && recipeData.extendedIngredients.map(ingredent => {
+                    return <Text key={ingredent.id}>{ingredent.name}</Text>;
+                    }) }
+                    
                 <Text style={{ color: "#777", paddingTop: 5 }}>
                 Steps
                 </Text>
+                {recipeData && recipeData.analyzedInstructions.map(instructions => {
+                    return <Text key={instructions.name}>{instructions.steps.step}</Text>;
+                    }) }
                 <View style={styles.fitToText}>
                     <Button
                         title='Add To My Recipes'

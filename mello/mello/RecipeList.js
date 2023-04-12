@@ -5,14 +5,13 @@ import Recipe from "./Recipe"
 import { View } from "react-native-web";
 
 export default function RecipeList({ recipeData }) {
-    console.log(recipeData);
   return (
-    <View>
-      <View style={{backgroundColor: 'red'}}>
+    
+    <View style={{flex: 1, flexDirection: 'row',}}>
         {recipeData.map(meal => {
-          return <Recipe key={meal.id} meal={meal} />
+            return <Recipe key={meal.id} meal={meal} />
         })}
-      </View>
     </View>
+    
   )
 }
