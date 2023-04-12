@@ -33,6 +33,7 @@ export default function Home() {
       tabBarInactiveBackgroundColor:'#022b3a',
       headerShown: false,
       showIcon: true,
+      shadow: true,
       }}>
     <TabNav.Screen name='Home' component={Dashboard} options={{ tabBarIcon:(tabInfo) => (<MaterialCommunityIcons name="home-account" size={24} color="black" />)}}/>
     <TabNav.Screen name="Schedule" component={Calendar} options={{ tabBarIcon:(tabInfo) => (<AntDesign name="book" size={24} color="black" />)}}/>

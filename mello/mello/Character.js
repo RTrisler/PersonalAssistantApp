@@ -12,14 +12,14 @@ import { Checkbox, FormGroup, FormControlLabel, Box  } from '@material-ui/core';
 import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import SetMealIcon from '@mui/icons-material/SetMeal';
-
+import robot from './assets/img/robot/robot2.png'
 const BGColor = "#003847"
 const LGreen = "#2AA198"
 const DGreen = "#002B36"
 
 const r1head = require('./assets/img/head/robot1headbitmap.png')
 const r1body = require('./assets/img/body/robot1bodybitmap.png')
-const r1wheels = require('./assets/img/wheels/robot1wheelsbitmap.png')
+const r1wheels = require('./assets/img/robot/robot2.png')
 
 const incrementingValues = [1,3,3,3];
 const valuesNeeded = [1,0,0,0];
@@ -93,9 +93,7 @@ export default function Character() {
     <View style={styles.container}>
       <View style={styles.charactercontainer}>
         <View style={{justifyContent: 'center', alignItems: 'center'}}>
-        <ImageBackground source={r1head} style={styles.head}></ImageBackground>
-        <ImageBackground source={r1body} style={styles.body}></ImageBackground>  
-        <ImageBackground source={r1wheels} style={styles.wheels}></ImageBackground>
+        <img src={robot} style={styles.wheels}/>
         </View>
         <View className='div'>
           <ProgressBar progress={progress/100} style={{borderRadius: 20, height: 20}} color={LGreen}/>
@@ -213,7 +211,7 @@ const styles = StyleSheet.create({
   wheels: {
     width: '215px',
     height: '304px',
-    marginTop: '-304px',
+    marginTop: '-65px',
     zIndex: 0
   },
   iconcontainer: {
