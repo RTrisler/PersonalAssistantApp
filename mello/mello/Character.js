@@ -73,7 +73,8 @@ set(dbvaluesNeededRef, valuesNeeded);
 const db = getDatabase();
 const dbIncrementingValues = ref(db,'users/userID/incrementingValues');
 const dbvaluesNeededRef = ref(db,'users/userID/valuesNeeded');
-
+const dbXPRef = ref(db,'users/userID/xp');
+const dbLVLRef = ref(db,'users/userID/level');
 useEffect(() => {
   get(dbIncrementingValues).then((snapshot) => {
     if(snapshot.exists()) {
@@ -91,6 +92,22 @@ useEffect(() => {
       set(dbvaluesNeededRef, valuesNeeded);
     }
   }, []);
+  get(dbXPRef).then((snapshot) => {
+    if(snapshot.exists()) {
+      setProgress(snapshot.val());
+    }
+    else {
+      set(dbXPRef, progress);
+    }
+  }, []);
+  get(dbLVLRef).then((snapshot) => {
+    if(snapshot.exists()) {
+      setLevel(snapshot.val());
+    }
+    else {
+      set(dbLVLRef, level);
+    }
+  }, []);
 }, []);
 
 useEffect(() => {
@@ -105,11 +122,20 @@ useEffect(() => {
       setValuesNeeded(snapshot.val());
     }
   });
+
+  onValue(dbXPRef, (snapshot) => {
+    if(snapshot.exists()) {
+      setProgress(snapshot.val());
+    }
+  });
+
+  onValue(dbLVLRef, (snapshot) => {
+    if(snapshot.exists()) {
+      setLevel(snapshot.val());
+    }
+  });
   
 }, []);
-
-
-
 
 
   const [shouldShowObjectives, setShouldShowObjectives] = useState(false);
@@ -171,8 +197,10 @@ useEffect(() => {
                           if (valuesNeeded[objective.id] >= incrementingValues[objective.id]) {
                           updateObjective(objective);
                           setProgress(() => {
+                            set(dbXPRef, 20 + progress)
                             setProgress(20 + progress)        
                               if (progress === 100){
+                                set(dbLVLRef, level+1)
                                 setLevel(level+1)
                                 return 0; 
                               }        
