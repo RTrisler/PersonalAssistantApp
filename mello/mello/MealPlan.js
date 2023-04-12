@@ -6,11 +6,20 @@ import { View, StyleSheet, Button, TouchableOpacity, ScrollView } from "react-na
 import { Surface, Text, TextInput} from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
 import Card from "./Card";
+import { useFonts } from 'expo-font';
+import { useNavigation } from '@react-navigation/native'
 
 
 const BGColor = "#003847";
 
 function MealPlan() {
+
+  const navigation = useNavigation()
+
+  const [fontsLoaded] = useFonts({
+    'Elnath': require('/assets/fonts/ELNATH.ttf'),
+  });
+
   const [mealData, setMealData] = useState(null)
   const [recipeData, setRecipeData] = useState(null)
   const [calories, setCalories] = useState(2000)
@@ -52,6 +61,10 @@ function MealPlan() {
     setIngredient(e.target.value)
   }
 
+  const handleNavigateBack = () => {
+    navigation.navigate("Groceries and Diet")
+  };
+
   return (
     <LinearGradient
         colors={[ BGColor, 'white']}
@@ -63,6 +76,21 @@ function MealPlan() {
           style={styles.topControl}
           elevation={5}
         >
+          <View style={styles.top}>
+            <View style={styles.topContainer}>
+              <View style={styles.backBtnContainer}>
+                <TouchableOpacity
+                  style={styles.backButton}
+                  onPress={handleNavigateBack}
+                >
+                  <Text style={styles.backButtonText}>Back to Dashboard</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.textContainer}>
+                <Text style={styles.titleText}>Mello</Text>
+              </View>
+            </View>
+          </View>
           {/* 
           <input
             type="number"
@@ -126,5 +154,46 @@ const styles = StyleSheet.create({
       flexDirection: 'row',
       justifyContent: 'space-between',
       marginLeft: 'auto'
+  },
+  titleText: {
+    fontFamily: 'Elnath',
+    fontWeight: 'bold',
+    fontSize: 40,
+    color: '#fff',
+    marginBottom: '5px'
+  },
+  backButtonText: {
+    fontFamily: 'Elnath',
+    fontWeight: 'bold',
+    fontSize: 20,
+    color: '#fff',
+    marginBottom: '5px'
+  },
+  backBtnContainer: {
+    width:"33.3%",
+    alignItems: "left",
+    marginBottom: '50px'
+  },
+  backButton: {
+    width: '250px',
+    alignSelf: 'left',
+  },
+  top: {
+    height: "5%",
+    width: "95%",
+    alignContent: "center",
+    justifyContent: "center",
+  },
+  topContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: "center",
+  },
+  textContainer: {
+    width:"33.3%",
+    alignItems: "center",
+    marginBottom: '50px'
   },
 })

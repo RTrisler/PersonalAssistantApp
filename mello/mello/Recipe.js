@@ -1,13 +1,15 @@
 // REcipe.js
 import React, { useState, useEffect } from "react"
-import { StyleSheet, Text, View, TouchableOpacity, Image, Button} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, Button, ScrollView} from 'react-native';
 import { Surface} from "react-native-paper"
+
 
 const BGColor = "#003847";
 
 export default function Recipe({ meal }) {
   const [imageUrl, setImageUrl] = useState("")
   const [recipeData, setRecipeData] = useState(null)
+  const [instructions, setInstructions] = useState(null)
 
   useEffect(() => {
     fetch(
@@ -17,8 +19,8 @@ export default function Recipe({ meal }) {
       .then(data => {
         setImageUrl(data.image)
         setRecipeData(data)
+        console.log(data)
         console.log(data.analyzedInstructions)
-
       })
       .catch(() => {
         console.log("error")
@@ -32,7 +34,7 @@ export default function Recipe({ meal }) {
                 <Image
                     source={{uri:imageUrl}}
                     style={{
-                        height: 400,
+                        height: 300,
                         width: '600px'
                     }}
                 />
@@ -42,15 +44,19 @@ export default function Recipe({ meal }) {
                 <Text style={{ color: "#777", paddingTop: 5 }}>
                 Ingredients
                 </Text>
-                {recipeData && recipeData.extendedIngredients.map(ingredent => {
-                    return <Text key={ingredent.id}>{ingredent.name}</Text>;
-                    }) }
+                <ScrollView>
+                    {recipeData && recipeData.extendedIngredients.map(ingredent => {
+                        return <Text key={ingredent.id}>{ingredent.name}</Text>;
+                        }) }
+                </ScrollView>
                     
                 <Text style={{ color: "#777", paddingTop: 5 }}>
                 Steps
                 </Text>
-                {recipeData && recipeData.analyzedInstructions.map(instructions => {
-                    return <Text key={instructions.name}>{instructions.steps.step}</Text>;
+                {recipeData && recipeData.analyzedInstructions.map(instruction => {
+                    return <ScrollView key={instruction.id}>{instruction.steps.map(step => {
+                        return <Text key={step.id}>{step.step + " \n"}</Text>
+                    })}</ScrollView>;
                     }) }
                 <View style={styles.fitToText}>
                     <Button

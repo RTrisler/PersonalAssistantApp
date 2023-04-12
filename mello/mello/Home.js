@@ -3,6 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import 'react-native-gesture-handler'
 import { AntDesign } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
@@ -22,6 +23,15 @@ import CardContainer from './CardContianer';
 
 const BGColor = "#004052"
 const TabNav = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
+
+function HomeStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen options={{headerShown: false}} name="MoreRecipes" component={MealPlan} />
+    </Stack.Navigator>
+  );
+}
 
 export default function Home() {
   return (
@@ -35,8 +45,10 @@ export default function Home() {
       }}>
     <TabNav.Screen name='Home' component={Dashboard} options={{ tabBarIcon:(tabInfo) => (<MaterialCommunityIcons name="home-account" size={24} color="black" />)}}/>
     <TabNav.Screen name="Schedule" component={TimeManagement} options={{ tabBarIcon:(tabInfo) => (<AntDesign name="book" size={24} color="black" />)}}/>
-    <TabNav.Screen name="Groceries and Diet" component={MealPlan} options={{ tabBarIcon:(tabInfo) => (<MaterialCommunityIcons name="food-variant" size={24} color="black" />)}}/>
+    <TabNav.Screen name="Groceries and Diet" component={GroceryAndDiet} options={{ tabBarIcon:(tabInfo) => (<MaterialCommunityIcons name="food-variant" size={24} color="black" />)}}/>
+    <TabNav.Screen name='MoreRecipes' component={HomeStack}  options={{tabBarButton: () => null,tabBarVisible: false,}} />
     <TabNav.Screen name='Settings' component={Settings} options={{ tabBarIcon:(tabInfo) => (<Fontisto name="player-settings" size={24} color="black" />)}}/>
+    
   </TabNav.Navigator>
     
   );
