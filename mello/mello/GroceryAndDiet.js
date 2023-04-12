@@ -11,6 +11,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native'
 import { FontAwesome5 } from '@expo/vector-icons';
 import { borderRadius, fontSize } from '@mui/system';
+import { BlurView } from 'expo-blur';
 
 
 const BGColor = "#003847"
@@ -475,7 +476,7 @@ export default function GroceryAndDiet() {
         </Surface>
         {/* Pantry LIST CONTAINER */}
         <View style={{width: '45%',}}>
-          <Surface style = {{flex:1, backgroundColor: BGColor, borderRadius: '10px', overflow: 'hidden'}}>
+          <BlurView style = {{...styles.pantryContainer, flex:1, backgroundColor: BGColor, borderRadius: '10px', overflow: 'hidden'}}>
             <View style={styles.iconcontainer}>
                 <Text style={styles.pantryText}> Pantry </Text>
             </View>
@@ -528,12 +529,12 @@ export default function GroceryAndDiet() {
                 </View>
               </Card>
             </Modal>
-          </Surface>
+          </BlurView>
         </View>
 
         {/* RECIPE LIST CONTAINER */}
         <View style={{width: '45%', height: '45%'}}>
-          <Surface style = {{flex:1, backgroundColor: BGColor, borderRadius: '10px', overflow: 'hidden'}}>
+          <BlurView style = {{...styles.pantryContainer, flex:1, backgroundColor: BGColor, borderRadius: '10px', overflow: 'hidden'}}>
             <View style={styles.iconcontainer}>
                 <TouchableOpacity style={styles.iconbackground}  onPress={() => {setShouldShowNewRecipe(!shouldShowNewRecipe); setShouldShowSavedRecipes(false); }}>
                   <Text style={styles.recipeText}>New Recipe</Text>
@@ -666,7 +667,7 @@ export default function GroceryAndDiet() {
               </>
             ):null}
         
-          </Surface>
+          </BlurView>
         </View>
           <Toast />
       </SafeAreaView>
@@ -795,6 +796,15 @@ const styles = StyleSheet.create({
     marginTop: '10px',
     marginBottom: '10px',
 
+  },
+  pantryContainer: {
+    width: "95%",
+    height: "80%",
+    borderColor: '#fff',
+    borderWidth: 2,
+    borderRadius: 10,
+    padding: 10,
+    marginVertical: "5px"
   },
   
 });
