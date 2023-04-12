@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {DayPilot, DayPilotCalendar, DayPilotNavigator} from "@daypilot/daypilot-lite-react";
 import "./mello.css";
+import './mellocal.css'
 import { LinearGradient } from 'expo-linear-gradient';
 
 const BGColor = "#004052"
@@ -54,49 +55,21 @@ class Calendar extends Component {
     return this.calendarRef.current.control;
   }
 
-  componentDidMount() {
+  
 
-    const events = [
-      {
-        id: 1,
-        text: "Event 1",
-        start: "2023-03-07T10:30:00",
-        end: "2023-03-07T13:00:00"
-      },
-      {
-        id: 2,
-        text: "Event 2",
-        start: "2023-03-08T09:30:00",
-        end: "2023-03-08T11:30:00",
-        backColor: "#6aa84f"
-      },
-      {
-        id: 3,
-        text: "Event 3",
-        start: "2023-03-08T12:00:00",
-        end: "2023-03-08T15:00:00",
-        backColor: "#f1c232"
-      },
-      {
-        id: 4,
-        text: "Event 4",
-        start: "2023-03-06T11:30:00",
-        end: "2023-03-06T14:30:00",
-        backColor: "#cc4125"
-      },
-    ];
-
-    const startDate = "2023-03-07";
-
-    this.calendar.update({startDate, events});
-
-  }
+    
 
   render() {
 
     
     return (
-
+<LinearGradient
+        // Background Linear Gradient
+        colors={[ BGColor, 'white']}
+        style={styles.gradient}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+      >
       <div style={styles.wrap}>
         <div style={styles.left}>
           <DayPilotNavigator
@@ -104,8 +77,6 @@ class Calendar extends Component {
             selectMode={"week"}
             showMonths={3}
             skipMonths={3}
-            startDate={"2023-03-07"}
-            selectionDay={"2023-03-07"}
             onTimeRangeSelected={ args => {
               this.calendar.update({
                 startDate: args.day
@@ -115,12 +86,13 @@ class Calendar extends Component {
         </div>
         <div style={styles.main}>
           <DayPilotCalendar
+          theme={"mellocal"}
             {...this.state}
             ref={this.calendarRef}
           />
         </div>
       </div>
-    );
+    </LinearGradient>);
   }
 }
 
