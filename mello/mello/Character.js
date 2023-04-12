@@ -205,7 +205,7 @@ useEffect(() => {
                                 return 0; 
                               }        
                             }
-                          );
+                          )
                         }
                       }}
                       >
@@ -233,7 +233,7 @@ useEffect(() => {
                     </Button>
                   </View>
                 </Surface>
-              ))};
+              ))}
           </Surface>
             ) : null}
             {shouldShowEditBot ?
