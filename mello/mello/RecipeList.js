@@ -2,19 +2,17 @@
 import React from "react"
 import Meal from "./Meal"
 import Recipe from "./Recipe"
+import { View } from "react-native-web";
 
 export default function RecipeList({ recipeData }) {
     console.log(recipeData);
   return (
-    <main>
-      <section>
-      </section>
-
-      <section className="meals">
+    <View>
+      <View style={{backgroundColor: 'red'}}>
         {recipeData.map(meal => {
           return <Recipe key={meal.id} meal={meal} />
         })}
-      </section>
-    </main>
+      </View>
+    </View>
   )
 }

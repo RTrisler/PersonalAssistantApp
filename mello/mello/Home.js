@@ -16,7 +16,8 @@ import TimeManagement from './TimeManagement';
 import TodoAppScreen from './ToDoAppScreen';
 import Dashboard from './Dashboard';
 import MealPlan from './MealPlan';
-
+import Card from './Card';
+import CardContainer from './CardContianer';
 
 
 const BGColor = "#004052"
