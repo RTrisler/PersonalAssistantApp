@@ -22,7 +22,7 @@ import Calendar from './month'
 import MealPlan from './MealPlan';
 
 
-const BGColor = "#004052"
+const BGColor = "#05586e"
 const TabNav = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -40,7 +40,7 @@ export default function Home() {
       tabBarActiveTintColor: '#467599',
       tabBarInactiveTintColor: '#fcf7ff', 
       tabBarActiveBackgroundColor: '#92828d',
-      tabBarInactiveBackgroundColor:'#022b3a',
+      tabBarInactiveBackgroundColor:'#05586e',
       headerShown: false,
       showIcon: true,
       }}>
