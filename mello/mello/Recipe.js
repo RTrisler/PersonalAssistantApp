@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react"
 import { StyleSheet, Text, View, TouchableOpacity, Image, Button, ScrollView} from 'react-native';
 import { Surface} from "react-native-paper"
-
+import { getDatabase, ref, get, set, onValue } from 'firebase/database';
 
 const BGColor = "#003847";
 
@@ -13,7 +13,7 @@ export default function Recipe({ meal }) {
 
   useEffect(() => {
     fetch(
-      `https://api.spoonacular.com/recipes/${meal.id}/information?apiKey=4edd629e3fe94477b016ab3c541c35bd&includeNutrition=false`
+      `https://api.spoonacular.com/recipes/${meal.id}/information?apiKey=da2e037dcf904218b7068c637a604454&includeNutrition=false`
     )
       .then(response => response.json())
       .then(data => {
@@ -62,8 +62,30 @@ export default function Recipe({ meal }) {
                     <Button
                         title='Add To My Recipes'
                         color='#003847'
+                        onPress={() => {
+                          if (!recipeData || !recipeData.extendedIngredients || !recipeData.analyzedInstructions) { return; }
+                          
+                          const db = getDatabase();
+                          const dbRecipes = ref(db, 'users/userID/recipes')
+                          console.log('hello')
+                          get(dbRecipes).then((snapshot) => {
+                            console.log('hello2')
+                            console.log(snapshot.exists())
+                            if(snapshot.exists()) {
+                              console.log('hello3')
+                              let recipes = snapshot.val();
+                              recipes = [...recipes, {name: meal.title, ingredients: recipeData.extendedIngredients, steps: recipeData.analyzedInstructions}]
+                              console.log(recipes.extendedIngredients);
+                              console.log(recipes.analyzedInstructions);
+                              set(dbRecipes, recipes);
+                              console.log('hello4')
+                            }
+                            else {
+                              set(dbRecipes, [{name: meal.title, ingredients: recipeData.extendedIngredients, steps: recipeData.analyzedInstructions}])
+                            }
+                          });
+                        }}
                         >
-
                     </Button>
                 </View>
             </View>
