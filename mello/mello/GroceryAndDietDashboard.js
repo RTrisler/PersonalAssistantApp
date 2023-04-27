@@ -41,6 +41,43 @@ export default function GroceryAndDietDashboard() {
   //#region PANTRY ITEM ADD/DELETE
 
   //vars for adding items
+  const handleAddItemFromRecipe = async (itemToAdd, itemQty) => {
+    const oldList = list;
+    const cat = category || -1;
+    console.log(cat);
+    //add to list quickly
+    setList([...oldList, { name: itemToAdd, ID: -1,  foodData: "" , itemCategory: cat == -1 ? "" : categories[cat], Qty: itemQty}]);
+    hideItemAdder();
+    //if not a food then no point in getting data from database
+    if(category == '' || cat > 7) return;
+    const fData = await fetchData(itemToAdd.replace(/[^a-zA-Z ]/g, ''));
+    //
+    if(fData[0] != -1) {
+        let fDataMap = fData[1].map(nutrient => {
+            return {
+                id: nutrient.nutrient.id,
+                amount: nutrient.amount,
+                name: nutrient.nutrient.name,
+                number: nutrient.nutrient.number,
+                unitName: nutrient.nutrient.unitName
+            }
+        });
+        const calories = fDataMap.filter((nutrient) => nutrient.id == 1008)[0];
+        const carbs = fDataMap.filter((nutrient) => nutrient.id == 1005)[0];
+        const protein = fDataMap.filter((nutrient) => nutrient.id == 1003)[0];
+        const cholesterol = fDataMap.filter((nutrient) => nutrient.id == 1253)[0];
+        const fat = fDataMap.filter((nutrient) => nutrient.id == 1004)[0];
+        const calV = calories ? (calories.amount + calories.unitName) : "0kcal";
+        const carbV = carbs ? (carbs.amount + carbs.unitName) : "0g";
+        const protV = protein ? (protein.amount + protein.unitName) : "0g";
+        const fatV = fat ? (fat.amount + fat.unitName) : "0g";
+        const cholV = cholesterol ? (cholesterol.amount + cholesterol.unitName) : "0g";
+        let fDataStr = "Cal " + calV + "\t" + "Carbs " + carbV + "\t" + "Protein " + protV  + "\t" + "Fat " + fatV + "\t" + "Cholesterol " + cholV;
+        setList([...oldList, { name: itemToAdd, ID: fData[0],  foodData: fDataStr, itemCategory: cat == -1 ? "" : categories[cat], Qty: itemQty }]);
+    }
+  };
+
+
   const [itemAdderVisible, setItemAdderVisible] = useState(false);
   const [category, setCategory] = useState('');
   const categories = [
@@ -171,6 +208,9 @@ export default function GroceryAndDietDashboard() {
     get(dbPantry).then((snapshot) => {
       if(snapshot.exists()) {
         setList(snapshot.val());
+        console.log(snapshot.val());
+        console.log(snapshot.val().map(item => item.name))
+        console.log(snapshot.val().map(item => item.name.toLowerCase()))
       }
       else {
         set(dbPantry, list);
@@ -256,7 +296,7 @@ export default function GroceryAndDietDashboard() {
 
   function getMealData() {
     fetch(
-      `https://api.spoonacular.com/mealplanner/generate?apiKey=dcea05756d484c179cbba25cbddde02d&timeFrame=day&targetCalories=${calories}`
+      `https://api.spoonacular.com/mealplanner/generate?apiKey=4edd629e3fe94477b016ab3c541c35bd&timeFrame=day&targetCalories=${calories}`
     )
       .then(response => response.json())
       .then(data => {
@@ -270,7 +310,7 @@ export default function GroceryAndDietDashboard() {
 
   function getRecipeData() {
     fetch(
-      `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredient}&number=6&ranking=2&ignorePantry=true&apiKey=dcea05756d484c179cbba25cbddde02d`
+      `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredient}&number=6&ranking=2&ignorePantry=true&apiKey=4edd629e3fe94477b016ab3c541c35bd`
     )
       .then(response => response.json())
       .then(data => {
@@ -381,11 +421,11 @@ export default function GroceryAndDietDashboard() {
                             style={styles.backButton}
                             onPress={hideFindMore}
                           >
-                            <Text style={styles.backButtonText}>Back to Dashboard</Text>
+                            <Text style={styles.backButtonText}>Back to MealPlan</Text>
                           </TouchableOpacity>
                         </View>
                         <View style={styles.textContainer}>
-                          <Text style={styles.titleText}>Mello</Text>
+                          <Text style={styles.titleText}>Find Recipes</Text>
                         </View>
                       </View>
                     </View>
@@ -413,7 +453,7 @@ export default function GroceryAndDietDashboard() {
                     </TouchableOpacity>
                   </Surface>
                   {/*{mealData && <MealList mealData={mealData} />} */}
-                  <ScrollView horizontal={true} pagingEnabled={true} showsHorizontalScrollIndicator={true} style={styles.recipeContainer}>
+                  <ScrollView vertical={true} pagingEnabled={true} showsHorizontalScrollIndicator={true} style={styles.recipeContainer}>
                     {recipeData && <RecipeList recipeData={recipeData} />}
                   </ScrollView>
                   
@@ -472,7 +512,7 @@ export default function GroceryAndDietDashboard() {
                   >
                   </IconButton>
                 </Surface>
-                <List.Accordion title='Ingredients' style={{backgroundColor: DGreen}} titleStyle={{color: LGreen}}>
+                {(item.ingredients) && <List.Accordion title='Ingredients' style={{backgroundColor: DGreen}} titleStyle={{color: LGreen}}>
                   {item.ingredients.map((itemIng, iIndex) => (
                     <Surface key={itemIng} style={{...styles.itemContainer, flexDirection:'row', justifyContent:'space-between'}}>
                       <Text style={{...styles.itemText, paddingLeft: 10}}>{itemIng.name}</Text>
@@ -489,14 +529,14 @@ export default function GroceryAndDietDashboard() {
                       </View>
                     </Surface>
                   ))}
-                </List.Accordion>
-                <List.Accordion title='Steps' style={{backgroundColor: DGreen}} titleStyle={{color: LGreen}}>
+                </List.Accordion> }
+                {(item.steps) && <List.Accordion title='Steps' style={{backgroundColor: DGreen}} titleStyle={{color: LGreen}}>
                   {item.steps.map((itemStep, sIndex) => (
                     <Surface key={itemStep} style={{...styles.itemContainer, flexDirection:'row', justifyContent:'space-between'}}>
                       <Text style={{...styles.itemText, paddingLeft: 10}}>{itemStep}</Text>
                     </Surface>
                   ))}
-                </List.Accordion>
+                </List.Accordion>}
                 </Surface>
               ))}
             </List.Section>
@@ -587,7 +627,7 @@ const styles = StyleSheet.create({
     backgroundColor: SurfaceColor,
     borderRadius: '10px',
     minWidth: "40%",
-    maxWidth: "80%",
+    maxWidth: "63%",
     marginLeft: "10px",
     marginRight: "10px",
   },
@@ -676,7 +716,7 @@ const styles = StyleSheet.create({
   },
   topControl: {
     height: '200px',
-    backgroundColor: BGColor,
+    backgroundColor: DGreen,
     justifyContent: 'center',
     alignItems: 'center',
     borderBottomEndRadius: '10px',

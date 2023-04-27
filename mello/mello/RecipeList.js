@@ -7,7 +7,7 @@ import { View } from "react-native-web";
 export default function RecipeList({ recipeData }) {
   return (
     
-    <View style={{flex: 1, flexDirection: 'row',}}>
+    <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap'}}>
         {recipeData.map(meal => {
             return <Recipe key={meal.id} meal={meal} />
         })}
