@@ -238,7 +238,7 @@ export default function GroceryAndDiet() {
   const [newRecipeName, setNewRecipeName] = useState("");
   const [recipes, setRecipes] = useState([]);
   const handleAddRecipe = () => {
-    if(newRecipeName == '') { return; }
+    if((newRecipeName == '' )) { return; }
     const recName = newRecipeName;
     const recIng = recipeIngredients;
     const recStep = recipeSteps;
@@ -268,6 +268,9 @@ export default function GroceryAndDiet() {
     get(dbPantry).then((snapshot) => {
       if(snapshot.exists()) {
         setList(snapshot.val());
+        console.log(snapshot.val());
+        console.log(snapshot.val().map(item => item.name))
+        console.log(snapshot.val().map(item => item.name.toLowerCase()))
       }
       else {
         set(dbPantry, list);
@@ -623,7 +626,7 @@ export default function GroceryAndDiet() {
                       >
                       </IconButton>
                     </Surface>
-                    <List.Accordion title='Ingredients' style={{backgroundColor: DGreen}} titleStyle={{color: LGreen}}>
+                    {(item.ingredients) && <List.Accordion title='Ingredients' style={{backgroundColor: DGreen}} titleStyle={{color: LGreen}}>
                       {item.ingredients.map((itemIng, iIndex) => (
                         <Surface key={itemIng} style={{...styles.itemContainer, flexDirection:'row', justifyContent:'space-between'}}>
                           <Text style={{...styles.itemText, paddingLeft: 10}}>{itemIng.name}</Text>
@@ -640,14 +643,14 @@ export default function GroceryAndDiet() {
                           </View>
                         </Surface>
                       ))}
-                    </List.Accordion>
-                    <List.Accordion title='Steps' style={{backgroundColor: DGreen}} titleStyle={{color: LGreen}}>
+                    </List.Accordion>}
+                    {(item.steps) && <List.Accordion title='Steps' style={{backgroundColor: DGreen}} titleStyle={{color: LGreen}}>
                       {item.steps.map((itemStep, sIndex) => (
                         <Surface key={itemStep} style={{...styles.itemContainer, flexDirection:'row', justifyContent:'space-between'}}>
                           <Text style={{...styles.itemText, paddingLeft: 10}}>{itemStep}</Text>
                         </Surface>
                       ))}
-                    </List.Accordion>
+                    </List.Accordion>}
                     </Surface>
                   ))}
                 </List.Section>
