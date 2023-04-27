@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react"
 import { StyleSheet, Text, View, TouchableOpacity, Image, Button, ScrollView} from 'react-native';
 import { Surface} from "react-native-paper"
-import { getDatabase, ref, get, set, onValue } from 'firebase/database';
+
 
 const BGColor = "#003847";
 
@@ -10,9 +10,10 @@ export default function Recipe({ meal }) {
   const [imageUrl, setImageUrl] = useState("")
   const [recipeData, setRecipeData] = useState(null)
   const [instructions, setInstructions] = useState(null)
+
   useEffect(() => {
     fetch(
-      `https://api.spoonacular.com/recipes/${meal.id}/information?apiKey=da2e037dcf904218b7068c637a604454&includeNutrition=false`
+      `https://api.spoonacular.com/recipes/${meal.id}/information?apiKey=dcea05756d484c179cbba25cbddde02d&includeNutrition=false`
     )
       .then(response => response.json())
       .then(data => {
@@ -25,22 +26,6 @@ export default function Recipe({ meal }) {
         console.log("error")
       })
   }, [meal.id])
-
-  const db = getDatabase();
-  
-  const [pantry, setPantry] = useState([]);
-  const dbPantry = ref(db, 'users/userID/pantry')
-  useEffect(() => {
-    get(dbPantry).then((snapshot) => {
-      if(snapshot.exists()) {
-        setPantry(snapshot.val());
-      }
-      else {
-        set(dbPantry, pantry);
-      }
-    }, []);
-  }, []);
-
 
   return (
     <View style={{ flex: 1, margin: '10px', }}>
@@ -61,12 +46,7 @@ export default function Recipe({ meal }) {
                 </Text>
                 <ScrollView>
                     {recipeData && recipeData.extendedIngredients.map(ingredent => {
-                        return <Text 
-                                key={ingredent.id} 
-                                style={{color: (pantry.map(item => item.name.toLowerCase()).includes(ingredent.name.toLowerCase())) ? "#22EE22" : "#EE2222"}}
-                                >
-                                  {ingredent.name}
-                                </Text>;
+                        return <Text key={ingredent.id}>{ingredent.name}</Text>;
                         }) }
                 </ScrollView>
                     
@@ -82,33 +62,8 @@ export default function Recipe({ meal }) {
                     <Button
                         title='Add To My Recipes'
                         color='#003847'
-                        onPress={() => {
-                          if (!recipeData || !recipeData.extendedIngredients || !recipeData.analyzedInstructions) { return; }
-                          
-                          const db = getDatabase();
-                          const dbRecipes = ref(db, 'users/userID/recipes')
-                          console.log(recipeData);
-                          console.log(recipeData.analyzedInstructions)
-                          console.log(recipeData.analyzedInstructions[0])
-                          const newRecipe = {
-                            name: meal.title, 
-                            ingredients: (recipeData.extendedIngredients != [] ? recipeData.extendedIngredients.map(ing => {return {name: ing.name, Qty: ing.amount}}) : []),
-                            steps: (((recipeData.analyzedInstructions != []) && recipeData.analyzedInstructions[0]) ? recipeData.analyzedInstructions[0].steps.map(steps => steps.step) : [])
-                          }
-                          
-                          get(dbRecipes).then((snapshot) => {
-                            console.log(snapshot.exists())
-                            if(snapshot.exists()) {
-                              let recipes = snapshot.val();
-                              recipes = [...recipes, newRecipe]
-                              set(dbRecipes, recipes);
-                            }
-                            else {
-                              set(dbRecipes, [newRecipe])
-                            }
-                          });
-                        }}
                         >
+
                     </Button>
                 </View>
             </View>

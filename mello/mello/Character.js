@@ -173,17 +173,8 @@ useEffect(() => {
         </View>
       </View>
       <View style={styles.rightCharacterContainer}>
-        <View style={styles.iconcontainer}>
-          <Button style={styles.iconbackground}  onPress={() => {setShouldShowObjectives(!shouldShowObjectives); setShouldShowShop(false); setShouldShowEditBot(false)}}>
-            <FontAwesome5 name="clipboard-list" size={25} color="white" />
-          </Button>
-          <Button style={styles.iconbackground} onPress={() => {setShouldShowEditBot(!shouldShowEditBot); setShouldShowShop(false); setShouldShowObjectives(false)}}>
-            <FontAwesome5 name="robot" size={25} color="white" style={styles.icon} />
-          </Button>
-        </View>
         <View style={styles.popupcontainer}>
-          {shouldShowObjectives ?
-            (
+         <Text style={styles.objectivesText}>Objectives</Text>
               <Surface style={{...styles.objectives, justifyContent: 'space-around', paddingHorizontal: '1%'}}>
               {chosenObjectives.map((objective, objectiveId) => (
                 <Surface key={objectiveId} style={{backgroundColor: DGreen, borderRadius: 20}}>
@@ -235,13 +226,6 @@ useEffect(() => {
                 </Surface>
               ))}
           </Surface>
-            ) : null}
-            {shouldShowEditBot ?
-            (
-              <Surface style={styles.editbot}>
-                <Text>Edit Appearance</Text>
-              </Surface>
-            ) : null}
         </View>
       </View>
     </View>
@@ -313,17 +297,25 @@ const styles = StyleSheet.create({
   popupcontainer: {
     display: 'flex',
     width: '100%',
-    height: '80%',
+    height: '95%',
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: DGreen,
+    borderRadius: '10px',
+    marginTop: '10px'
   },
   objectives: {
     display: 'flex',
     flexDirection: 'column',
     flexWrap: 'wrap',
-    width: '100%',
-    height: '100%',
+    width: '90%',
+    height: '80%',
     backgroundColor: LGreen,
+    borderRadius: '10px',
+    alignSelf: 'center',
+    marginTop: '10px',
+    marginLeft: '10px',
+    marginRight: '10px'
   },
   unfinishedObjective: {
     margin:"10px",
@@ -350,5 +342,11 @@ const styles = StyleSheet.create({
     height: '100%',
     backgroundColor: DGreen,
     justifyContent: 'space-between',
+  },
+  objectivesText: {
+    fontFamily: "Monospace",
+    fontSize: 25,
+    color: "white",
+    alignSelf: "center",
   },
 });

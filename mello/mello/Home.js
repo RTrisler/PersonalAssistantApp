@@ -20,6 +20,7 @@ import Card from './Card';
 import CardContainer from './CardContianer';
 import Calendar from './month'
 import MealPlan from './MealPlan';
+import GroceryAndDietDashboard from './GroceryAndDietDashboard';
 
 
 const BGColor = "#05586e"
@@ -39,16 +40,16 @@ export default function Home() {
     <TabNav.Navigator  screenOptions={{
       tabBarActiveTintColor: '#467599',
       tabBarInactiveTintColor: '#fcf7ff', 
-      tabBarActiveBackgroundColor: '#92828d',
-      tabBarInactiveBackgroundColor:'#05586e',
+      tabBarActiveBackgroundColor: '#002B36',
+      tabBarInactiveBackgroundColor:'black',
       headerShown: false,
       showIcon: true,
       }}>
-    <TabNav.Screen name='Home' component={Dashboard} options={{ tabBarIcon:(tabInfo) => (<MaterialCommunityIcons name="home-account" size={24} color="black" />)}}/>
-    <TabNav.Screen name="Schedule" component={Calendar} options={{ tabBarIcon:(tabInfo) => (<AntDesign name="book" size={24} color="black" />)}}/>
-    <TabNav.Screen name="Groceries and Diet" component={GroceryAndDiet} options={{ tabBarIcon:(tabInfo) => (<MaterialCommunityIcons name="food-variant" size={24} color="black" />)}}/>
+    <TabNav.Screen name='Home' component={Dashboard} options={{ tabBarIcon:(tabInfo) => (<MaterialCommunityIcons name="home-account" size={24} color="white" />)}}/>
+    <TabNav.Screen name="Schedule" component={Calendar} options={{ tabBarIcon:(tabInfo) => (<AntDesign name="book" size={24} color="white" />)}}/>
+    <TabNav.Screen name="Groceries and Diet" component={GroceryAndDietDashboard} options={{ tabBarIcon:(tabInfo) => (<MaterialCommunityIcons name="food-variant" size={24} color="white" />)}}/>
     <TabNav.Screen name='MoreRecipes' component={HomeStack}  options={{tabBarButton: () => null,tabBarVisible: false,}} />
-    <TabNav.Screen name='Settings' component={Settings} options={{ tabBarIcon:(tabInfo) => (<Fontisto name="player-settings" size={24} color="black" />)}}/>
+    <TabNav.Screen name='Settings' component={Settings} options={{ tabBarIcon:(tabInfo) => (<Fontisto name="player-settings" size={24} color="white" />)}}/>
     
   </TabNav.Navigator>
     
