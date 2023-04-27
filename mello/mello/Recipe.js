@@ -10,7 +10,6 @@ export default function Recipe({ meal }) {
   const [imageUrl, setImageUrl] = useState("")
   const [recipeData, setRecipeData] = useState(null)
   const [instructions, setInstructions] = useState(null)
-
   useEffect(() => {
     fetch(
       `https://api.spoonacular.com/recipes/${meal.id}/information?apiKey=da2e037dcf904218b7068c637a604454&includeNutrition=false`
@@ -26,6 +25,22 @@ export default function Recipe({ meal }) {
         console.log("error")
       })
   }, [meal.id])
+
+  const db = getDatabase();
+  
+  const [pantry, setPantry] = useState([]);
+  const dbPantry = ref(db, 'users/userID/pantry')
+  useEffect(() => {
+    get(dbPantry).then((snapshot) => {
+      if(snapshot.exists()) {
+        setPantry(snapshot.val());
+      }
+      else {
+        set(dbPantry, pantry);
+      }
+    }, []);
+  }, []);
+
 
   return (
     <View style={{ flex: 1, margin: '10px', }}>
@@ -46,7 +61,12 @@ export default function Recipe({ meal }) {
                 </Text>
                 <ScrollView>
                     {recipeData && recipeData.extendedIngredients.map(ingredent => {
-                        return <Text key={ingredent.id}>{ingredent.name}</Text>;
+                        return <Text 
+                                key={ingredent.id} 
+                                style={{color: (pantry.map(item => item.name.toLowerCase()).includes(ingredent.name.toLowerCase())) ? "#22EE22" : "#EE2222"}}
+                                >
+                                  {ingredent.name}
+                                </Text>;
                         }) }
                 </ScrollView>
                     
@@ -67,21 +87,24 @@ export default function Recipe({ meal }) {
                           
                           const db = getDatabase();
                           const dbRecipes = ref(db, 'users/userID/recipes')
-                          console.log('hello')
+                          console.log(recipeData);
+                          console.log(recipeData.analyzedInstructions)
+                          console.log(recipeData.analyzedInstructions[0])
+                          const newRecipe = {
+                            name: meal.title, 
+                            ingredients: (recipeData.extendedIngredients != [] ? recipeData.extendedIngredients.map(ing => {return {name: ing.name, Qty: ing.amount}}) : []),
+                            steps: (((recipeData.analyzedInstructions != []) && recipeData.analyzedInstructions[0]) ? recipeData.analyzedInstructions[0].steps.map(steps => steps.step) : [])
+                          }
+                          
                           get(dbRecipes).then((snapshot) => {
-                            console.log('hello2')
                             console.log(snapshot.exists())
                             if(snapshot.exists()) {
-                              console.log('hello3')
                               let recipes = snapshot.val();
-                              recipes = [...recipes, {name: meal.title, ingredients: recipeData.extendedIngredients, steps: recipeData.analyzedInstructions}]
-                              console.log(recipes.extendedIngredients);
-                              console.log(recipes.analyzedInstructions);
+                              recipes = [...recipes, newRecipe]
                               set(dbRecipes, recipes);
-                              console.log('hello4')
                             }
                             else {
-                              set(dbRecipes, [{name: meal.title, ingredients: recipeData.extendedIngredients, steps: recipeData.analyzedInstructions}])
+                              set(dbRecipes, [newRecipe])
                             }
                           });
                         }}

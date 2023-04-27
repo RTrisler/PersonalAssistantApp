@@ -268,6 +268,9 @@ export default function GroceryAndDiet() {
     get(dbPantry).then((snapshot) => {
       if(snapshot.exists()) {
         setList(snapshot.val());
+        console.log(snapshot.val());
+        console.log(snapshot.val().map(item => item.name))
+        console.log(snapshot.val().map(item => item.name.toLowerCase()))
       }
       else {
         set(dbPantry, list);
