@@ -60,7 +60,11 @@ export default function Recipe({ meal }) {
                 <Text style={{ color: "#777", paddingTop: 5 }}>
                 Ingredients
                 </Text>
-                <ScrollView>
+                <ScrollView
+                  alwaysBounceHorizontal={false}
+                  alwaysBounceVertical={false}
+                  bounces={false}
+                >
                     {recipeData && recipeData.extendedIngredients.map(ingredent => {
                         return <Text 
                                 key={ingredent.id} 
