@@ -553,9 +553,14 @@ export default function GroceryAndDietDashboard() {
                               />)}
                               {/*REID RIGHT HERE*/}
                               {meal.name != 'null' && (
-                                <Surface style={{ width: '100%', height: '100%', justifyContent:'center', alignContent:'center', backgroundColor: BGColor}}>
-                                  <Text style={{color: LGreen, fontSize: 20, fontWeight: 'bold', justifyContent: 'space-around', alignItems: 'center'}}>{meal.name}</Text>
-                                </Surface>
+                                <BlurView intensity={0} tint='dark' style={{...styles.mealCard, height: '100%', marginTop: 0, marginBottom: 0, border: '1px solid black'}}>
+                                  <Text style={{color: 'white', fontSize: 30, fontFamily: 'GothamMedium', fontWeight: 'bold', justifyContent: 'space-around', alignItems: 'center'}}>{meal.name}</Text>
+                                  <IconButton
+                                    onPress={console.log("Pressed")}
+                                    icon="delete"
+                                    iconColor={'white'}
+                                  ></IconButton>
+                                </BlurView>
                               )}
                           </BlurView>))}
                         </View>
