@@ -167,11 +167,25 @@ export default function GroceryAndDietDashboard() {
 
   //#region RECIPE ITEM ADD/DELETE
   const [recipeAdderVisible, setRecipeAdderVisible] = useState(false);
+  const [chooseRecipeVisible, setChooseRecipeVisible] = useState(false);
+  const [recipeDataVisible, setRecipeDataVisible] = useState(false);
   const hideRecipeAdder = () => {
     setRecipeAdderVisible(false);
   };
   const showRecipeAdder = () => {
     setRecipeAdderVisible(true);
+  };
+  const hideChooseRecipe = () => {
+    setChooseRecipeVisible(false);
+  };
+  const showChooseRecipeVisible = () => {
+    setChooseRecipeVisible(true);
+  };
+  const hideRecipeData = () => {
+    setRecipeDataVisible(false);
+  };
+  const showRecipeData = () => {
+    setRecipeDataVisible(true);
   };
   const [newRecipeName, setNewRecipeName] = useState("");
   const [recipes, setRecipes] = useState([]);
@@ -495,7 +509,7 @@ export default function GroceryAndDietDashboard() {
                         end={{ x: 1, y: 1 }}
                       >
                         <Text style={styles.dayText}>Sun.</Text>
-                        <Divider style={{ width: 2, height: '90%', alignSelf: 'center', marginLeft: '300px'}} />
+                        <Divider style={{ width: 2, height: '90%', alignSelf: 'center', marginLeft: '300px', zIndex: 1}} />
                         <View style={styles.mealCardContainer}>
                           <BlurView intensity={30} tint='dark' style={styles.mealCard}>
                             <IconButton
@@ -503,7 +517,11 @@ export default function GroceryAndDietDashboard() {
                               iconColor={"white"}
                               size={50}
                               style={{alignSelf: 'center'}}
+                              onPress={showChooseRecipeVisible}
                               />
+                              {recipeDataVisible ? (
+                                <Surface style={{ width: '100%', height: '100%'}}>Recipe</Surface>
+                              ): null}
                           </BlurView>
                           <BlurView intensity={30} tint='dark' style={styles.mealCard}>
                             <IconButton
@@ -873,6 +891,62 @@ export default function GroceryAndDietDashboard() {
             </Modal>
 
         </Surface>
+
+        <Modal visible={chooseRecipeVisible} onDismiss={hideChooseRecipe} style={styles.recipesModal}>
+            <Surface
+              elevation={5}
+              style={styles.pantryTopBox}> 
+                <Text style={styles.pantryText}> Select Recipe </Text>
+                <IconButton
+                  icon="arrow-collapse"
+                  iconColor={"gray"}
+                  size={30}
+                  style={styles.iconButton}
+                  onPress={hideChooseRecipe}
+                  />
+            </Surface>
+
+            <ScrollView>
+              <List.Section style={{backgroundColor: 'red'}}>
+                {recipes.map((item, index) => (
+                  <Surface>
+                  <TouchableOpacity onPress={showRecipeData} key={item.name} style={{...styles.itemContainer, flexDirection: 'row', justifyContent: 'space-between', alignContent: 'center'}}>
+                    <View style={styles.itemDetailsContainer}>
+                      <View style ={{justifyContent: 'space-between', flexDirection: 'row'}}>
+                        <Text style={styles.itemText}>{item.name}</Text>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                  {(item.ingredients) && <List.Accordion title='Ingredients' style={{backgroundColor: DGreen}} titleStyle={{color: LGreen}}>
+                    {item.ingredients.map((itemIng, iIndex) => (
+                      <Surface key={itemIng} style={{...styles.itemContainer, flexDirection:'row', justifyContent:'space-between'}}>
+                        <Text style={{...styles.itemText, paddingLeft: 10}}>{itemIng.name}</Text>
+                        <Text style={{...styles.itemText, paddingRight: 10}}>{itemIng.Qty}</Text>
+                        <View style={{flexDirection:'row'}}>
+                          <IconButton
+                            onPress={ async () => {
+                              handleAddItemFromRecipe(itemIng.name, itemIng.Qty);
+                            }}
+                            icon="plus"
+                            iconColor={LGreen}
+                          >
+                          </IconButton>
+                        </View>
+                      </Surface>
+                    ))}
+                  </List.Accordion> }
+                  {(item.steps) && <List.Accordion title='Steps' style={{backgroundColor: DGreen}} titleStyle={{color: LGreen}}>
+                    {item.steps.map((itemStep, sIndex) => (
+                      <Surface key={itemStep} style={{...styles.itemContainer, flexDirection:'row', justifyContent:'space-between'}}>
+                        <Text style={{...styles.itemText, paddingLeft: 10}}>{itemStep}</Text>
+                      </Surface>
+                    ))}
+                  </List.Accordion>}
+                  </Surface>
+                ))}
+              </List.Section>
+            </ScrollView>
+        </Modal>
        
     </LinearGradient>
   );
@@ -926,6 +1000,14 @@ const styles = StyleSheet.create({
     backgroundColor: SurfaceColor,
     borderRadius: '10px',
     flexDirection: 'column',
+  },
+  recipesModal: {
+    marginLeft: windowWidth - 325,
+    width: 300,
+    backgroundColor: SurfaceColor,
+    borderRadius: '10px',
+    flexDirection: 'row',
+    marginTop: '10px',
   },
   pantryTopBox: {
     height: '10%',
@@ -1099,14 +1181,17 @@ const styles = StyleSheet.create({
     color: 'white',
     alignSelf: 'center',
     lineHeight: '120px',
+    zIndex: 1
   },
   mealCardContainer: {
     padding: '10px',
     flex: 1,
+    width: '100%',
     alignContent: 'center',
     justifyContent: 'center',
     justifyContent: 'space-evenly',
     flexDirection: 'row',
+    zIndex: 2,
   },
   mealCard: {
     height: '98%',
