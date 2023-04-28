@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View,  StyleSheet,SafeAreaView, Platform,  TouchableOpacity} from 'react-native';
-import { TextInput, List, Checkbox, Divider, Surface, Button, Text, IconButton, Modal, Card, HelperText, } from 'react-native-paper';
+import { View,  StyleSheet,SafeAreaView,   TouchableOpacity} from 'react-native';
+import { TextInput, List, Surface, Button, Text, IconButton, Modal, Card, HelperText, } from 'react-native-paper';
 import axios from 'axios';
 import { SelectList } from 'react-native-dropdown-select-list';
 import Toast from 'react-native-toast-message';
 import { ScrollView } from 'react-native-gesture-handler';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native'
-import { FontAwesome5 } from '@expo/vector-icons';
-import { borderRadius, fontSize } from '@mui/system';
 import { BlurView } from 'expo-blur';
 import { getDatabase, ref, get, set, onValue } from 'firebase/database';
 

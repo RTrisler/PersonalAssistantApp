@@ -1,8 +1,7 @@
 // REcipe.js
 import React, { useState, useEffect } from "react"
-import { StyleSheet, Text, View, TouchableOpacity, Image, Button, ScrollView} from 'react-native';
-import { Surface} from "react-native-paper"
-import { getDatabase, ref, get, set, onValue } from 'firebase/database';
+import { StyleSheet, Text, View, Image, Button, ScrollView} from 'react-native';
+import { getDatabase, ref, get, set} from 'firebase/database';
 
 const BGColor = "#003847";
 

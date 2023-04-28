@@ -6,10 +6,8 @@ import { Divider, Card, Button, Modal, List, Surface, IconButton } from 'react-n
 import { useFonts } from 'expo-font';
 import { getDatabase, ref, onValue, set, get } from 'firebase/database';
 import { useEffect, useState } from 'react';
-import {db} from './firebase'
 import { BlurView } from 'expo-blur';
 import { SelectList } from 'react-native-dropdown-select-list';
-import MealPlan from './MealPlan';
 import RecipeList from "./RecipeList"
 
 
