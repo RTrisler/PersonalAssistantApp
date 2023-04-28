@@ -21,13 +21,15 @@ const BGColor = "#05586e";
 export default function Dashboard() {
 
   
-
+  const db = getDatabase();
+  const dbToDo = ref(db, 'users/userID/todo');
   const [ toDoList, setToDoList ] = useState([]);
 
   useEffect(() => {
     get(dbToDo).then((snapshot) => {
       if(snapshot.exists()) {
         setToDoList(snapshot.val());
+        console.log(snapshot.val());
       }
       else {
       }
@@ -41,6 +43,32 @@ export default function Dashboard() {
       }
     });
   }, []);
+
+  const [eventList, setEventList] = useState([]);
+  const dbEvents = ref(db, 'users/userID/events');
+
+  useEffect(() => {
+    get(dbEvents).then((snapshot) => {
+      if(snapshot.exists()) {
+        setEventList(snapshot.val());
+        console.log(snapshot.val());
+      }
+      else {
+      }
+    }, []);
+  }, []);
+
+  useEffect(() => {
+    onValue(dbEvents, (snapshot) => {
+      if(snapshot.exists()) {
+        setEventList(snapshot.val());
+        console.log(snapshot.val()[0].start.value.split('T')[0])
+        console.log(new Date().toISOString());
+      }
+    });
+  }, []);
+
+
 
   const [initialized, setInitialized] = useState(false);
   useEffect(() => {
@@ -91,8 +119,7 @@ export default function Dashboard() {
 
   const [todoData, setTodoData] = useState([])
   
-  const db = getDatabase();
-  const dbToDo = ref(db, 'users/userID/todo');
+
 
   
 
@@ -167,22 +194,12 @@ export default function Dashboard() {
             <Text style={{...styles.todoTodayText, marginTop:'5px',}}>Events for Today</Text>
             <BlurView intensity={100} style={{...styles.todoContainer, marginLeft: '2.5%', height: '90%'}}>
             <Divider style={styles.divider} />
-              {
-                todoData.map((item, index) => {
-                  return(
-                    <View key={index} >
-                      <View style={styles.todoTextContainer}>
-                      {index < 1 ? <Text style={styles.todoText}>{item.name} {"\n"}
-                        <View style={{flexDirection: 'column', whitespace: "pre-line"}}>
-                          <Text style={styles.todoText}>Start: {item.startTime}</Text>
-                          <Text style={styles.todoText}>End: {item.endTime}</Text>
-                        </View>
-                      </Text>
-                      : <Text>{''}</Text>}
-                      </View>
-                    </View>
-                  )
-                })
+              {eventList != [] &&
+                (
+                  eventList.filter(event => event.start.value.split('T')[0] == (new Date().toISOString().split('T')[0])).map((event) =>(
+                    <Text>{event.text}</Text>
+                  ))
+                )
               }
               <Divider style={styles.divider}></Divider>
             </BlurView>
