@@ -27,7 +27,7 @@ function MealPlan() {
 
   function getMealData() {
     fetch(
-      `https://api.spoonacular.com/mealplanner/generate?apiKey=dcea05756d484c179cbba25cbddde02d&timeFrame=day&targetCalories=${calories}`
+      `https://api.spoonacular.com/mealplanner/generate?apiKey=4edd629e3fe94477b016ab3c541c35bd&timeFrame=day&targetCalories=${calories}`
     )
       .then(response => response.json())
       .then(data => {
@@ -41,7 +41,7 @@ function MealPlan() {
 
   function getRecipeData() {
     fetch(
-      `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredient}&number=10&ranking=2&ignorePantry=true&apiKey=dcea05756d484c179cbba25cbddde02d`
+      `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredient}&number=5&ranking=2&ignorePantry=true&apiKey=4edd629e3fe94477b016ab3c541c35bd`
     )
       .then(response => response.json())
       .then(data => {

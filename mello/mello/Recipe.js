@@ -13,7 +13,7 @@ export default function Recipe({ meal }) {
 
   useEffect(() => {
     fetch(
-      `https://api.spoonacular.com/recipes/${meal.id}/information?apiKey=dcea05756d484c179cbba25cbddde02d&includeNutrition=false`
+      `https://api.spoonacular.com/recipes/${meal.id}/information?apiKey=4edd629e3fe94477b016ab3c541c35bd&includeNutrition=false`
     )
       .then(response => response.json())
       .then(data => {
@@ -44,23 +44,27 @@ export default function Recipe({ meal }) {
 
 
   return (
-    <View style={{ flex: 1, margin: '10px', }}>
-            <View style={{ backgroundColor: "#eee", borderRadius: 10, overflow: "hidden", width: '600px' }}>
+    <View style={{ width: '400px', margin: '10px', }}>
+            <View style={{ backgroundColor: "#eee", borderRadius: 10, overflow: "hidden", width: '400px' }}>
             <View>
                 <Image
                     source={{uri:imageUrl}}
                     style={{
                         height: 300,
-                        width: '600px'
+                        width: '400px'
                     }}
                 />
             </View>
-            <View style={{ padding: 10, width: '600px', height: '250px' }}>
+            <View style={{ padding: 10, width: '400px', height: '250px' }}>
                 <Text>{meal.title}</Text>
                 <Text style={{ color: "#777", paddingTop: 5 }}>
                 Ingredients
                 </Text>
-                <ScrollView>
+                <ScrollView
+                  alwaysBounceHorizontal={false}
+                  alwaysBounceVertical={false}
+                  bounces={false}
+                >
                     {recipeData && recipeData.extendedIngredients.map(ingredent => {
                         return <Text 
                                 key={ingredent.id} 
