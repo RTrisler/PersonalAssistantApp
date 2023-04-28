@@ -1,17 +1,10 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Text, Image, Button } from 'react-native';
-import { Divider, Surface, TextInput } from 'react-native-paper';
-import VectorIcon from 'react-native-vector-icons/Feather';
-import { ScrollView } from 'react-native-web';
+import React from 'react';
+import {Text} from 'react-native';
+
 import Row from './Row';
 import Col from './Column';
 import Card from './Card';
 
-
-
-const BGColor = "#003847"
-const LGreen = "#2AA198"
-const DGreen = "#002B36"
 
 export default function CardContainer() {
     return (

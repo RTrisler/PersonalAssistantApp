@@ -1,17 +1,14 @@
-import { StyleSheet, Text, View,button, ScrollView } from 'react-native'
+import { StyleSheet, Text, View} from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react'
 import Character from './Character'
 import SignoutButton from './Signout';
-import { Checkbox, FormGroup, FormControlLabel, Box  } from '@material-ui/core';
 import { Divider, Card, Button, Modal, TextInput, Surface } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-web';
 import { useFonts } from 'expo-font';
 import { getDatabase, ref, onValue, set, get } from 'firebase/database';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useEffect, useState } from 'react';
 import { BlurView } from 'expo-blur';
-import Calendar from './month'
 import ToDoList from "./ToDoList";
 import ToDoForm from './ToDoForm';
 import './index.css';

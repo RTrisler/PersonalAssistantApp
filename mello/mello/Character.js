@@ -1,30 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View} from 'react-native';
 import 'react-native-gesture-handler';
 import { Button, Surface, IconButton, ProgressBar } from 'react-native-paper';
-import { ImageBackground } from 'react-native';
-import { FontAwesome5 } from '@expo/vector-icons';
-import BouncyCheckboxGroup from 'react-native-bouncy-checkbox-group';
-import LinearProgress from '@mui/material/LinearProgress';
-import { useNavigation } from '@react-navigation/native'
-import { auth } from "./firebase"
-import { Checkbox, FormGroup, FormControlLabel, Box  } from '@material-ui/core';
-import ContentPasteIcon from '@mui/icons-material/ContentPaste';
-import AssignmentIcon from '@mui/icons-material/Assignment';
-import SetMealIcon from '@mui/icons-material/SetMeal';
+
 import robot from './assets/img/robot/robot2.png'
 import robot1 from './assets/img/robot/robot3.gif'
 import robot2 from './assets/img/robot/robot4.gif'
 import { getDatabase, ref, set, get, onValue } from 'firebase/database';
+
+
 const BGColor = "#003847"
 const LGreen = "#2AA198"
 const DGreen = "#002B36"
-
-const r1head = require('./assets/img/head/robot1headbitmap.png')
-const r1body = require('./assets/img/body/robot1bodybitmap.png')
-const r1wheels = require('./assets/img/robot/robot2.png')
-
-
 
 
 
@@ -140,14 +127,10 @@ useEffect(() => {
 }, []);
 
 
-  const [shouldShowObjectives, setShouldShowObjectives] = useState(false);
-  const [shouldShowShop, setShouldShowShop] = useState(false);
-  const [shouldShowEditBot, setShouldShowEditBot] = useState(false);
+
   const [progress, setProgress] = React.useState(0);
   const [level, setLevel] = React.useState(0);
   const chosenObjectives = chooseObjective();
-  const [obj1, setObj1] = React.useState(false);
-  const [obj2, setObj2] = React.useState(true);
   const [img, setImg] = React.useState(robot);
 
   const levelUp = () => 

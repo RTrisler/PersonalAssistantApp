@@ -1,12 +1,9 @@
-import React, { useState } from 'react';
+import React  from 'react';
 import { View, StyleSheet, Text, Image, Button } from 'react-native';
-import { Divider, Surface, TextInput } from 'react-native-paper';
-import VectorIcon from 'react-native-vector-icons/Feather';
-import { ScrollView } from 'react-native-web';
+
 
 const BGColor = "#003847"
-const LGreen = "#2AA198"
-const DGreen = "#002B36"
+
 
 export default function Card() {
     return (

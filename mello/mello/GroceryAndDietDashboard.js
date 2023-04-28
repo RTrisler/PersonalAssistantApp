@@ -2,11 +2,7 @@ import { StyleSheet, Text, View, ScrollView, TextInput, TouchableOpacity } from 
 import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react'
 import {Dimensions} from 'react-native';
-import Character from './Character'
-import SignoutButton from './Signout';
-import { Checkbox, FormGroup, FormControlLabel, Box  } from '@material-ui/core';
 import { Divider, Card, Button, Modal, List, Surface, IconButton } from 'react-native-paper';
-import { SafeAreaView } from 'react-native-web';
 import { useFonts } from 'expo-font';
 import { getDatabase, ref, onValue, set, get } from 'firebase/database';
 import { useEffect, useState } from 'react';

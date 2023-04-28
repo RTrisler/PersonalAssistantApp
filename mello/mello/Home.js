@@ -9,15 +9,15 @@ import { AntDesign } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 import { Fontisto } from '@expo/vector-icons';
 
-import AgendaView from './AgendaView';
+//import AgendaView from './AgendaView';
 import Settings from './Settings';
-import Character from './Dashboard';
-import GroceryAndDiet from './GroceryAndDiet'
-import TimeManagement from './TimeManagement';
-import TodoAppScreen from './ToDoAppScreen';
+//import Character from './Dashboard';
+//import GroceryAndDiet from './GroceryAndDiet'
+//import TimeManagement from './TimeManagement';
+//import TodoAppScreen from './ToDoAppScreen';
 import Dashboard from './Dashboard';
-import Card from './Card';
-import CardContainer from './CardContianer';
+//import Card from './Card';
+//import CardContainer from './CardContianer';
 import Calendar from './month'
 import MealPlan from './MealPlan';
 import GroceryAndDietDashboard from './GroceryAndDietDashboard';
