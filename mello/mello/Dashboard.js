@@ -142,6 +142,9 @@ export default function Dashboard() {
           </View>
           <Surface style={styles.second}>
             <Text style={styles.todoTodayText}>Meal Plan for Today</Text>
+            <BlurView intensity={100} style={styles.todoContainer}>
+              
+            </BlurView>
             
           </Surface>
           <Surface style={styles.third}>
@@ -158,7 +161,10 @@ export default function Dashboard() {
             </BlurView>
           </Surface>
           <Surface style={styles.fourth}>
-            <Character></Character>
+          <Text style={styles.todoTodayText}> </Text>
+            <BlurView intensity={50} style={styles.todoContainer}>
+              <Character></Character>
+            </BlurView>
           </Surface>
           <View style={styles.wrapper}>
             <Text style={{...styles.todoTodayText, marginTop:'5px',}}>Events for Today</Text>
@@ -261,6 +267,10 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   todoTextContainer: {
+    width: "100%",
+    height: "100%",
+  },
+  todoTextContainer2: {
     width: "100%",
     height: "100%",
   },
