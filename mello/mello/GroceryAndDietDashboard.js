@@ -556,7 +556,12 @@ export default function GroceryAndDietDashboard() {
                                 <BlurView intensity={0} tint='dark' style={{...styles.mealCard, height: '100%', marginTop: 0, marginBottom: 0, border: '1px solid black'}}>
                                   <Text style={{color: 'white', fontSize: 30, fontFamily: 'GothamMedium', fontWeight: 'bold', justifyContent: 'space-around', alignItems: 'center'}}>{meal.name}</Text>
                                   <IconButton
-                                    onPress={console.log("Pressed")}
+                                    onPress={() => {
+                                      let newMeals = meals;
+                                      meals[index][jndex] = {name: 'null'};
+                                      setMeals(newMeals);
+                                      set(dbMeals, newMeals);
+                                    }}
                                     icon="delete"
                                     iconColor={'white'}
                                   ></IconButton>
