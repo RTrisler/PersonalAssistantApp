@@ -13,6 +13,8 @@ import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import SetMealIcon from '@mui/icons-material/SetMeal';
 import robot from './assets/img/robot/robot2.png'
+import robot1 from './assets/img/robot/robot3.gif'
+import robot2 from './assets/img/robot/robot4.gif'
 import { getDatabase, ref, set, get, onValue } from 'firebase/database';
 const BGColor = "#003847"
 const LGreen = "#2AA198"
@@ -146,30 +148,45 @@ useEffect(() => {
   const chosenObjectives = chooseObjective();
   const [obj1, setObj1] = React.useState(false);
   const [obj2, setObj2] = React.useState(true);
+  const [img, setImg] = React.useState(robot);
 
   const levelUp = () => 
   {
     setProgress((oldProgress) => 
     {
-      if (oldProgress === 100)
+      setProgress(oldProgress+34)   
+      levelCheck()             
+    });
+  }
+
+  const levelCheck = () =>
+  {
+    console.log("check1")
+    if (progress >= 100)
       {
         setLevel(level+1)
-        return 0; 
+        setProgress(progress-100) 
+        if (level === 0)
+          {
+            setImg(robot1)
+          }
+        else if (level === 1)
+        {
+          setImg(robot2)
+        }
       }
-      setProgress(oldProgress+10)                
-    });
   }
 
   return (
     <View style={styles.container}>
       <View style={styles.charactercontainer}>
         <View style={{justifyContent: 'center', alignItems: 'center'}}>
-        <img src={robot} style={styles.wheels}/>
+        <img src={img} style={styles.wheels}/>
         </View>
         <View className='div'>
           <ProgressBar progress={progress/100} style={{borderRadius: 20, height: 20}} color={LGreen}/>
           <Text style={{color: LGreen, fontSize: 20, fontWeight: 'bold'}}>Level {level}</Text>
-        
+          <Button onClick={levelUp}>Button</Button>
         </View>
       </View>
       <View style={styles.rightCharacterContainer}>
