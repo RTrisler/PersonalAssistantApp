@@ -10,7 +10,6 @@ import { BlurView } from 'expo-blur';
 import { SelectList } from 'react-native-dropdown-select-list';
 import RecipeList from "./RecipeList"
 
-
 const BGColor = "#003847";
 const LGreen = "#2AA198";
 const DGreen = "#002B36";
@@ -214,9 +213,6 @@ export default function GroceryAndDietDashboard() {
     get(dbPantry).then((snapshot) => {
       if(snapshot.exists()) {
         setList(snapshot.val());
-        console.log(snapshot.val());
-        console.log(snapshot.val().map(item => item.name))
-        console.log(snapshot.val().map(item => item.name.toLowerCase()))
       }
       else {
         set(dbPantry, list);
@@ -341,6 +337,42 @@ export default function GroceryAndDietDashboard() {
   const [mealPlannerVisible, setmealPlannerVisible] = useState(true);
   const showFindMore = () => {setfindMoreVisible(true);setmealPlannerVisible(false);};
   const hideFindMore = () => {setfindMoreVisible(false);setmealPlannerVisible(true);};
+  const daysAbv = ['Sun.', 'Mon.', 'Tues', 'Wed.', 'Thu.', 'Fri.', 'Sat.'];
+  const [meals, setMeals] = useState([
+    [{name: 'null'},{name: 'null'},{name: 'null'}],
+    [{name: 'null'},{name: 'null'},{name: 'null'}],
+    [{name: 'null'},{name: 'null'},{name: 'null'}],
+    [{name: 'null'},{name: 'null'},{name: 'null'}],
+    [{name: 'null'},{name: 'null'},{name: 'null'}],
+    [{name: 'null'},{name: 'null'},{name: 'null'}],
+    [{name: 'null'},{name: 'null'},{name: 'null'}],]);
+  const [activeRecipeSlot, setActiveRecipeSlot] = useState([-1,-1]);
+
+  const dbMeals = ref(db, 'users/userID/Meals')
+
+  useEffect(() => {
+    get(dbMeals).then((snapshot) => {
+      if(snapshot.exists()) {
+        setMeals(snapshot.val());
+      }
+      else {
+        set(dbMeals, meals);
+      }
+    }, []);
+  }, []);
+
+  useEffect(() => {
+    onValue(dbMeals, (snapshot) => {
+      if(snapshot.exists()) {
+        setMeals(snapshot.val());
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    set(dbMeals, meals);
+  }, [meals]);
+
   return (
     <LinearGradient
         // Background Linear Gradient
@@ -494,269 +526,42 @@ export default function GroceryAndDietDashboard() {
                   alwaysBounceVertical={false}
                   bounces={false}
                   style={styles.mealScroll}>
-                      {/* SUNDAY */}
-                      <LinearGradient
+                      {/*for each day */}
+                      {meals.map((day, index) => (
+                        <LinearGradient
                         // Background Linear Gradient
                         colors={[ DGreen, 'white']}
                         style={styles.dayCard}
                         start={{ x: 0, y: 0 }}
                         end={{ x: 1, y: 1 }}
                       >
-                        <Text style={styles.dayText}>Sun.</Text>
+                        <Text style={styles.dayText}>{daysAbv[index]}</Text>
                         <Divider style={{ width: 2, height: '90%', alignSelf: 'center', marginLeft: '300px', zIndex: 1}} />
                         <View style={styles.mealCardContainer}>
+                          {/*for each meal of the day*/}
+                          {day.map((meal, jndex) => (
                           <BlurView intensity={30} tint='dark' style={styles.mealCard}>
-                            <IconButton
+                            {meal.name == 'null' && (<IconButton
                               icon="plus"
                               iconColor={"white"}
                               size={50}
                               style={{alignSelf: 'center'}}
-                              onPress={showChooseRecipeVisible}
-                              />
-                              {recipeDataVisible ? (
-                                <Surface style={{ width: '100%', height: '100%'}}>Recipe</Surface>
-                              ): null}
-                          </BlurView>
-                          <BlurView intensity={30} tint='dark' style={styles.mealCard}>
-                            <IconButton
-                              icon="plus"
-                              iconColor={"white"}
-                              size={50}
-                              style={{alignSelf: 'center'}}
-                              />
-                          </BlurView>
-                          <BlurView intensity={40} tint='dark' style={styles.mealCard}>
-                            <IconButton
-                              icon="plus"
-                              iconColor={"white"}
-                              size={50}
-                              style={{alignSelf: 'center'}}
-                              />
-                          </BlurView>
+                              onPress={() => {
+                                setActiveRecipeSlot([index,jndex]);
+                                showChooseRecipeVisible();
+                              }}
+                              />)}
+                              {/*REID RIGHT HERE*/}
+                              {meal.name != 'null' && (
+                                <Surface style={{ width: '100%', height: '100%', justifyContent:'center', alignContent:'center', backgroundColor: BGColor}}>
+                                  <Text style={{color: LGreen, fontSize: 20, fontWeight: 'bold', justifyContent: 'space-around', alignItems: 'center'}}>{meal.name}</Text>
+                                </Surface>
+                              )}
+                          </BlurView>))}
                         </View>
-                      </LinearGradient>
-                      {/* MONDAY */}
-                      <LinearGradient
-                        // Background Linear Gradient
-                        colors={[ DGreen, 'white']}
-                        style={styles.dayCard}
-                        start={{ x: 0, y: 0 }}
-                        end={{ x: 1, y: 1 }}
-                      >
-                        <Text style={styles.dayText}>Mon.</Text>
-                        <Divider style={{ width: 2, height: '90%', alignSelf: 'center', marginLeft: '300px'}} />
-                        <View style={styles.mealCardContainer}>
-                          <BlurView intensity={30} tint='dark' style={styles.mealCard}>
-                            <IconButton
-                                icon="plus"
-                                iconColor={"white"}
-                                size={50}
-                                style={{alignSelf: 'center'}}
-                                />
-                          </BlurView>
-                          <BlurView intensity={30} tint='dark' style={styles.mealCard}>
-                            <IconButton
-                              icon="plus"
-                              iconColor={"white"}
-                              size={50}
-                              style={{alignSelf: 'center'}}
-                              />
-                          </BlurView>
-                          <BlurView intensity={50} tint='dark' style={styles.mealCard}>
-                            <IconButton
-                              icon="plus"
-                              iconColor={"white"}
-                              size={50}
-                              style={{alignSelf: 'center'}}
-                              />
-                          </BlurView>
-                        </View>
-                      </LinearGradient>
-                      {/* TUESDAY */}
-                      <LinearGradient
-                        // Background Linear Gradient
-                        colors={[ DGreen, 'white']}
-                        style={styles.dayCard}
-                        start={{ x: 0, y: 0 }}
-                        end={{ x: 1, y: 1 }}
-                      >
-                        <Text style={styles.dayText}>Tue.</Text>
-                        <Divider style={{ width: 2, height: '90%', alignSelf: 'center', marginLeft: '300px'}} />
-                        <View style={styles.mealCardContainer}>
-                          <BlurView intensity={30} tint='dark' style={styles.mealCard}>
-                            <IconButton
-                              icon="plus"
-                              iconColor={"white"}
-                              size={50}
-                              style={{alignSelf: 'center'}}
-                              />
-                          </BlurView>
-                          <BlurView intensity={30} tint='dark' style={styles.mealCard}>
-                            <IconButton
-                              icon="plus"
-                              iconColor={"white"}
-                              size={50}
-                              style={{alignSelf: 'center'}}
-                              />
-                          </BlurView>
-                          <BlurView intensity={50} tint='dark' style={styles.mealCard}>
-                            <IconButton
-                              icon="plus"
-                              iconColor={"white"}
-                              size={50}
-                              style={{alignSelf: 'center'}}
-                              />
-                          </BlurView>
-                        </View>
-                      </LinearGradient>
-                      {/* WEDNESDAY */}
-                      <LinearGradient
-                        // Background Linear Gradient
-                        colors={[ DGreen, 'white']}
-                        style={styles.dayCard}
-                        start={{ x: 0, y: 0 }}
-                        end={{ x: 1, y: 1 }}
-                      >
-                        <Text style={styles.dayText}>Wed.</Text>
-                        <Divider style={{ width: 2, height: '90%', alignSelf: 'center', marginLeft: '300px'}} />
-                        <View style={styles.mealCardContainer}>
-                          <BlurView intensity={30} tint='dark' style={styles.mealCard}>
-                            <IconButton
-                              icon="plus"
-                              iconColor={"white"}
-                              size={50}
-                              style={{alignSelf: 'center'}}
-                              />
-                          </BlurView>
-                          <BlurView intensity={30} tint='dark' style={styles.mealCard}>
-                            <IconButton
-                              icon="plus"
-                              iconColor={"white"}
-                              size={50}
-                              style={{alignSelf: 'center'}}
-                              />
-                          </BlurView>
-                          <BlurView intensity={50} tint='dark' style={styles.mealCard}>
-                            <IconButton
-                              icon="plus"
-                              iconColor={"white"}
-                              size={50}
-                              style={{alignSelf: 'center'}}
-                              />
-                          </BlurView>
-                        </View>
-                      </LinearGradient>
-                      {/* THURSDAY */}
-                      <LinearGradient
-                        // Background Linear Gradient
-                        colors={[ DGreen, 'white']}
-                        style={styles.dayCard}
-                        start={{ x: 0, y: 0 }}
-                        end={{ x: 1, y: 1 }}
-                      >
-                        <Text style={styles.dayText}>Thu.</Text>
-                        <Divider style={{ width: 2, height: '90%', alignSelf: 'center', marginLeft: '300px'}} />
-                        <View style={styles.mealCardContainer}>
-                          <BlurView intensity={30} tint='dark' style={styles.mealCard}>
-                            <IconButton
-                              icon="plus"
-                              iconColor={"white"}
-                              size={50}
-                              style={{alignSelf: 'center'}}
-                              />
-                          </BlurView>
-                          <BlurView intensity={30} tint='dark' style={styles.mealCard}>
-                            <IconButton
-                              icon="plus"
-                              iconColor={"white"}
-                              size={50}
-                              style={{alignSelf: 'center'}}
-                              />
-                          </BlurView>
-                          <BlurView intensity={50} tint='dark' style={styles.mealCard}>
-                            <IconButton
-                              icon="plus"
-                              iconColor={"white"}
-                              size={50}
-                              style={{alignSelf: 'center'}}
-                              />
-                          </BlurView>
-                        </View>
-                      </LinearGradient>
-                      {/* FRIDAY */}
-                      <LinearGradient
-                        // Background Linear Gradient
-                        colors={[ DGreen, 'white']}
-                        style={styles.dayCard}
-                        start={{ x: 0, y: 0 }}
-                        end={{ x: 1, y: 1 }}
-                      >
-                        <Text style={styles.dayText}>Fri.</Text>
-                        <Divider style={{ width: 2, height: '90%', alignSelf: 'center', marginLeft: '300px'}} />
-                        <View style={styles.mealCardContainer}>
-                          <BlurView intensity={30} tint='dark' style={styles.mealCard}>
-                            <IconButton
-                              icon="plus"
-                              iconColor={"white"}
-                              size={50}
-                              style={{alignSelf: 'center'}}
-                              />
-                          </BlurView>
-                          <BlurView intensity={30} tint='dark' style={styles.mealCard}>
-                            <IconButton
-                              icon="plus"
-                              iconColor={"white"}
-                              size={50}
-                              style={{alignSelf: 'center'}}
-                              />
-                          </BlurView>
-                          <BlurView intensity={50} tint='dark' style={styles.mealCard}>
-                            <IconButton
-                              icon="plus"
-                              iconColor={"white"}
-                              size={50}
-                              style={{alignSelf: 'center'}}
-                              />
-                          </BlurView>
-                        </View>
-                      </LinearGradient>
-                      {/* SATURDAY */}
-                      <LinearGradient
-                        // Background Linear Gradient
-                        colors={[ DGreen, 'white']}
-                        style={styles.dayCard}
-                        start={{ x: 0, y: 0 }}
-                        end={{ x: 1, y: 1 }}
-                      >
-                        <Text style={styles.dayText}>Sat.</Text>
-                        <Divider style={{ width: 2, height: '90%', alignSelf: 'center', marginLeft: '300px'}} />
-                        <View style={styles.mealCardContainer}>
-                          <BlurView intensity={30} tint='dark' style={styles.mealCard}>
-                            <IconButton
-                              icon="plus"
-                              iconColor={"white"}
-                              size={50}
-                              style={{alignSelf: 'center'}}
-                              />
-                          </BlurView>
-                          <BlurView intensity={30} tint='dark' style={styles.mealCard}>
-                            <IconButton
-                              icon="plus"
-                              iconColor={"white"}
-                              size={50}
-                              style={{alignSelf: 'center'}}
-                              />
-                          </BlurView>
-                          <BlurView intensity={50} tint='dark' style={styles.mealCard}>
-                            <IconButton
-                              icon="plus"
-                              iconColor={"white"}
-                              size={50}
-                              style={{alignSelf: 'center'}}
-                              />
-                          </BlurView>
-                        </View>
-                      </LinearGradient>
+                      </LinearGradient>))}
+
+
                 </ScrollView>
               </>
             ): null}
@@ -904,7 +709,17 @@ export default function GroceryAndDietDashboard() {
               <List.Section style={{backgroundColor: 'red'}}>
                 {recipes.map((item, index) => (
                   <Surface>
-                  <TouchableOpacity onPress={showRecipeData} key={item.name} style={{...styles.itemContainer, flexDirection: 'row', justifyContent: 'space-between', alignContent: 'center'}}>
+                  <TouchableOpacity onPress={
+                    () => {
+                      const newMeals = meals;
+                      newMeals[activeRecipeSlot[0]][activeRecipeSlot[1]] = item;
+                      console.log(newMeals);
+                      set(dbMeals, newMeals);
+                      setMeals(newMeals);
+                      hideChooseRecipe();
+                    }} 
+                    key={item.name} 
+                    style={{...styles.itemContainer, flexDirection: 'row', justifyContent: 'space-between', alignContent: 'center'}}>
                     <View style={styles.itemDetailsContainer}>
                       <View style ={{justifyContent: 'space-between', flexDirection: 'row'}}>
                         <Text style={styles.itemText}>{item.name}</Text>
