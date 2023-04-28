@@ -508,7 +508,7 @@ export default function GroceryAndDietDashboard() {
                   style={styles.mealsTopBox}> 
                     <Text style={styles.mealsText}> Meal Planner </Text>
                     <View style={styles.findMoreContainter}>
-                      <Text style={{...styles.mealsText, alignSelf: 'center'}}> FindMoreRecipes </Text>
+                      <Text style={{...styles.findMoreText, alignSelf: 'center'}}> FindMoreRecipes </Text>
                       <IconButton
                         icon="arrow-right"
                         iconColor={"gray"}
@@ -798,16 +798,16 @@ const styles = StyleSheet.create({
   },
   pantry: {
     width: 300,
-    backgroundColor: SurfaceColor,
+    backgroundColor: BGColor,
     borderRadius: '10px',
     flexDirection: 'column',
   },
   meals: {
     flexGrow: 1,
-    backgroundColor: SurfaceColor,
+    backgroundColor: BGColor,
     borderRadius: '10px',
     minWidth: "40%",
-    maxWidth: "63%",
+    maxWidth: "70%",
     marginLeft: "10px",
     marginRight: "10px",
   },
@@ -816,14 +816,14 @@ const styles = StyleSheet.create({
   },
   recipes: {
     width: 300,
-    backgroundColor: SurfaceColor,
+    backgroundColor: BGColor,
     borderRadius: '10px',
     flexDirection: 'column',
   },
   recipesModal: {
     marginLeft: windowWidth - 325,
     width: 300,
-    backgroundColor: SurfaceColor,
+    backgroundColor: BGColor,
     borderRadius: '10px',
     flexDirection: 'row',
     marginTop: '10px',
@@ -834,7 +834,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: SurfaceColor,
+    backgroundColor: BGColor,
     borderTopLeftRadius: '10px',
     borderTopRightRadius: '10px',
   },
@@ -844,17 +844,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: SurfaceColor,
+    backgroundColor: BGColor,
     borderTopLeftRadius: '10px',
     borderTopRightRadius: '10px',
   },
   pantryText: {
     fontFamily: 'GothamBold',
-    fontSize: 25,
+    fontSize: 35,
     color: 'white',
     marginLeft: '10px',
   },
   mealsText: {
+    fontFamily: 'GothamBold',
+    fontSize: 70,
+    color: 'white',
+  },
+  findMoreText: {
     fontFamily: 'GothamBold',
     fontSize: 25,
     color: 'white',
@@ -907,7 +912,7 @@ const styles = StyleSheet.create({
   },
   topControl: {
     height: '25%',
-    backgroundColor: SurfaceColor,
+    backgroundColor: BGColor,
     justifyContent: 'center',
     alignItems: 'center',
     borderBottomEndRadius: '10px',

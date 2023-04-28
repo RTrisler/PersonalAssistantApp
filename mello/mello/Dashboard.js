@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View} from 'react-native'
+import { ScrollView, StyleSheet, Text, View} from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react'
 import Character from './Character'
@@ -14,7 +14,9 @@ import ToDoForm from './ToDoForm';
 import './index.css';
 
 
-const BGColor = "#05586e";
+const BGColor = "#003847";
+const SurfaceColor = "#00181f";
+const DGreen = "#002B36";
 
 
 
@@ -115,6 +117,10 @@ export default function Dashboard() {
 
   const [fontsLoaded] = useFonts({
     'Elnath': require('/assets/fonts/ELNATH.ttf'),
+    'GothamBold': require('/assets/fonts/GothamBold.ttf'),
+    'GothamBook': require('/assets/fonts/GothamBook.ttf'),
+    'GothamLight': require('/assets/fonts/GothamLight.ttf'),
+    'GothamMedium': require('/assets/fonts/GothamMedium.ttf'),
   });
 
   const [todoData, setTodoData] = useState([])
@@ -159,18 +165,31 @@ export default function Dashboard() {
               <View style={styles.textContainer}>
                 <Text style={styles.titleText}>Mello</Text>
               </View>
-              <View style={styles.textContainer}>
-                <Text style={styles.profileText}>Profile</Text>
-              </View>
             </View>
           </View>
-          <Surface style={styles.second}>
-            <Text style={styles.todoTodayText}>Meal Plan for Today</Text>
-            <BlurView intensity={100} style={styles.todoContainer}>
-              
-            </BlurView>
+            <Surface style={styles.fourth}>
+            <Text style={styles.todoTodayText}> </Text>
+                <Character></Character>
+            </Surface>
             
-          </Surface>
+            <View style={styles.wrapper}>
+              <Surface style={styles.topBar}>
+                <Text style={{...styles.todoTodayText, marginTop:'5px',}}>Today's Events</Text>
+              </Surface>
+              <ScrollView>
+                  {eventList != [] &&
+                    (
+                      eventList.filter(event => event.start.value.split('T')[0] == (new Date().toISOString().split('T')[0])).map((event) =>(
+                        <Surface style={{width:'100%', height:'50px', backgroundColor:DGreen,marginBottom: '5px', marginTop: '5px'}}>
+                          <Text style={{fontSize: 40, fontFamily: 'GothamBook', color: 'white', }}>{event.text}</Text>
+                        </Surface>
+                      ))
+                    )
+                  }
+              </ScrollView>
+            </View>
+            
+
           <Surface style={styles.third}>
             <Text style={styles.todoTodayText}>ToDo List for Today</Text>
             <BlurView intensity={100} style={styles.todoContainer}>
@@ -184,26 +203,6 @@ export default function Dashboard() {
               <Divider style={styles.divider}></Divider>
             </BlurView>
           </Surface>
-          <Surface style={styles.fourth}>
-          <Text style={styles.todoTodayText}> </Text>
-            <BlurView intensity={50} style={styles.todoContainer}>
-              <Character></Character>
-            </BlurView>
-          </Surface>
-          <View style={styles.wrapper}>
-            <Text style={{...styles.todoTodayText, marginTop:'5px',}}>Events for Today</Text>
-            <BlurView intensity={100} style={{...styles.todoContainer, marginLeft: '2.5%', height: '90%'}}>
-            <Divider style={styles.divider} />
-              {eventList != [] &&
-                (
-                  eventList.filter(event => event.start.value.split('T')[0] == (new Date().toISOString().split('T')[0])).map((event) =>(
-                    <Text>{event.text}</Text>
-                  ))
-                )
-              }
-              <Divider style={styles.divider}></Divider>
-            </BlurView>
-          </View>
         </SafeAreaView>
     </LinearGradient>
   );
@@ -213,9 +212,6 @@ export default function Dashboard() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'row',
-    alignContent: "space-around",
-    justifyContent: "space-evenly",
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
@@ -256,8 +252,12 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end'
   },
   second: {
+    position: 'absolute',
+    top: 0,
+    marginTop: '50px',
+    left: 0,
     height: "35%",
-    width: "45%",
+    width: "60%",
     backgroundColor: BGColor,
     borderRadius: "10px",
   },
@@ -267,12 +267,16 @@ const styles = StyleSheet.create({
     backgroundColor: 'red',
   },
   third: {
-    height: "35%",
-    width: "45%",
+    position: "absolute",
+    right: "0",
+    height: "94%",
+    width: "38%",
     backgroundColor: BGColor,
     borderRadius: "10px",
-    justifyContent: "center",
-    alignItems: "center",
+    marginRight: "10px",
+    marginTop: "50px",
+    alignContent: "center",
+    padding: "10px",
   },
   todoTodayText: {
     fontFamily: "Monospace",
@@ -283,6 +287,7 @@ const styles = StyleSheet.create({
   todoTextContainer: {
     width: "100%",
     height: "100%",
+    marginLeft: "10px"
   },
   todoTextContainer2: {
     width: "100%",
@@ -299,8 +304,8 @@ const styles = StyleSheet.create({
     height: '85%',
 },
   todoContainer: {
-    width: "95%",
-    height: "80%",
+    width: "100%",
+    height: "95%",
     borderColor: '#fff',
     borderWidth: 2,
     borderRadius: 10,
@@ -308,14 +313,23 @@ const styles = StyleSheet.create({
     marginVertical: "5px"
   },
   fourth: {
-    height: "50%",
-    width: "56%",
+    position: 'absolute',
+    top: 0,
+    marginTop: '50px',
+    left: 0,
+    marginLeft: '10px',
+    height: "46%",
+    width: "60%",
     backgroundColor: BGColor,
     borderRadius: "10px",
   },
   wrapper: {
-    height: "50%",
-    width: "36%",
+    position: "absolute",
+    bottom: "0",
+    marginLeft: "10px",
+    marginBottom: "10px",
+    height: "46%",
+    width: "60%",
     backgroundColor: BGColor,
     justifyContent: "space-between",
     alignItems: "space-between",
@@ -323,6 +337,27 @@ const styles = StyleSheet.create({
   },
   divider: {
     width: "100%",
-  }
+  },
+  dayCard: {
+    width: "10%",
+    height: 100,
+    backgroundColor: DGreen,
+    marginTop: '10px',
+    marginBottom: '10px',
+    marginLeft: '10px',
+    marginRight: '10px',
+    borderRadius: '15px',
+    flexDirection: 'row',
+  },
+  topBar: {
+    height: '25%',
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: BGColor,
+    borderTopLeftRadius: '10px',
+    borderTopRightRadius: '10px',
+  },
  
 })
