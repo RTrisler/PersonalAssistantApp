@@ -187,6 +187,7 @@ Theme Designer Version: 2021.09.25.67272
 	border-right: 1px solid #0a0a0a;
 	border-bottom: 1px solid #0a0a0a;
 	background: #27a2c4;
+	opacity: .5;
 }
 .mellocal_cell_business .mellocal_cell_inner {
 	background: #3595b0;

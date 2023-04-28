@@ -3,13 +3,14 @@ DayPilot Navigator Theme
 https://themes.daypilot.org/navigator/theme/skig57
 Theme Designer Version: 2021.09.25.67272
 */
-.mello_main { height: 100%; border-left: 1px solid #5174a6;border-right: 1px solid #5174a6;border-bottom: 1px solid #5174a6; font-family: -apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif; font-size: 12px; }
+.mello_main { height: 100%; border-left: 3px solid #5174a6;border-right: 3px solid #5174a6;border-bottom: 1px solid #5174a6; font-family: -apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif; font-size: 12px; }
 .mello_main *, .mello_main *:before, .mello_main *:after { box-sizing: border-box; }
 .mello_line { border-bottom: 1px solid #5174a6; }
 /* month header */ 
 .mello_title, .mello_titleleft, .mello_titleright { 
-	border-top: 1px solid #5174a6;
+	border-top: 3px solid #5174a6;
 	color: #f5edf5;
+	opacity: .8;
 	background: #004052;
 	background: -webkit-gradient(linear, left top, left bottom, from(#00607b), to(#002029));
 	background: -webkit-linear-gradient(top, #00607b 0%, #002029);
@@ -24,6 +25,7 @@ Theme Designer Version: 2021.09.25.67272
 /* day headers */
 .mello_dayheader { 
 	color: #f7f5f7;
+	opacity: .8;
 	background: #177d99;
 	background: -webkit-gradient(linear, left top, left bottom, from(#29b8df), to(#0b3f4d));
 	background: -webkit-linear-gradient(top, #29b8df 0%, #0b3f4d);
@@ -47,6 +49,7 @@ Theme Designer Version: 2021.09.25.67272
 	background: linear-gradient(top, #46abc6 0%, #09191d);
 	filter: progid:DXImageTransform.Microsoft.Gradient(startColorStr="#46abc6", endColorStr="#09191d");
 	text-align: center;
+	opacity: .75;
 }
 .mello_cell_text {
 	padding: 0px;

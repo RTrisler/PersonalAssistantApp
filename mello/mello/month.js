@@ -103,7 +103,7 @@ class Calendar extends Component {
           <DayPilotNavigator
             theme={"mello"}
             selectMode={"week"}
-            showMonths={3}
+            showMonths={3.5}
             skipMonths={3}
             onTimeRangeSelected={ args => {
               this.calendar.update({
