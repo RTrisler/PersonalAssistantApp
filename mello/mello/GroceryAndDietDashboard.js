@@ -35,6 +35,7 @@ export default function GroceryAndDietDashboard() {
   const [itemAdderVisible, setItemAdderVisible] = useState(false);
   const [shoppingItemAdderVisible, setShoppingItemAdderVisible] = useState(false);
   const [category, setCategory] = useState('');
+  const [category2, setCategory2] = useState('');
   const categories = [
     {key:'0', value:'Vegetables'},
     {key:'1', value:'Fruit'},
@@ -53,6 +54,8 @@ export default function GroceryAndDietDashboard() {
   const [list, setList] = useState([]);
   const [newItemName, setNewItemName] = useState('');
   const [newItemQty, setNewItemQty] = useState(1);
+  const [newItem2Name, setNewItem2Name] = useState('');
+  const [newItem2Qty, setNewItem2Qty] = useState(1);
   //the actual adding part
   const handleAddItem = async () => {
     if(newItemName == '' || isNaN(+newIngredientQty)) {
@@ -102,13 +105,65 @@ export default function GroceryAndDietDashboard() {
     }
   };
 
-  //vars for adding items
-  const handleAddItemFromRecipe = async (itemToAdd, itemQty) => {
-    const oldList = list;
+  const handleAddItem2 = async () => {
+    console.log(1);
+    if(newItem2Name == '' || isNaN(+newIngredientQty)) {
+      Toast.show({
+        type: 'error',
+        text1: 'Item needs a name or quantity'
+      })
+      console.log(2);
+      return;
+    }
+    console.log(3);
+    const itemToAdd = newItem2Name;
+    const itemQty = newItem2Qty ? newItem2Qty : 1;
+    //reset newitemname
+    setNewItem2Name('');
+    setNewItem2Qty(1);
+    const oldList = list2;
     const cat = category || -1;
     console.log(cat);
     //add to list quickly
-    setList([...oldList, { name: itemToAdd, ID: -1,  foodData: "" , itemCategory: cat == -1 ? "" : categories[cat], Qty: itemQty}]);
+    setList2([...oldList, { name: itemToAdd, ID: -1,  foodData: "" , itemCategory: cat == -1 ? "" : categories[cat], Qty: itemQty}]);
+    console.log(4);
+    hideShoppingItemAdder();
+    //if not a food then no point in getting data from database
+    if(category == '' || cat > 7) return;
+    const fData = await fetchData(itemToAdd.replace(/[^a-zA-Z ]/g, ''));
+    //
+    if(fData[0] != -1) {
+        let fDataMap = fData[1].map(nutrient => {
+            return {
+                id: nutrient.nutrient.id,
+                amount: nutrient.amount,
+                name: nutrient.nutrient.name,
+                number: nutrient.nutrient.number,
+                unitName: nutrient.nutrient.unitName
+            }
+        });
+        const calories = fDataMap.filter((nutrient) => nutrient.id == 1008)[0];
+        const carbs = fDataMap.filter((nutrient) => nutrient.id == 1005)[0];
+        const protein = fDataMap.filter((nutrient) => nutrient.id == 1003)[0];
+        const cholesterol = fDataMap.filter((nutrient) => nutrient.id == 1253)[0];
+        const fat = fDataMap.filter((nutrient) => nutrient.id == 1004)[0];
+        const calV = calories ? (calories.amount + calories.unitName) : "0kcal";
+        const carbV = carbs ? (carbs.amount + carbs.unitName) : "0g";
+        const protV = protein ? (protein.amount + protein.unitName) : "0g";
+        const fatV = fat ? (fat.amount + fat.unitName) : "0g";
+        const cholV = cholesterol ? (cholesterol.amount + cholesterol.unitName) : "0g";
+        let fDataStr = "Cal " + calV + "\t" + "Carbs " + carbV + "\t" + "Protein " + protV  + "\t" + "Fat " + fatV + "\t" + "Cholesterol " + cholV;
+        setList2([...oldList, { name: itemToAdd, ID: fData[0],  foodData: fDataStr, itemCategory: cat == -1 ? "" : categories[cat], Qty: itemQty }]);
+    }
+  };
+
+  //vars for adding items
+  const handleAddItemFromRecipe = async (itemToAdd, itemQty) => {
+    const oldList = list2;
+    const cat = category || -1;
+    console.log(cat);
+    //add to list quickly
+    setList2([...oldList, { name: itemToAdd, ID: -1,  foodData: "" , itemCategory: cat == -1 ? "" : categories[cat], Qty: itemQty}]);
     hideItemAdder();
     //if not a food then no point in getting data from database
     if(category == '' || cat > 7) return;
@@ -135,12 +190,16 @@ export default function GroceryAndDietDashboard() {
         const fatV = fat ? (fat.amount + fat.unitName) : "0g";
         const cholV = cholesterol ? (cholesterol.amount + cholesterol.unitName) : "0g";
         let fDataStr = "Cal " + calV + "\t" + "Carbs " + carbV + "\t" + "Protein " + protV  + "\t" + "Fat " + fatV + "\t" + "Cholesterol " + cholV;
-        setList([...oldList, { name: itemToAdd, ID: fData[0],  foodData: fDataStr, itemCategory: cat == -1 ? "" : categories[cat], Qty: itemQty }]);
+        setList2([...oldList, { name: itemToAdd, ID: fData[0],  foodData: fDataStr, itemCategory: cat == -1 ? "" : categories[cat], Qty: itemQty }]);
     }
   };
 
   const handleDeleteItem = (index) => {
     setList(list.filter((item, i) => i !== index));
+  };
+
+  const handleDeleteItem2 = (index) => {
+    setList2(list2.filter((item, i) => i !== index));
   };
 
   const fetchData = async (food) => {
@@ -376,6 +435,7 @@ export default function GroceryAndDietDashboard() {
     set(dbMeals, meals);
   }, [meals]);
 
+  const [list2, setList2] = useState([]);
   return (
     <LinearGradient
         // Background Linear Gradient
@@ -386,10 +446,11 @@ export default function GroceryAndDietDashboard() {
       >
         { /* PANTRY */}
         <Surface style={styles.pantry}>
+          <View style={{height:'50%'}}>
           <Surface
             elevation={5}
             style={styles.pantryTopBox}> 
-              <Text style={styles.pantryText}> Your Pantry </Text>
+              <Text style={styles.pantryText}> Pantry </Text>
               <IconButton
                 icon="plus"
                 iconColor={"gray"}
@@ -418,77 +479,11 @@ export default function GroceryAndDietDashboard() {
                     iconColor={LGreen}
                   ></IconButton>
                   </View>
-                  {(item.ID != -1) && <List.Accordion style={{backgroundColor: "red"}} title="Nutrional Info" titleStyle={{color: LGreen}}>
-                    <Text style={styles.itemDetails}>{item.foodData}</Text>
-                  </List.Accordion>}
                 </Surface>
               ))}
             </List.Section>
           </ScrollView>
-
-          {/*Shopping List*/}
-          <Surface
-            elevation={5}
-            style={{height: "10%", width: "100%", alignSelf: "baseline", paddingBottom: "10px", flexDirection: 'row',alignItems: 'center',justifyContent: 'space-between',backgroundColor: BGColor,borderTopLeftRadius: '10px',borderTopRightRadius: '10px',}}> 
-              <Text style={styles.pantryText}> Shopping List </Text>
-              <IconButton
-                icon="plus"
-                iconColor={"gray"}
-                size={30}
-                style={styles.iconButton}
-                onPress={showShoppingItemAdder}
-                />
-          </Surface>
-          <Surface style={{height: "40%", width: "100%", backgroundColor: BGColor}}>
-            <ScrollView>
-              <List.Section style={{backgroundColor: BGColor}}>
-                {list.map((item, index) => (
-                  <Surface key={item.name} style={{backgroundColor: BGColor, justifyContent: 'space-between'}}>
-                    <View style={{flexDirection: 'row'}}>
-                      <View style={{...styles.itemDetailsContainer, justifyContent: 'center'}}>
-                        <View style ={{justifyContent: 'space-between', flexDirection: 'row'}}>
-                          <Text style={styles.categoryText}>{item.name}</Text>
-                          <Text style={{...styles.categoryText, paddingRight: '3%'}}>{item.itemCategory.value}</Text>
-                        </View>
-                      </View>
-                      <View style={{backgroundColor: DGreen, maxWidth: '15%', minWidth: '5%', justifyContent: 'center', alignItems: 'center'}}>
-                        <Text style={{color: LGreen, fontSize: 25, fontWeight: 'bold'}}>{item.Qty}</Text>
-                      </View>
-                      <IconButton
-                      onPress={() => handleDeleteItem(index)}
-                      icon="delete"
-                      iconColor={LGreen}
-                    ></IconButton>
-                    </View>
-                    {(item.ID != -1) && <List.Accordion style={{backgroundColor: "red"}} title="Nutrional Info" titleStyle={{color: LGreen}}>
-                      <Text style={styles.itemDetails}>{item.foodData}</Text>
-                    </List.Accordion>}
-                  </Surface>
-                ))}
-              </List.Section>
-            </ScrollView>
-          </Surface>
-          
-
-          <Modal style={styles.groceryModal} visible={shoppingItemAdderVisible} onDismiss={hideShoppingItemAdder}>
-              <Card style={styles.itemAdder}>
-                <View style={{flexDirection: 'row'}}>
-                  <TextInput placeholder='Item name' activeUnderlineColor = "#2AA198" onChangeText={setNewItemName} textColor="#2AA198" value={newItemName} style={{width: '75%', backgroundColor: 'white', border: 'none'}}/>
-                  <TextInput placeholder='Qty.' activeUnderlineColor = "#2AA198" onChangeText={setNewItemQty} textColor="#2AA198" value={newItemQty} style={{width: '25%', backgroundColor: 'white'}} keyboardType='numeric'/>
-                </View>
-                <SelectList setSelected={setCategory} data={categories} save="key" inputStyles={{color: LGreen}} dropdownTextStyles={{color: LGreen}}/>
-                <View style={{border: '0px', flexDirection:'row', justifyContent:'space-between', paddingVertical: 10, paddingHorizontal: 5}}>
-                <Button onPress={handleAddItem} buttonColor={DGreen} textColor={LGreen}>
-                  <Text style = {{fontSize: 20, fontWeight: 'bold', color: LGreen}}> Save </Text>
-                </Button>
-                <Button onPress={hideShoppingItemAdder} buttonColor={DGreen} textColor={LGreen}>
-                  <Text style = {{fontSize: 20, fontWeight: 'bold', color: LGreen}}> Cancel </Text>
-                </Button>
-                </View>
-              </Card>
-            </Modal>
-
-            <Modal style={styles.groceryModal} visible={itemAdderVisible} onDismiss={hideItemAdder}>
+          <Modal style={styles.groceryModal} visible={itemAdderVisible} onDismiss={hideItemAdder}>
               <Card style={styles.itemAdder}>
                 <View style={{flexDirection: 'row'}}>
                   <TextInput placeholder='Item name' activeUnderlineColor = "#2AA198" onChangeText={setNewItemName} textColor="#2AA198" value={newItemName} style={{width: '75%', backgroundColor: 'white', border: 'none'}}/>
@@ -505,6 +500,65 @@ export default function GroceryAndDietDashboard() {
                 </View>
               </Card>
             </Modal>
+          </View>
+          
+          {/*Shopping List*/}
+          <View style={{height:'50%'}}>
+          <Surface
+            elevation={5}
+            style={{height: "10%", width: "100%", alignSelf: "baseline", paddingBottom: "10px", flexDirection: 'row',alignItems: 'center',justifyContent: 'space-between',backgroundColor: BGColor,borderTopLeftRadius: '10px',borderTopRightRadius: '10px',}}> 
+              <Text style={styles.pantryText}> Shopping </Text>
+              <IconButton
+                icon="plus"
+                iconColor={"gray"}
+                size={30}
+                style={styles.iconButton}
+                onPress={showShoppingItemAdder}
+                />
+          </Surface>
+            <ScrollView>
+              <List.Section style={{backgroundColor: BGColor}}>
+                {list2.map((item, index) => (
+                  <Surface key={item.name} style={{backgroundColor: BGColor, justifyContent: 'space-between'}}>
+                    <View style={{flexDirection: 'row'}}>
+                      <View style={{...styles.itemDetailsContainer, justifyContent: 'center'}}>
+                        <View style ={{justifyContent: 'space-between', flexDirection: 'row'}}>
+                          <Text style={styles.categoryText}>{item.name}</Text>
+                          <Text style={{...styles.categoryText, paddingRight: '3%'}}>{item.itemCategory.value}</Text>
+                        </View>
+                      </View>
+                      <View style={{backgroundColor: DGreen, maxWidth: '15%', minWidth: '5%', justifyContent: 'center', alignItems: 'center'}}>
+                        <Text style={{color: LGreen, fontSize: 25, fontWeight: 'bold'}}>{item.Qty}</Text>
+                      </View>
+                      <IconButton
+                      onPress={() => handleDeleteItem2(index)}
+                      icon="delete"
+                      iconColor={LGreen}
+                    ></IconButton>
+                    </View>
+                  </Surface>
+                ))}
+              </List.Section>
+            </ScrollView>
+
+          <Modal style={styles.groceryModal} visible={shoppingItemAdderVisible} onDismiss={hideShoppingItemAdder}>
+              <Card style={styles.itemAdder}>
+                <View style={{flexDirection: 'row'}}>
+                  <TextInput placeholder='Item name' activeUnderlineColor = "#2AA198" onChangeText={setNewItem2Name} textColor="#2AA198" value={newItem2Name} style={{width: '75%', backgroundColor: 'white', border: 'none'}}/>
+                  <TextInput placeholder='Qty.' activeUnderlineColor = "#2AA198" onChangeText={setNewItem2Qty} textColor="#2AA198" value={newItem2Qty} style={{width: '25%', backgroundColor: 'white'}} keyboardType='numeric'/>
+                </View>
+                <SelectList setSelected={setCategory2} data={categories} save="key" inputStyles={{color: LGreen}} dropdownTextStyles={{color: LGreen}}/>
+                <View style={{border: '0px', flexDirection:'row', justifyContent:'space-between', paddingVertical: 10, paddingHorizontal: 5}}>
+                <Button onPress={handleAddItem2} buttonColor={DGreen} textColor={LGreen}>
+                  <Text style = {{fontSize: 20, fontWeight: 'bold', color: LGreen}}> Save </Text>
+                </Button>
+                <Button onPress={hideShoppingItemAdder} buttonColor={DGreen} textColor={LGreen}>
+                  <Text style = {{fontSize: 20, fontWeight: 'bold', color: LGreen}}> Cancel </Text>
+                </Button>
+                </View>
+              </Card>
+            </Modal>
+            </View>
         </Surface>
          
         
