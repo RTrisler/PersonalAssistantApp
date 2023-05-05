@@ -1,18 +1,52 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, StyleSheet, ScrollView } from 'react-native';
 import { Divider, Surface } from 'react-native-paper';
 import ToDoCard from './ToDoCard';
 import InlineInputAndButton from './InlineInputAndButton';
+import { getDatabase, ref, onValue, set, get } from 'firebase/database';
 
 const BGColor = "#003847"
 const LGreen = "#2AA198"
 const DGreen = "#002B36"
 
 const TodoAppScreen = () => {
-
-    const initialTodo = [{ value: "Edit text here" }];
-    const [todos, setTodos] = useState(initialTodo);
+    const [todos, setTodos] = useState([]);
     const [text, setText] = useState("");
+    const db = getDatabase();
+    const dbToDo = ref(db, 'users/userID/todo');
+
+    useEffect(() => {
+        get(dbToDo).then((snapshot) => {
+          if(snapshot.exists()) {
+            setTodos(snapshot.val());
+            console.log(snapshot.val());
+          }
+          else {
+          }
+        }, []);
+      }, []);
+    
+      useEffect(() => {
+        onValue(dbToDo, (snapshot) => {
+          if(snapshot.exists()) {
+            setTodos(snapshot.val());
+          }
+        });
+      }, []);
+      const [initialized, setInitialized] = useState(false);
+      useEffect(() => {
+
+        if(!initialized) {
+          setInitialized(true);
+          console.log('initializing')
+          console.log(initialized)
+        }
+        else {
+          console.log('setting list')
+          console.log(initialized)
+          set(dbToDo, todos);
+        }
+      }, [todos]);
 
     const handleChangeText = (text) => {
         setText(text);
@@ -22,6 +56,14 @@ const TodoAppScreen = () => {
 
         setTodos([...todos, { value: text }]);
         setText("");
+        const dbObjectivesRef = ref(db, 'users/userID/valuesNeeded');
+        get(dbObjectivesRef).then((snapshot) => {
+          if(snapshot.exists()) {
+            let valuesNeeded = snapshot.val();
+            valuesNeeded[3] += 1;
+            set(dbObjectivesRef, valuesNeeded);
+          }
+        });
 
     }
 
@@ -54,7 +96,7 @@ const TodoAppScreen = () => {
     return (
         <>
             <Surface style={styles.container}>
-                <Text style={styles.subtitle}>What're your plans for today ?</Text>
+                <Text style={styles.subtitle}>What are your plans for today ?</Text>
                 <InlineInputAndButton
                     name='Add'
                     text={text}

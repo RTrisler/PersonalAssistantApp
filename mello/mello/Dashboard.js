@@ -24,30 +24,7 @@ const DGreen = "#002B36";
 
 export default function Dashboard() {
 
-  
   const db = getDatabase();
-  const dbToDo = ref(db, 'users/userID/todo');
-  const [ toDoList, setToDoList ] = useState([]);
-
-  useEffect(() => {
-    get(dbToDo).then((snapshot) => {
-      if(snapshot.exists()) {
-        setToDoList(snapshot.val());
-        console.log(snapshot.val());
-      }
-      else {
-      }
-    }, []);
-  }, []);
-
-  useEffect(() => {
-    onValue(dbToDo, (snapshot) => {
-      if(snapshot.exists()) {
-        setToDoList(snapshot.val());
-      }
-    });
-  }, []);
-
   const [eventList, setEventList] = useState([]);
   const dbEvents = ref(db, 'users/userID/events');
 
@@ -71,51 +48,6 @@ export default function Dashboard() {
       }
     });
   }, []);
-
-
-
-  const [initialized, setInitialized] = useState(false);
-  useEffect(() => {
-
-    if(!initialized) {
-      setInitialized(true);
-      console.log('initializing')
-      console.log(initialized)
-    }
-    else {
-      console.log('setting list')
-      console.log(initialized)
-      set(dbToDo, toDoList);
-    }
-  }, [toDoList]);
-
-  const handleToggle = (id) => {
-    let mapped = toDoList.map(task => {
-      return task.id === Number(id) ? { ...task, complete: !task.complete } : { ...task};
-    });
-    setToDoList(mapped);
-  }
-
-  const handleFilter = () => {
-    let filtered = toDoList.filter(task => {
-      return !task.complete;
-    });
-    setToDoList(filtered);
-  }
-
-  const addTask = (userInput ) => {
-    let copy = [...toDoList];
-    copy = [...copy, { id: toDoList.length + 1, task: userInput, complete: false }];
-    setToDoList(copy);
-    const dbObjectivesRef = ref(db, 'users/userID/valuesNeeded');
-        get(dbObjectivesRef).then((snapshot) => {
-          if(snapshot.exists()) {
-            let valuesNeeded = snapshot.val();
-            valuesNeeded[3] += 1;
-            set(dbObjectivesRef, valuesNeeded);
-          }
-        });
-  }
 
   const [fontsLoaded] = useFonts({
     'Elnath': require('/assets/fonts/ELNATH.ttf'),
