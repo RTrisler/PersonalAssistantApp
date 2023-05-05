@@ -527,7 +527,7 @@ export default function GroceryAndDietDashboard() {
                       style={styles.iconButton}
                       onPress={hideFindMore}
                       />
-                      <Text style={{...styles.mealsText, alignSelf: 'center'}}> Meal Plan </Text>
+                      <Text style={{...styles.mealsText, fontSize: 30, alignSelf: 'center'}}> Meal Planner </Text>
                     </View>
 
                     
@@ -575,7 +575,7 @@ export default function GroceryAndDietDashboard() {
                   style={styles.mealsTopBox}> 
                     <Text style={styles.mealsText}> Meal Planner </Text>
                     <View style={styles.findMoreContainter}>
-                      <Text style={{...styles.findMoreText, alignSelf: 'center'}}> FindMoreRecipes </Text>
+                      <Text style={{...styles.findMoreText, alignSelf: 'center'}}> Find More Recipes </Text>
                       <IconButton
                         icon="arrow-right"
                         iconColor={"gray"}

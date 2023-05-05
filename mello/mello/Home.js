@@ -49,7 +49,6 @@ export default function Home() {
     <TabNav.Screen name='Home' component={Dashboard} options={{ tabBarIcon:(tabInfo) => (<MaterialCommunityIcons name="home-account" size={24} color="white" />)}}/>
     <TabNav.Screen name="Schedule" component={Calendar} options={{ tabBarIcon:(tabInfo) => (<AntDesign name="book" size={24} color="white" />)}}/>
     <TabNav.Screen name="Groceries and Diet" component={GroceryAndDietDashboard} options={{ tabBarIcon:(tabInfo) => (<MaterialCommunityIcons name="food-variant" size={24} color="white" />)}}/>
-    <TabNav.Screen name="TODO" component={TodoAppScreen} options={{ tabBarIcon:(tabInfo) => (<MaterialCommunityIcons name="food-variant" size={24} color="white" />)}}/>
     <TabNav.Screen name='MoreRecipes' component={HomeStack}  options={{tabBarButton: () => null,tabBarVisible: false,}} />
   
     

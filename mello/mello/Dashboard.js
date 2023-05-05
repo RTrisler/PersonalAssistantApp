@@ -193,7 +193,7 @@ export default function Dashboard() {
             
 
           <Surface style={styles.third}>
-            <Text style={styles.todoTodayText}>ToDo List for Today</Text>
+            <TodoAppScreen></TodoAppScreen>
           </Surface>
         </SafeAreaView>
     </LinearGradient>
@@ -271,7 +271,7 @@ const styles = StyleSheet.create({
     padding: "10px",
   },
   todoTodayText: {
-    fontFamily: "Monospace",
+    fontFamily: "GothamBook",
     fontSize: 25,
     color: "white",
     alignSelf: "center",
@@ -286,7 +286,7 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   todoText: {
-    fontFamily: "Monospace",
+    fontFamily: "GothamBook",
     fontSize: 25,
     alignSelf: "flex-start",
     width: "100%",

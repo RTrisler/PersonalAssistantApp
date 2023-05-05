@@ -7,7 +7,7 @@ const BGColor = "#003847"
 const LGreen = "#2AA198"
 const DGreen = "#002B36"
 
-const TodoCard = (props) => {
+const ToDoCard = (props) => {
 
     const { data: { value }, index, handleClickEdit, handleDeleteTodo } = props;
     const [text, setTodo] = useState(value);
@@ -77,7 +77,7 @@ const TodoCard = (props) => {
     );
 };
 
-export default TodoCard;
+export default ToDoCard;
 
 const styles = StyleSheet.create({
     container: {
@@ -88,8 +88,8 @@ const styles = StyleSheet.create({
     input: {
         flex: 3,
         backgroundColor: 'white',
-        color: 'white',
-        fontSize: 18,
+        color: 'black',
+        fontSize: 20,
         marginRight: 16
     },
     buttonContainer: {
@@ -97,6 +97,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
+        
     },
     divider: {
         borderBottomColor: DGreen,

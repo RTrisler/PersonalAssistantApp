@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Text, StyleSheet, ScrollView } from 'react-native';
 import { Divider, Surface } from 'react-native-paper';
-import TodoCard from './TodoCard';
+import ToDoCard from './ToDoCard';
 import InlineInputAndButton from './InlineInputAndButton';
 
 const BGColor = "#003847"
@@ -64,10 +64,10 @@ const TodoAppScreen = () => {
                     mode='contained'
                     style={{backgroundColor: DGreen}}
                 />
-                <Text style={[styles.subtitle, { fontSize: 22, paddingTop: 16, paddingBottom: 8 }]}> List Todo </Text>
+                <Text style={[styles.subtitle, { fontSize: 22, paddingTop: 16, paddingBottom: 8 }]}> Todo List </Text>
                 <Divider style={styles.divider} />
                 {
-                    todos.map((todo, index) => <TodoCard
+                    todos.map((todo, index) => <ToDoCard
                         key={index}
                         index={index}
                         data={todo}
