@@ -312,7 +312,7 @@ export default function GroceryAndDietDashboard() {
 
   function getRecipeData() {
     fetch(
-      `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredient}&number=6&ranking=2&ignorePantry=true&apiKey=4edd629e3fe94477b016ab3c541c35bd`
+      `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredient}&number=1&ranking=2&ignorePantry=true&apiKey=4edd629e3fe94477b016ab3c541c35bd`
     )
       .then(response => response.json())
       .then(data => {
@@ -415,13 +415,28 @@ export default function GroceryAndDietDashboard() {
                     iconColor={LGreen}
                   ></IconButton>
                   </View>
-                  {(item.ID != -1) && <List.Accordion style={{backgroundColor: DGreen}} title="Nutrional Info" titleStyle={{color: LGreen}}>
+                  {(item.ID != -1) && <List.Accordion style={{backgroundColor: "red"}} title="Nutrional Info" titleStyle={{color: LGreen}}>
                     <Text style={styles.itemDetails}>{item.foodData}</Text>
                   </List.Accordion>}
                 </Surface>
               ))}
             </List.Section>
           </ScrollView>
+          {/*Shopping List*/}
+          <Surface
+            elevation={5}
+            style={{height: "10%", width: "100%", alignSelf: "baseline", paddingBottom: "10px", flexDirection: 'row',alignItems: 'center',justifyContent: 'space-between',backgroundColor: BGColor,borderTopLeftRadius: '10px',borderTopRightRadius: '10px',}}> 
+              <Text style={styles.pantryText}> Your Pantry </Text>
+              <IconButton
+                icon="plus"
+                iconColor={"gray"}
+                size={30}
+                style={styles.iconButton}
+                onPress={showItemAdder}
+                />
+          </Surface>
+          <Surface style={{height: "40%", width: "100%", backgroundColor: BGColor}}></Surface>
+          
 
           <Modal style={styles.groceryModal} visible={itemAdderVisible} onDismiss={hideItemAdder}>
               <Card style={styles.itemAdder}>
@@ -442,6 +457,8 @@ export default function GroceryAndDietDashboard() {
             </Modal>
         </Surface>
          
+        
+
         {/* MEALS/RECIPE FINDER */}
         <Surface style={styles.meals}>
           {findMoreVisible ?

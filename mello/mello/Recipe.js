@@ -2,8 +2,11 @@
 import React, { useState, useEffect } from "react"
 import { StyleSheet, Text, View, Image, Button, ScrollView} from 'react-native';
 import { getDatabase, ref, get, set} from 'firebase/database';
+import { Chip, Surface, List} from 'react-native-paper';
 
 const BGColor = "#003847";
+const DGreen = "#002B36";
+const LGreen = "#2AA198";
 
 export default function Recipe({ meal }) {
   const [imageUrl, setImageUrl] = useState("")
@@ -49,7 +52,7 @@ export default function Recipe({ meal }) {
                 <Image
                     source={{uri:imageUrl}}
                     style={{
-                        height: 300,
+                        height: 250,
                         width: '400px'
                     }}
                 />
@@ -59,29 +62,36 @@ export default function Recipe({ meal }) {
                 <Text style={{ color: "#777", paddingTop: 5 }}>
                 Ingredients
                 </Text>
-                <ScrollView
-                  alwaysBounceHorizontal={false}
-                  alwaysBounceVertical={false}
-                  bounces={false}
-                >
-                    {recipeData && recipeData.extendedIngredients.map(ingredent => {
-                        return <Text 
-                                key={ingredent.id} 
-                                style={{color: (pantry.map(item => item.name.toLowerCase()).includes(ingredent.name.toLowerCase())) ? "#22EE22" : "#EE2222"}}
-                                >
-                                  {ingredent.name}
-                                </Text>;
+                
+                  <List.Section style={{backgroundColor: 'red'}}></List.Section>
+                    {recipeData && <List.Accordion title='Ingredients' style={{backgroundColor: DGreen}} titleStyle={{color: LGreen}}>
+                      {recipeData.extendedIngredients.map(ingredent => {
+                        return <ScrollView
+                          alwaysBounceHorizontal={false}
+                          alwaysBounceVertical={false}
+                          bounces={false}
+                        ><Chip  
+                          onPress={() => console.log('Pressed')} 
+                          style={{width: 150, backgroundColor: (pantry.map(item => item.name.toLowerCase()).includes(ingredent.name.toLowerCase())) ? "#0f4f20" : "#660d19"}}
+                          >
+                            <Text style={{color: "white", }}>{ingredent.name}</Text>
+                          </Chip></ScrollView>;
                         }) }
-                </ScrollView>
+                        </List.Accordion>}
+    
                     
                 <Text style={{ color: "#777", paddingTop: 5 }}>
                 Steps
                 </Text>
-                {recipeData && recipeData.analyzedInstructions.map(instruction => {
-                    return <ScrollView key={instruction.id}>{instruction.steps.map(step => {
+                <List.Section style={{backgroundColor: 'red'}}>
+                {recipeData && <List.Accordion title='Steps' style={{backgroundColor: DGreen}} titleStyle={{color: LGreen}}>
+                  {recipeData.analyzedInstructions.map(instruction => {
+                    return <ScrollView><Surface style={{...styles.itemContainer, justifyContent:'space-between'}} key={instruction.id}>{instruction.steps.map(step => {
                         return <Text key={step.id}>{step.step + " \n"}</Text>
-                    })}</ScrollView>;
+                    })}</Surface></ScrollView>;
                     }) }
+                    </List.Accordion>}
+                </List.Section>
                 <View style={styles.fitToText}>
                     <Button
                         title='Add To My Recipes'
