@@ -33,6 +33,7 @@ export default function GroceryAndDietDashboard() {
 
   //#region PANTRY ITEM ADD/DELETE
   const [itemAdderVisible, setItemAdderVisible] = useState(false);
+  const [shoppingItemAdderVisible, setShoppingItemAdderVisible] = useState(false);
   const [category, setCategory] = useState('');
   const categories = [
     {key:'0', value:'Vegetables'},
@@ -47,6 +48,8 @@ export default function GroceryAndDietDashboard() {
   ]
   const showItemAdder = () => setItemAdderVisible(true);
   const hideItemAdder = () => setItemAdderVisible(false);
+  const showShoppingItemAdder = () => setShoppingItemAdderVisible(true);
+  const hideShoppingItemAdder = () => setShoppingItemAdderVisible(false);
   const [list, setList] = useState([]);
   const [newItemName, setNewItemName] = useState('');
   const [newItemQty, setNewItemQty] = useState(1);
@@ -422,23 +425,70 @@ export default function GroceryAndDietDashboard() {
               ))}
             </List.Section>
           </ScrollView>
+
           {/*Shopping List*/}
           <Surface
             elevation={5}
             style={{height: "10%", width: "100%", alignSelf: "baseline", paddingBottom: "10px", flexDirection: 'row',alignItems: 'center',justifyContent: 'space-between',backgroundColor: BGColor,borderTopLeftRadius: '10px',borderTopRightRadius: '10px',}}> 
-              <Text style={styles.pantryText}> Your Pantry </Text>
+              <Text style={styles.pantryText}> Shopping List </Text>
               <IconButton
                 icon="plus"
                 iconColor={"gray"}
                 size={30}
                 style={styles.iconButton}
-                onPress={showItemAdder}
+                onPress={showShoppingItemAdder}
                 />
           </Surface>
-          <Surface style={{height: "40%", width: "100%", backgroundColor: BGColor}}></Surface>
+          <Surface style={{height: "40%", width: "100%", backgroundColor: BGColor}}>
+            <ScrollView>
+              <List.Section style={{backgroundColor: BGColor}}>
+                {list.map((item, index) => (
+                  <Surface key={item.name} style={{backgroundColor: BGColor, justifyContent: 'space-between'}}>
+                    <View style={{flexDirection: 'row'}}>
+                      <View style={{...styles.itemDetailsContainer, justifyContent: 'center'}}>
+                        <View style ={{justifyContent: 'space-between', flexDirection: 'row'}}>
+                          <Text style={styles.categoryText}>{item.name}</Text>
+                          <Text style={{...styles.categoryText, paddingRight: '3%'}}>{item.itemCategory.value}</Text>
+                        </View>
+                      </View>
+                      <View style={{backgroundColor: DGreen, maxWidth: '15%', minWidth: '5%', justifyContent: 'center', alignItems: 'center'}}>
+                        <Text style={{color: LGreen, fontSize: 25, fontWeight: 'bold'}}>{item.Qty}</Text>
+                      </View>
+                      <IconButton
+                      onPress={() => handleDeleteItem(index)}
+                      icon="delete"
+                      iconColor={LGreen}
+                    ></IconButton>
+                    </View>
+                    {(item.ID != -1) && <List.Accordion style={{backgroundColor: "red"}} title="Nutrional Info" titleStyle={{color: LGreen}}>
+                      <Text style={styles.itemDetails}>{item.foodData}</Text>
+                    </List.Accordion>}
+                  </Surface>
+                ))}
+              </List.Section>
+            </ScrollView>
+          </Surface>
           
 
-          <Modal style={styles.groceryModal} visible={itemAdderVisible} onDismiss={hideItemAdder}>
+          <Modal style={styles.groceryModal} visible={shoppingItemAdderVisible} onDismiss={hideShoppingItemAdder}>
+              <Card style={styles.itemAdder}>
+                <View style={{flexDirection: 'row'}}>
+                  <TextInput placeholder='Item name' activeUnderlineColor = "#2AA198" onChangeText={setNewItemName} textColor="#2AA198" value={newItemName} style={{width: '75%', backgroundColor: 'white', border: 'none'}}/>
+                  <TextInput placeholder='Qty.' activeUnderlineColor = "#2AA198" onChangeText={setNewItemQty} textColor="#2AA198" value={newItemQty} style={{width: '25%', backgroundColor: 'white'}} keyboardType='numeric'/>
+                </View>
+                <SelectList setSelected={setCategory} data={categories} save="key" inputStyles={{color: LGreen}} dropdownTextStyles={{color: LGreen}}/>
+                <View style={{border: '0px', flexDirection:'row', justifyContent:'space-between', paddingVertical: 10, paddingHorizontal: 5}}>
+                <Button onPress={handleAddItem} buttonColor={DGreen} textColor={LGreen}>
+                  <Text style = {{fontSize: 20, fontWeight: 'bold', color: LGreen}}> Save </Text>
+                </Button>
+                <Button onPress={hideShoppingItemAdder} buttonColor={DGreen} textColor={LGreen}>
+                  <Text style = {{fontSize: 20, fontWeight: 'bold', color: LGreen}}> Cancel </Text>
+                </Button>
+                </View>
+              </Card>
+            </Modal>
+
+            <Modal style={styles.groceryModal} visible={itemAdderVisible} onDismiss={hideItemAdder}>
               <Card style={styles.itemAdder}>
                 <View style={{flexDirection: 'row'}}>
                   <TextInput placeholder='Item name' activeUnderlineColor = "#2AA198" onChangeText={setNewItemName} textColor="#2AA198" value={newItemName} style={{width: '75%', backgroundColor: 'white', border: 'none'}}/>
