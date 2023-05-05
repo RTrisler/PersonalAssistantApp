@@ -59,10 +59,7 @@ export default function Recipe({ meal }) {
             </View>
             <View style={{ padding: 10, width: '400px', height: '250px' }}>
                 <Text>{meal.title}</Text>
-                <Text style={{ color: "#777", paddingTop: 5 }}>
-                Ingredients
-                </Text>
-                
+                <ScrollView>
                   <List.Section style={{backgroundColor: 'red'}}></List.Section>
                     {recipeData && <List.Accordion title='Ingredients' style={{backgroundColor: DGreen}} titleStyle={{color: LGreen}}>
                       {recipeData.extendedIngredients.map(ingredent => {
@@ -72,26 +69,23 @@ export default function Recipe({ meal }) {
                           bounces={false}
                         ><Chip  
                           onPress={() => console.log('Pressed')} 
-                          style={{width: 150, backgroundColor: (pantry.map(item => item.name.toLowerCase()).includes(ingredent.name.toLowerCase())) ? "#0f4f20" : "#660d19"}}
+                          style={{width: "100%", backgroundColor: (pantry.map(item => item.name.toLowerCase()).includes(ingredent.name.toLowerCase())) ? "#0f4f20" : "#660d19"}}
                           >
                             <Text style={{color: "white", }}>{ingredent.name}</Text>
                           </Chip></ScrollView>;
                         }) }
                         </List.Accordion>}
-    
-                    
-                <Text style={{ color: "#777", paddingTop: 5 }}>
-                Steps
-                </Text>
+  
                 <List.Section style={{backgroundColor: 'red'}}>
                 {recipeData && <List.Accordion title='Steps' style={{backgroundColor: DGreen}} titleStyle={{color: LGreen}}>
                   {recipeData.analyzedInstructions.map(instruction => {
-                    return <ScrollView><Surface style={{...styles.itemContainer, justifyContent:'space-between'}} key={instruction.id}>{instruction.steps.map(step => {
+                    return <Surface style={{...styles.itemContainer, justifyContent:'space-between'}} key={instruction.id}>{instruction.steps.map(step => {
                         return <Text key={step.id}>{step.step + " \n"}</Text>
-                    })}</Surface></ScrollView>;
+                    })}</Surface>;
                     }) }
                     </List.Accordion>}
                 </List.Section>
+                </ScrollView>
                 <View style={styles.fitToText}>
                     <Button
                         title='Add To My Recipes'

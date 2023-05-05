@@ -12,6 +12,8 @@ import { BlurView } from 'expo-blur';
 import ToDoList from "./ToDoList";
 import ToDoForm from './ToDoForm';
 import './index.css';
+import ToDo from './ToDo';
+import TodoAppScreen from './ToDoAppScreen';
 
 
 const BGColor = "#003847";
@@ -192,16 +194,6 @@ export default function Dashboard() {
 
           <Surface style={styles.third}>
             <Text style={styles.todoTodayText}>ToDo List for Today</Text>
-            <BlurView intensity={100} style={styles.todoContainer}>
-            <Divider style={styles.divider} />
-              {
-                <div className="App">
-                  <ToDoList toDoList={toDoList} handleToggle={handleToggle} handleFilter={handleFilter}/>
-                  <ToDoForm addTask={addTask}/>
-                </div>
-              }
-              <Divider style={styles.divider}></Divider>
-            </BlurView>
           </Surface>
         </SafeAreaView>
     </LinearGradient>

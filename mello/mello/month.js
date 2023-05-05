@@ -15,7 +15,8 @@ const styles = {
     marginRight: "10px"
   },
   main: {
-    flexGrow: "1"
+    flexGrow: "1",
+    
   }
 };
 
@@ -115,6 +116,7 @@ class Calendar extends Component {
         <div style={styles.main} className="Event">
           <DayPilotCalendar
           theme={"mellocal"}
+          style={styles.calendar}
             {...this.state}
             ref={this.calendarRef}
           />
